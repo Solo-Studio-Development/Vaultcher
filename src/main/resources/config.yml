@@ -1,0 +1,152 @@
+# ==============================================================
+# Language Configuration Section
+# ==============================================================
+
+language: "en" # Supported languages -> de, en
+# If you want to change the language of your plugin, choose from the available options: 'de' (German) or 'en' (English)
+
+# ==============================================================
+# Main Menu Configuration
+# ==============================================================
+
+uses-must-be-bigger-than-one: true # If true, the main menu will only display codes where the 'USES' is greater than 1
+# This is a toggle to control whether vaults with less than one use should be excluded from the menu
+
+# ==============================================================
+# Database Configuration
+# ==============================================================
+
+database:
+  type: sqlite # Supported types -> MYSQL, SQLITE
+  # Type of the database you want to use. You can choose between 'SQLITE' or 'MYSQL'. Please type it in upper case!
+  
+  # MySQL-specific configuration
+  mysql:
+    host: localhost
+    port: 3306
+    database: coma112
+    username: root
+    password: "" # Enter your MySQL password here (leave empty for no password)
+    ssl: false
+    certificateverification: false
+    poolsize: 10
+    lifetime: 1800000
+  # This section is only necessary for MySQL. If using SQLite, you can ignore this part.
+  # Provides configuration for the MySQL connection, including host, port, and other settings.
+
+# ==============================================================
+# Vaultcher Item Configuration
+# ==============================================================
+
+vaultcher-item:
+  amount: 1
+  material: PAPER
+  name: "&b{name}" # {name} will be replaced with the vaultcher's name
+  lore:
+    - "" # Optional empty line
+    - "&aClick if you want to redeem the vaultcher!" # Description when hovering or clicking on the vaultcher item
+
+# ==============================================================
+# Filler Glass Item Configuration
+# ==============================================================
+
+filler-glass-item:
+  material: GRAY_STAINED_GLASS_PANE
+  name: " " # An empty name for the filler glass
+  lore: [] # Empty lore as it is just a filler item
+
+# ==============================================================
+# Menu Configuration - Accessible Vaultchers
+# ==============================================================
+
+user-accessible-menu:
+  title: "&c&lACCESSIBLE VAULTCHERS" # The title of the menu (with color codes)
+  size: 54 # Size of the menu (9 slots per row)
+  update-tick: 2 # Refresh rate of the menu in ticks
+  back-item:
+    amount: 1
+    material: RED_STAINED_GLASS
+    name: "&cBack" # Button to go back to the previous menu
+    slot: 45 # Slot position in the menu
+  forward-item:
+    amount: 1
+    material: GREEN_STAINED_GLASS
+    name: "&aForward" # Button to go forward to the next page of codes
+    slot: 53 # Slot position in the menu
+  filler-glass: true # Filler glass to fill unused slots
+
+# ==============================================================
+# Full Overview Menu Configuration
+# ==============================================================
+
+full-overview-menu:
+  title: "&c&lFULL OVERVIEW" # The title of the full overview menu
+  size: 54
+  update-tick: 2
+  back-item:
+    amount: 1
+    material: RED_STAINED_GLASS
+    name: "&cBack"
+    slot: 45
+  forward-item:
+    amount: 1
+    material: GREEN_STAINED_GLASS
+    name: "&aForward"
+    slot: 53
+  filler-glass: true # Same filler glass setting as in the accessible vaultcher menu
+
+# ==============================================================
+# Navigation Menu Configuration
+# ==============================================================
+
+navigation-menu:
+  title: "&c&lNAVIGATION MENU" # Title of the navigation menu
+  size: 9 # Smaller menu with only 9 slots
+  filler-glass: true # Use filler glass to fill empty slots
+
+  user-accessible-menu-item:
+    amount: 1
+    material: DIAMOND
+    name: "&4&lAVAILABLE CODES" # A diamond item representing available codes
+    slot: 3 # Slot where the item will appear
+  full-overview-menu-item:
+    amount: 1
+    material: CAULDRON
+    name: "&4&lALL" # Cauldron item representing the full overview of vaultchers
+    slot: 5 # Slot where the item will appear
+
+# ==============================================================
+# Webhook Configuration
+# ==============================================================
+
+webhook:
+  enabled: false # Set to 'true' if you want to enable the webhook feature
+  url: "WEBHOOK URL HERE!!!" # The Discord Webhook URL to send notifications to
+  
+  # Webhook embeds for various events
+  vaultcher-create-embed:
+    title: "NEW VAULTCHER CREATED!" # Title of the embed message for a new vaultcher creation
+    description: "{player} created a new vaultcher: {vaultcher} (Uses: {uses}, Command: {command})" # Description template for the created vaultcher
+    color: "RED" # Embed color
+    author-name: "" # Optional author name
+    footer-text: "SENT BY VAULTCHER" # Footer text
+  vaultcher-delete-embed:
+    title: "VAULTCHER DELETED!" # Title for the vaultcher deletion webhook embed
+    description: "{player} deleted a vaultcher: {vaultcher}" # Description for vaultcher deletion event
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"
+  vaultcher-edituse-embed:
+    title: "USES EDIT!" # Title when the uses of a vaultcher are edited
+    description: "{vaultcher}'s uses has been changed from {old} to {new}" # Description template showing the old and new uses
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"
+  vaultcher-editcommand-embed:
+    title: "COMMAND EDIT!" # Title when the command of a vaultcher is edited
+    description: "{vaultcher}'s command has been changed from {old} to {new}" # Old vs new command description
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"
+  vaultcher-editname-embed:
+    title: "NAME EDIT!" # Title for the name editing embed
+    description: "{vaultcher}'s name has been changed from {old} to {new}" # Description for changing the vaultcher's name
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"

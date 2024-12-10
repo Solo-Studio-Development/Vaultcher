@@ -1,0 +1,131 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "net.solostudio",
+    "module": "vaultcher",
+    "version": "1.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.8"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 22,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "vaultcher-1.0.0-dev.jar",
+          "url": "vaultcher-1.0.0-dev.jar",
+          "size": 105796,
+          "sha512": "c121fc86fbcef5b0dbaa69545d13266eab42ec69e477bd8ad3e34fa75cf20e5d48b05ba6a5764b6e642fe1798dba06aa769f83d70fba68fc0a4b553b2c31a07a",
+          "sha256": "22b22776e68f65fccb7a663ad8774a63f61b1aee692536ff6300f9134c5ebb4e",
+          "sha1": "1814a14f174b055b68b41ae35c6a1ba1850fd2b8",
+          "md5": "a3cf28818a02221947bc6377ea3082b3"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 22,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.zaxxer",
+          "module": "HikariCP",
+          "version": {
+            "requires": "6.2.1"
+          }
+        },
+        {
+          "group": "mysql",
+          "module": "mysql-connector-java",
+          "version": {
+            "requires": "8.0.33"
+          }
+        },
+        {
+          "group": "com.github.Revxrsal.Lamp",
+          "module": "common",
+          "version": {
+            "requires": "3.2.1"
+          }
+        },
+        {
+          "group": "com.github.Revxrsal.Lamp",
+          "module": "bukkit",
+          "version": {
+            "requires": "3.2.1"
+          }
+        },
+        {
+          "group": "org.bstats",
+          "module": "bstats-bukkit",
+          "version": {
+            "requires": "3.0.2"
+          }
+        },
+        {
+          "group": "com.github.Anon8281",
+          "module": "UniversalScheduler",
+          "version": {
+            "requires": "0.1.6"
+          }
+        },
+        {
+          "group": "org.reflections",
+          "module": "reflections",
+          "version": {
+            "requires": "0.10.2"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "vaultcher-1.0.0-dev.jar",
+          "url": "vaultcher-1.0.0-dev.jar",
+          "size": 105796,
+          "sha512": "c121fc86fbcef5b0dbaa69545d13266eab42ec69e477bd8ad3e34fa75cf20e5d48b05ba6a5764b6e642fe1798dba06aa769f83d70fba68fc0a4b553b2c31a07a",
+          "sha256": "22b22776e68f65fccb7a663ad8774a63f61b1aee692536ff6300f9134c5ebb4e",
+          "sha1": "1814a14f174b055b68b41ae35c6a1ba1850fd2b8",
+          "md5": "a3cf28818a02221947bc6377ea3082b3"
+        }
+      ]
+    },
+    {
+      "name": "shadowRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "shadowed",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "vaultcher-1.0.0-dev-all.jar",
+          "url": "vaultcher-1.0.0-dev-all.jar",
+          "size": 1462939,
+          "sha512": "2b2217f46a692af8a0459bae807df7fa3c63f7fd76e596e99f8b8335dfc749a24822999d2821e5da2c24f5111f34f57cc18f3fb82323147258199ea539bea4f6",
+          "sha256": "bc1e4a8bd229205a6e25e6e836412d42339cf88c3b11d3b1a8b92fdd7b4c973f",
+          "sha1": "64da35f70f9413d81bcaabc1e0ebb5a828e51153",
+          "md5": "ad440a36b87f47b75fab9c3e5c19dc31"
+        }
+      ]
+    }
+  ]
+}
