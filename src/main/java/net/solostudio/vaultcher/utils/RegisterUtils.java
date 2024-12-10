@@ -21,7 +21,7 @@ public class RegisterUtils {
 
         AtomicInteger count = new AtomicInteger();
 
-        new Reflections("net.solostudio.vaultcher.listeners")
+        new Reflections("net.solostudio.vaultcher")
                 .getSubTypesOf(Listener.class)
                 .forEach(listenerClass -> {
                     try {

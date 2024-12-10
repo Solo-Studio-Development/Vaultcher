@@ -64,6 +64,8 @@ public class UserAccessibleMenu extends PaginatedMenu implements Listener {
         inventory.clear();
         addMenuBorder();
 
+        if (vaultchers.isEmpty()) return;
+
         int startIndex = page * getMaxItemsPerPage();
         int endIndex = Math.min(startIndex + getMaxItemsPerPage(), vaultchers.size());
 
@@ -102,10 +104,13 @@ public class UserAccessibleMenu extends PaginatedMenu implements Listener {
             }
         }
 
+        if (event.getSlot() < 0 || event.getSlot() >= vaultchers.size()) return;
+
         Vaultcher.getDatabase().redeemVaultcher(vaultchers.get(event.getSlot()).vaultcherName(), player);
         inventory.close();
         player.sendMessage(MessageKeys.REDEEMED.getMessage());
     }
+
 
     @EventHandler
     public void onClose(final InventoryCloseEvent event) {

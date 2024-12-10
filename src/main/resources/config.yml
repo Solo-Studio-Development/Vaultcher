@@ -3,6 +3,7 @@
 # ==============================================================
 
 language: "en" # Supported languages -> de, en
+console-in-webhook: "CONSOLE"
 # If you want to change the language of your plugin, choose from the available options: 'de' (German) or 'en' (English)
 
 # ==============================================================
@@ -41,7 +42,7 @@ database:
 vaultcher-item:
   amount: 1
   material: PAPER
-  name: "&b{name}" # {name} will be replaced with the vaultcher's name
+  name: "&c{name}" # {name} will be replaced with the vaultcher's name
   lore:
     - "" # Optional empty line
     - "&aClick if you want to redeem the vaultcher!" # Description when hovering or clicking on the vaultcher item
@@ -120,32 +121,39 @@ navigation-menu:
 # ==============================================================
 
 webhook:
-  enabled: false # Set to 'true' if you want to enable the webhook feature
-  url: "WEBHOOK URL HERE!!!" # The Discord Webhook URL to send notifications to
-  
   # Webhook embeds for various events
   vaultcher-create-embed:
+    url: "WEBHOOK URL HERE!!!"
+    enabled: false
     title: "NEW VAULTCHER CREATED!" # Title of the embed message for a new vaultcher creation
     description: "{player} created a new vaultcher: {vaultcher} (Uses: {uses}, Command: {command})" # Description template for the created vaultcher
     color: "RED" # Embed color
     author-name: "" # Optional author name
     footer-text: "SENT BY VAULTCHER" # Footer text
   vaultcher-delete-embed:
+    url: "WEBHOOK URL HERE!!!"
+    enabled: false
     title: "VAULTCHER DELETED!" # Title for the vaultcher deletion webhook embed
     description: "{player} deleted a vaultcher: {vaultcher}" # Description for vaultcher deletion event
     color: "RED"
     footer-text: "SENT BY VAULTCHER"
   vaultcher-edituse-embed:
+    url: "WEBHOOK URL HERE!!!"
+    enabled: false
     title: "USES EDIT!" # Title when the uses of a vaultcher are edited
     description: "{vaultcher}'s uses has been changed from {old} to {new}" # Description template showing the old and new uses
     color: "RED"
     footer-text: "SENT BY VAULTCHER"
   vaultcher-editcommand-embed:
+    url: "WEBHOOK URL HERE!!!"
+    enabled: false
     title: "COMMAND EDIT!" # Title when the command of a vaultcher is edited
     description: "{vaultcher}'s command has been changed from {old} to {new}" # Old vs new command description
     color: "RED"
     footer-text: "SENT BY VAULTCHER"
   vaultcher-editname-embed:
+    url: "WEBHOOK URL HERE!!!"
+    enabled: false
     title: "NAME EDIT!" # Title for the name editing embed
     description: "{vaultcher}'s name has been changed from {old} to {new}" # Description for changing the vaultcher's name
     color: "RED"

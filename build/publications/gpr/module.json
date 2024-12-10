@@ -3,7 +3,7 @@
   "component": {
     "group": "net.solostudio",
     "module": "vaultcher",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "attributes": {
       "org.gradle.status": "release"
     }
@@ -25,8 +25,8 @@
       },
       "files": [
         {
-          "name": "vaultcher-1.0.0-dev.jar",
-          "url": "vaultcher-1.0.0-dev.jar",
+          "name": "vaultcher-1.0.1-dev.jar",
+          "url": "vaultcher-1.0.1-dev.jar",
           "size": 105796,
           "sha512": "c121fc86fbcef5b0dbaa69545d13266eab42ec69e477bd8ad3e34fa75cf20e5d48b05ba6a5764b6e642fe1798dba06aa769f83d70fba68fc0a4b553b2c31a07a",
           "sha256": "22b22776e68f65fccb7a663ad8774a63f61b1aee692536ff6300f9134c5ebb4e",
@@ -97,8 +97,8 @@
       ],
       "files": [
         {
-          "name": "vaultcher-1.0.0-dev.jar",
-          "url": "vaultcher-1.0.0-dev.jar",
+          "name": "vaultcher-1.0.1-dev.jar",
+          "url": "vaultcher-1.0.1-dev.jar",
           "size": 105796,
           "sha512": "c121fc86fbcef5b0dbaa69545d13266eab42ec69e477bd8ad3e34fa75cf20e5d48b05ba6a5764b6e642fe1798dba06aa769f83d70fba68fc0a4b553b2c31a07a",
           "sha256": "22b22776e68f65fccb7a663ad8774a63f61b1aee692536ff6300f9134c5ebb4e",
@@ -117,13 +117,13 @@
       },
       "files": [
         {
-          "name": "vaultcher-1.0.0-dev-all.jar",
-          "url": "vaultcher-1.0.0-dev-all.jar",
-          "size": 1462939,
-          "sha512": "2b2217f46a692af8a0459bae807df7fa3c63f7fd76e596e99f8b8335dfc749a24822999d2821e5da2c24f5111f34f57cc18f3fb82323147258199ea539bea4f6",
-          "sha256": "bc1e4a8bd229205a6e25e6e836412d42339cf88c3b11d3b1a8b92fdd7b4c973f",
-          "sha1": "64da35f70f9413d81bcaabc1e0ebb5a828e51153",
-          "md5": "ad440a36b87f47b75fab9c3e5c19dc31"
+          "name": "vaultcher-1.0.1-dev-all.jar",
+          "url": "vaultcher-1.0.1-dev-all.jar",
+          "size": 1462064,
+          "sha512": "e3612f51e066faa37f8e322a3b8e7a7d2f0cf376435ebc5562da162686c47433857ed2413535401b60f166e88fd2b82d0bd37599734c052c42841d3a0adea0bb",
+          "sha256": "7275574dd89d30e220de18498109f0525e5bca63f303fdc976d50f71e2f5fa79",
+          "sha1": "a271e7082acb57d4f7c0fea05fa1aa3049fab9ae",
+          "md5": "a6c723c35370c876ced5d5d31241b47c"
         }
       ]
     }

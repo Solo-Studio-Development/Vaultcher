@@ -59,7 +59,7 @@ public class NavigationMenu extends Menu implements Listener {
     @Override
     public void setMenuItems() {
         inventory.setItem(ConfigKeys.NAVIGATION_USER_ACCESSIBLE_MENU_SLOT.getInt(), ItemKeys.NAVIGATION_USER_ACCESSIBLE_MENU_ITEM.getItem());
-        inventory.setItem(ConfigKeys.NAVIGATION_FULL_OVERVIEW_MENU_SLOT.getInt(), ItemKeys.NAVIGATION_USER_ACCESSIBLE_MENU_ITEM.getItem());
+        inventory.setItem(ConfigKeys.NAVIGATION_FULL_OVERVIEW_MENU_SLOT.getInt(), ItemKeys.NAVIGATION_FULL_OVERVIEW_MENU_ITEM.getItem());
         setFillerGlass();
     }
 

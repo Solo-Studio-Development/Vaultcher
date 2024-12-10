@@ -68,7 +68,7 @@ public final class Vaultcher extends JavaPlugin {
 
     private void initializeDatabaseManager() {
         try {
-            switch (DatabaseTypes.valueOf(ConfigKeys.DATABASE.getString())) {
+            switch (DatabaseTypes.valueOf(ConfigKeys.DATABASE.getString().toUpperCase())) {
                 case MYSQL -> {
                     LoggerUtils.info("### MySQL support found! Starting to initializing it... ###");
                     database = new MySQL(Objects.requireNonNull(getConfiguration().getSection("database.mysql")));
