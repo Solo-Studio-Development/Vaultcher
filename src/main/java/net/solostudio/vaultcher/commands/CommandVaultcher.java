@@ -7,7 +7,7 @@ import net.solostudio.vaultcher.events.*;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.menu.menus.NavigationMenu;
 import net.solostudio.vaultcher.utils.EventUtils;
-import net.solostudio.vaultcher.utils.MenuUtils;
+import net.solostudio.vaultcher.managers.MenuController;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -46,7 +46,7 @@ public class CommandVaultcher {
     @Subcommand("menu")
     @CommandPermission("vaultcher.menu")
     public void menu(@NotNull Player player) {
-        new NavigationMenu(MenuUtils.getMenuUtils(player)).open();
+        new NavigationMenu(MenuController.getMenuUtils(player)).open();
     }
 
     @Subcommand("create")

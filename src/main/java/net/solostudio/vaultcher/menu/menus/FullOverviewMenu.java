@@ -6,7 +6,7 @@ import net.solostudio.vaultcher.enums.keys.ItemKeys;
 import net.solostudio.vaultcher.enums.keys.MessageKeys;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.menu.PaginatedMenu;
-import net.solostudio.vaultcher.utils.MenuUtils;
+import net.solostudio.vaultcher.managers.MenuController;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -20,8 +20,8 @@ import java.util.List;
 @SuppressWarnings("all")
 public class FullOverviewMenu extends PaginatedMenu {
 
-    public FullOverviewMenu(@NotNull MenuUtils menuUtils) {
-        super(menuUtils);
+    public FullOverviewMenu(@NotNull MenuController menuController) {
+        super(menuController);
     }
 
     @Override

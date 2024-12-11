@@ -2,7 +2,7 @@ package net.solostudio.vaultcher.menu;
 
 import net.solostudio.vaultcher.enums.keys.ItemKeys;
 import net.solostudio.vaultcher.processor.MessageProcessor;
-import net.solostudio.vaultcher.utils.MenuUtils;
+import net.solostudio.vaultcher.managers.MenuController;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -14,11 +14,11 @@ import java.util.stream.IntStream;
 @SuppressWarnings("deprecation")
 public abstract class Menu implements InventoryHolder {
 
-    protected MenuUtils menuUtils;
+    protected MenuController menuController;
     protected Inventory inventory;
 
-    public Menu(@NotNull MenuUtils menuUtils) {
-        this.menuUtils = menuUtils;
+    public Menu(@NotNull MenuController menuController) {
+        this.menuController = menuController;
     }
 
     public abstract void handleMenu(final InventoryClickEvent event);
@@ -41,7 +41,7 @@ public abstract class Menu implements InventoryHolder {
 
         this.setMenuItems();
 
-        menuUtils.getOwner().openInventory(inventory);
+        menuController.owner().openInventory(inventory);
         MenuUpdater menuUpdater = new MenuUpdater(this);
         menuUpdater.start(getMenuTick());
     }
@@ -63,7 +63,7 @@ public abstract class Menu implements InventoryHolder {
     public void updateMenuItems() {
         if (inventory != null) {
             setMenuItems();
-            menuUtils.getOwner().updateInventory();
+            menuController.owner().updateInventory();
         }
     }
 }

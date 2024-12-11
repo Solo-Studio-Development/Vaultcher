@@ -6,7 +6,7 @@ import net.solostudio.vaultcher.enums.keys.ItemKeys;
 import net.solostudio.vaultcher.enums.keys.MessageKeys;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.menu.PaginatedMenu;
-import net.solostudio.vaultcher.utils.MenuUtils;
+import net.solostudio.vaultcher.managers.MenuController;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -16,13 +16,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 @SuppressWarnings("all")
 public class UserAccessibleMenu extends PaginatedMenu {
 
-    public UserAccessibleMenu(@NotNull MenuUtils menuUtils) {
-        super(menuUtils);
+    public UserAccessibleMenu(@NotNull MenuController menuController) {
+        super(menuController);
     }
 
     @Override
@@ -58,7 +57,7 @@ public class UserAccessibleMenu extends PaginatedMenu {
 
     @Override
     public void setMenuItems() {
-        List<VaultcherData> vaultchers = Vaultcher.getDatabase().getVaultchers(menuUtils.getOwner());
+        List<VaultcherData> vaultchers = Vaultcher.getDatabase().getVaultchers(menuController.owner());
         int startIndex = page * getMaxItemsPerPage();
         int endIndex = Math.min(startIndex + getMaxItemsPerPage(), vaultchers.size());
 

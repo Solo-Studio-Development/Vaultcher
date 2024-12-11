@@ -3,7 +3,7 @@ package net.solostudio.vaultcher.menu.menus;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.enums.keys.ItemKeys;
 import net.solostudio.vaultcher.menu.Menu;
-import net.solostudio.vaultcher.utils.MenuUtils;
+import net.solostudio.vaultcher.managers.MenuController;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -13,8 +13,8 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("all")
 public class NavigationMenu extends Menu {
 
-    public NavigationMenu(@NotNull MenuUtils menuUtils) {
-        super(menuUtils);
+    public NavigationMenu(@NotNull MenuController menuController) {
+        super(menuController);
     }
 
     @Override
@@ -47,11 +47,11 @@ public class NavigationMenu extends Menu {
 
         if (slot == ConfigKeys.NAVIGATION_USER_ACCESSIBLE_MENU_SLOT.getInt()) {
             inventory.close();
-            new UserAccessibleMenu(MenuUtils.getMenuUtils(player)).open();
+            new UserAccessibleMenu(MenuController.getMenuUtils(player)).open();
         } else if (slot == ConfigKeys.NAVIGATION_FULL_OVERVIEW_MENU_SLOT.getInt()) {
             if (player.hasPermission("vaultcher.all-menu")) {
                 inventory.close();
-                new FullOverviewMenu(MenuUtils.getMenuUtils(player)).open();
+                new FullOverviewMenu(MenuController.getMenuUtils(player)).open();
             } else inventory.close();
         }
     }

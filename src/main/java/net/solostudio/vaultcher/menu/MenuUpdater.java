@@ -19,7 +19,7 @@ public class MenuUpdater {
             return;
         }
 
-        if (menu.getInventory().getViewers().contains(menu.menuUtils.getOwner())) menu.updateMenuItems();
+        if (menu.getInventory().getViewers().contains(menu.menuController.owner())) menu.updateMenuItems();
         else stop();
     }
 
