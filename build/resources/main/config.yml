@@ -3,6 +3,7 @@
 # ==============================================================
 
 language: "en" # Supported languages -> de, en
+console-in-webhook: "CONSOLE"
 # If you want to change the language of your plugin, choose from the available options: 'de' (German) or 'en' (English)
 
 # ==============================================================
@@ -24,7 +25,7 @@ database:
   mysql:
     host: localhost
     port: 3306
-    database: coma112
+    database: user
     username: root
     password: "" # Enter your MySQL password here (leave empty for no password)
     ssl: false
@@ -43,7 +44,7 @@ vaultcher-item:
   material: PAPER
   name: "&c{name}" # {name} will be replaced with the vaultcher's name
   lore:
-    - "" # Optional empty line
+    - ""
     - "&aClick if you want to redeem the vaultcher!" # Description when hovering or clicking on the vaultcher item
 
 # ==============================================================

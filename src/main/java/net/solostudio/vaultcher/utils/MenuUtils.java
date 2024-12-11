@@ -2,7 +2,7 @@ package net.solostudio.vaultcher.utils;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.UtilityClass;
+
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

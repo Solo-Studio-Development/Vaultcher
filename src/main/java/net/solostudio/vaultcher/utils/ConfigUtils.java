@@ -2,7 +2,6 @@ package net.solostudio.vaultcher.utils;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.solostudio.vaultcher.processor.MessageProcessor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -71,12 +70,6 @@ public class ConfigUtils {
                 .map(MessageProcessor::process)
                 .toList();
 
-    }
-
-    public List<String> getLoreList(@NotNull String path) {
-        return getList(path).stream()
-                .map(MessageProcessor::process)
-                .toList();
     }
 
     public boolean getBoolean(@NotNull String path) {

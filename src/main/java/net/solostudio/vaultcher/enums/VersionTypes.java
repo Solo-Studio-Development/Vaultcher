@@ -1,9 +1,8 @@
 package net.solostudio.vaultcher.enums;
 
+import lombok.Getter;
 import net.solostudio.vaultcher.utils.LoggerUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.Bukkit;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,6 +20,7 @@ public enum VersionTypes {
     v1_21_R3,
     v1_21_R4;
 
+    @Getter
     private static VersionTypes serverVersion;
 
     static {
@@ -48,7 +48,7 @@ public enum VersionTypes {
         if (major == 1) {
             return switch (minor) {
                 case 20 -> switch (patch) {
-                    case 1 -> v1_20_R1; // 1.20.1 and 1.20
+                    case 0, 1 -> v1_20_R1; // 1.20.1 and 1.20
                     case 2 -> v1_20_R2; // 1.20.2
                     case 3, 4 -> v1_20_R3; // 1.20.3 and 1.20.4
                     case 5, 6 -> v1_20_R4; // 1.20.5 and 1.20.6
@@ -56,7 +56,7 @@ public enum VersionTypes {
                 };
 
                 case 21 -> switch (patch) {
-                    case 1 -> v1_21_R1; // 1.21.1 and 1.21
+                    case 0, 1 -> v1_21_R1; // 1.21.1 and 1.21
                     case 2 -> v1_21_R2; // 1.21.2
                     case 3, 4 -> v1_21_R3; // 1.21.3 and 1.21.4
                     default -> UNKNOWN;
@@ -68,48 +68,4 @@ public enum VersionTypes {
         return UNKNOWN;
     }
 
-    public static VersionTypes getCurrentVersion() {
-        LoggerUtils.info("Current Minecraft version: " + serverVersion);
-        return serverVersion;
-    }
-
-    public static boolean isServerVersion(@NotNull VersionTypes version) {
-        return serverVersion == version;
-    }
-
-    public static boolean isServerVersion(@NotNull VersionTypes... versions) {
-        return ArrayUtils.contains(versions, serverVersion);
-    }
-
-    public static boolean isServerVersionAbove(@NotNull VersionTypes version) {
-        return serverVersion.ordinal() > version.ordinal();
-    }
-
-    public static boolean isServerVersionAtLeast(@NotNull VersionTypes version) {
-        return serverVersion.ordinal() >= version.ordinal();
-    }
-
-    public static boolean isServerVersionAtOrBelow(@NotNull VersionTypes version) {
-        return serverVersion.ordinal() <= version.ordinal();
-    }
-
-    public static boolean isServerVersionBelow(@NotNull VersionTypes version) {
-        return serverVersion.ordinal() < version.ordinal();
-    }
-
-    public boolean isLessThan(@NotNull VersionTypes other) {
-        return this.ordinal() < other.ordinal();
-    }
-
-    public boolean isAtOrBelow(@NotNull VersionTypes other) {
-        return this.ordinal() <= other.ordinal();
-    }
-
-    public boolean isGreaterThan(@NotNull VersionTypes other) {
-        return this.ordinal() > other.ordinal();
-    }
-
-    public boolean isAtLeast(@NotNull VersionTypes other) {
-        return this.ordinal() >= other.ordinal();
-    }
 }

@@ -30,7 +30,7 @@ public class VaultcherNameEditEvent extends Event implements PlaceholderProvider
     public Map<String, String> getPlaceholders() {
         Map<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("{old}", Vaultcher.getDatabase().getCommand(getName()));
+        placeholders.put("{old}", Vaultcher.getDatabase().getName(getName()));
         placeholders.put("{new}", getNewName());
         placeholders.put("{vaultcher}", getName());
 

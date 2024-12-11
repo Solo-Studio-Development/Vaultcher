@@ -12,16 +12,13 @@ import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONArray;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -254,17 +251,16 @@ public class Webhook {
                     jsonEmbed.put("author", jsonAuthor);
                 }
 
-                List<JSONObject> jsonFields = new ArrayList<>();
+                List<JSONObject> jsonFields = fields.stream()
+                        .map(field -> {
+                            JSONObject jsonField = new JSONObject();
 
-                fields.forEach(field -> {
-                    JSONObject jsonField = new JSONObject();
-
-                    jsonField.put("name", field.name());
-                    jsonField.put("value", field.value());
-                    jsonField.put("inline", field.inline());
-
-                    jsonFields.add(jsonField);
-                });
+                            jsonField.put("name", field.name());
+                            jsonField.put("value", field.value());
+                            jsonField.put("inline", field.inline());
+                            return jsonField;
+                        })
+                        .toList();
 
                 jsonEmbed.put("fields", jsonFields.toArray());
                 embedObjects.add(jsonEmbed);

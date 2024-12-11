@@ -37,7 +37,7 @@ public class MySQL extends AbstractDatabase {
         int poolSize = section.getInt("poolsize");
         int maxLifetime = section.getInt("lifetime");
 
-        hikariConfig.setPoolName("CodePool");
+        hikariConfig.setPoolName("VaultcherPool");
         hikariConfig.setMaximumPoolSize(poolSize);
         hikariConfig.setMaxLifetime(maxLifetime * 1000L);
         hikariConfig.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
@@ -54,7 +54,7 @@ public class MySQL extends AbstractDatabase {
         hikariConfig.addDataSourceProperty("rewriteBatchedStatements", "true");
         hikariConfig.addDataSourceProperty("socketTimeout", String.valueOf(TimeUnit.SECONDS.toMillis(30)));
         hikariConfig.addDataSourceProperty("prepStmtCacheSize", "275");
-        hikariConfig.addDataSourceProperty("useUnicode", "true");
+        hikariConfig.addDataSourceProperty("useUnivaultcher", "true");
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
         connection = dataSource.getConnection();
     }
@@ -76,7 +76,7 @@ public class MySQL extends AbstractDatabase {
     }
 
     public void createTable() {
-        String query = "CREATE TABLE IF NOT EXISTS code (CODE VARCHAR(255) NOT NULL, CMD VARCHAR(255) NOT NULL, USES INT, OWNERS VARCHAR(255), PRIMARY KEY (CODE))";
+        String query = "CREATE TABLE IF NOT EXISTS vaultcher (VAULTCHER VARCHAR(255) NOT NULL, COMMAND VARCHAR(255) NOT NULL, USES INT, OWNERS VARCHAR(255), PRIMARY KEY (VAULTCHER))";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
             preparedStatement.execute();
@@ -87,7 +87,7 @@ public class MySQL extends AbstractDatabase {
 
     @Override
     public void createVaultcher(@NotNull String name, @NotNull String cmd, int uses) {
-        String query = "INSERT IGNORE INTO code (CODE, CMD, USES) VALUES (?, ?, ?)";
+        String query = "INSERT IGNORE INTO vaultcher (VAULTCHER, COMMAND, USES) VALUES (?, ?, ?)";
 
         try {
             if (!exists(name)) {
@@ -105,7 +105,7 @@ public class MySQL extends AbstractDatabase {
 
     @Override
     public boolean exists(@NotNull String name) {
-        String query = "SELECT * FROM code WHERE CODE = ?";
+        String query = "SELECT * FROM vaultcher WHERE VAULTCHER = ?";
 
         try {
             if (!getConnection().isValid(2)) reconnect();
@@ -123,10 +123,10 @@ public class MySQL extends AbstractDatabase {
 
     @Override
     public void redeemVaultcher(@NotNull String name, @NotNull OfflinePlayer player) {
-        String selectQuery = "SELECT USES, CMD, OWNERS FROM code WHERE CODE = ?";
-        String updateQuery = "UPDATE code SET USES = USES - 1 WHERE CODE = ?";
-        String deleteQuery = "DELETE FROM code WHERE CODE = ?";
-        String updateOwnersQuery = "UPDATE code SET OWNERS = TRIM(BOTH ', ' FROM REPLACE(CONCAT(', ', OWNERS, ', '), CONCAT(', ', ?, ', '), ', ')) WHERE CODE = ?";
+        String selectQuery = "SELECT USES, COMMAND, OWNERS FROM vaultcher WHERE VAULTCHER = ?";
+        String updateQuery = "UPDATE vaultcher SET USES = USES - 1 WHERE VAULTCHER = ?";
+        String deleteQuery = "DELETE FROM vaultcher WHERE VAULTCHER = ?";
+        String updateOwnersQuery = "UPDATE vaultcher SET OWNERS = TRIM(BOTH ', ' FROM REPLACE(CONCAT(', ', OWNERS, ', '), CONCAT(', ', ?, ', '), ', ')) WHERE VAULTCHER = ?";
 
         try {
             int currentUses = 0;
@@ -138,7 +138,7 @@ public class MySQL extends AbstractDatabase {
                 ResultSet resultSet = selectStatement.executeQuery();
                 if (resultSet.next()) {
                     currentUses = resultSet.getInt("USES");
-                    command = resultSet.getString("CMD");
+                    command = resultSet.getString("COMMAND");
                 }
             }
 
@@ -167,13 +167,13 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public void giveVaultcher(@NotNull String code, @NotNull OfflinePlayer player) {
-        String updateOwnersQuery = "UPDATE code SET OWNERS = CONCAT(IFNULL(OWNERS,''), ?, ', ') WHERE CODE = ?";
+    public void giveVaultcher(@NotNull String vaultcher, @NotNull OfflinePlayer player) {
+        String updateOwnersQuery = "UPDATE vaultcher SET OWNERS = CONCAT(IFNULL(OWNERS,''), ?, ', ') WHERE VAULTCHER = ?";
 
         try {
             try (PreparedStatement updateOwnersStatement = getConnection().prepareStatement(updateOwnersQuery)) {
                 updateOwnersStatement.setString(1, player.getName());
-                updateOwnersStatement.setString(2, code);
+                updateOwnersStatement.setString(2, vaultcher);
                 updateOwnersStatement.executeUpdate();
             }
         } catch (SQLException exception) {
@@ -182,12 +182,12 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public boolean isOwned(@NotNull String code, @NotNull OfflinePlayer player) {
-        String selectQuery = "SELECT OWNERS FROM code WHERE CODE = ?";
+    public boolean isOwned(@NotNull String vaultcher, @NotNull OfflinePlayer player) {
+        String selectQuery = "SELECT OWNERS FROM vaultcher WHERE VAULTCHER = ?";
 
         try {
             try (PreparedStatement selectStatement = getConnection().prepareStatement(selectQuery)) {
-                selectStatement.setString(1, code);
+                selectStatement.setString(1, vaultcher);
 
                 ResultSet resultSet = selectStatement.executeQuery();
 
@@ -204,12 +204,12 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public boolean isUsesZero(@NotNull String code) {
-        String query = "SELECT USES FROM code WHERE CODE = ?";
+    public boolean isUsesZero(@NotNull String vaultcher) {
+        String query = "SELECT USES FROM vaultcher WHERE VAULTCHER = ?";
 
         try {
             try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
-                preparedStatement.setString(1, code);
+                preparedStatement.setString(1, vaultcher);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
@@ -225,12 +225,12 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public int getUses(@NotNull String code) {
-        String query = "SELECT USES FROM code WHERE CODE = ?";
+    public int getUses(@NotNull String vaultcher) {
+        String query = "SELECT USES FROM vaultcher WHERE VAULTCHER = ?";
 
         try {
             try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
-                preparedStatement.setString(1, code);
+                preparedStatement.setString(1, vaultcher);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -244,16 +244,16 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public String getCommand(@NotNull String code) {
-        String query = "SELECT CMD FROM code WHERE CODE = ?";
+    public String getCommand(@NotNull String vaultcher) {
+        String query = "SELECT COMMAND FROM vaultcher WHERE VAULTCHER = ?";
 
         try {
             try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
-                preparedStatement.setString(1, code);
+                preparedStatement.setString(1, vaultcher);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
 
-                if (resultSet.next()) return resultSet.getString("CMD");
+                if (resultSet.next()) return resultSet.getString("COMMAND");
             }
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
@@ -263,16 +263,16 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public String getName(@NotNull String code) {
-        String query = "SELECT CODE FROM code WHERE CODE = ?";
+    public String getName(@NotNull String vaultcher) {
+        String query = "SELECT VAULTCHER FROM vaultcher WHERE VAULTCHER = ?";
 
         try {
             try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
-                preparedStatement.setString(1, code);
+                preparedStatement.setString(1, vaultcher);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
 
-                if (resultSet.next()) return resultSet.getString("CODE");
+                if (resultSet.next()) return resultSet.getString("VAULTCHER");
             }
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
@@ -282,17 +282,17 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public void takeVaultcher(@NotNull String code, @NotNull String oldOwner, @NotNull String newOwner) {
-        String query = "SELECT OWNERS FROM code WHERE CODE = ?";
-        String updateQuery = "UPDATE code SET OWNERS = ? WHERE CODE = ?";
+    public void takeVaultcher(@NotNull String vaultcher, @NotNull String oldOwner, @NotNull String newOwner) {
+        String query = "SELECT OWNERS FROM vaultcher WHERE VAULTCHER = ?";
+        String updateQuery = "UPDATE vaultcher SET OWNERS = ? WHERE VAULTCHER = ?";
 
         try (PreparedStatement selectStatement = getConnection().prepareStatement(query)) {
-            selectStatement.setString(1, code);
+            selectStatement.setString(1, vaultcher);
             ResultSet resultSet = selectStatement.executeQuery();
+
             if (resultSet.next()) {
-                String owners = resultSet.getString("OWNERS");
                 List<String> ownerList = Arrays
-                        .stream(owners.split(","))
+                        .stream(resultSet.getString("OWNERS").split(","))
                         .map(String::trim)
                         .collect(Collectors.toList());
 
@@ -300,11 +300,10 @@ public class MySQL extends AbstractDatabase {
 
                 if (index != -1) {
                     ownerList.set(index, newOwner);
-                    String updatedOwners = String.join(", ", ownerList);
 
                     try (PreparedStatement updateStatement = getConnection().prepareStatement(updateQuery)) {
-                        updateStatement.setString(1, updatedOwners);
-                        updateStatement.setString(2, code);
+                        updateStatement.setString(1, String.join(", ", ownerList));
+                        updateStatement.setString(2, vaultcher);
                         updateStatement.executeUpdate();
                     }
                 }
@@ -315,12 +314,12 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public void deleteVaultcher(@NotNull String code) {
-        String deleteQuery = "DELETE FROM code WHERE CODE = ?";
+    public void deleteVaultcher(@NotNull String vaultcher) {
+        String deleteQuery = "DELETE FROM vaultcher WHERE VAULTCHER = ?";
 
         try {
             try (PreparedStatement deleteStatement = getConnection().prepareStatement(deleteQuery)) {
-                deleteStatement.setString(1, code);
+                deleteStatement.setString(1, vaultcher);
                 deleteStatement.executeUpdate();
             }
         } catch (SQLException exception) {
@@ -330,7 +329,7 @@ public class MySQL extends AbstractDatabase {
 
     @Override
     public void changeName(@NotNull String oldName, @NotNull String newName) {
-        String updateQuery = "UPDATE code SET CODE = ? WHERE CODE = ?";
+        String updateQuery = "UPDATE vaultcher SET VAULTCHER = ? WHERE VAULTCHER = ?";
 
         try {
             try (PreparedStatement updateStatement = getConnection().prepareStatement(updateQuery)) {
@@ -345,7 +344,7 @@ public class MySQL extends AbstractDatabase {
 
     @Override
     public void changeCommand(@NotNull String name, @NotNull String newCommand) {
-        String updateQuery = "UPDATE code SET CMD = ? WHERE CODE = ?";
+        String updateQuery = "UPDATE vaultcher SET COMMAND = ? WHERE VAULTCHER = ?";
 
         try {
             try (PreparedStatement updateStatement = getConnection().prepareStatement(updateQuery)) {
@@ -360,7 +359,7 @@ public class MySQL extends AbstractDatabase {
 
     @Override
     public void changeUses(@NotNull String name, int newUses) {
-        String updateQuery = "UPDATE code SET USES = ? WHERE CODE = ?";
+        String updateQuery = "UPDATE vaultcher SET USES = ? WHERE VAULTCHER = ?";
 
         try {
             try (PreparedStatement updateStatement = getConnection().prepareStatement(updateQuery)) {
@@ -375,44 +374,44 @@ public class MySQL extends AbstractDatabase {
 
     @Override
     public List<VaultcherData> getVaultchers(@NotNull OfflinePlayer player) {
-        List<VaultcherData> codes = new ArrayList<>();
-        String query = "SELECT * FROM code WHERE USES >= 1 AND OWNERS LIKE ?";
+        List<VaultcherData> vaultchers = new ArrayList<>();
+        String query = "SELECT * FROM vaultcher WHERE USES >= 1 AND OWNERS LIKE ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, "%" + player.getName() + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("CODE");
-                String command = resultSet.getString("CMD");
+                String name = resultSet.getString("VAULTCHER");
+                String command = resultSet.getString("COMMAND");
                 int uses = resultSet.getInt("USES");
-                codes.add(new VaultcherData(name, command, uses));
+                vaultchers.add(new VaultcherData(name, command, uses));
             }
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
 
-        return codes;
+        return vaultchers;
     }
 
     @Override
     public List<VaultcherData> getEveryVaultcher() {
-        List<VaultcherData> codes = new ArrayList<>();
-        String query = ConfigKeys.USES_MUST_BE_BIGGER_THAN_ONE.getBoolean() ? "SELECT * FROM code WHERE USES >= 1" : "SELECT * FROM code";
+        List<VaultcherData> vaultchers = new ArrayList<>();
+        String query = ConfigKeys.USES_MUST_BE_BIGGER_THAN_ONE.getBoolean() ? "SELECT * FROM vaultcher WHERE USES >= 1" : "SELECT * FROM vaultcher";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                String name = resultSet.getString("CODE");
-                String command = resultSet.getString("CMD");
+                String name = resultSet.getString("VAULTCHER");
+                String command = resultSet.getString("COMMAND");
                 int uses = resultSet.getInt("USES");
-                codes.add(new VaultcherData(name, command, uses));
+                vaultchers.add(new VaultcherData(name, command, uses));
             }
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
 
-        return codes;
+        return vaultchers;
     }
 
     @Override

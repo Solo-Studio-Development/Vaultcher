@@ -6,6 +6,7 @@ import net.solostudio.vaultcher.enums.keys.MessageKeys;
 import net.solostudio.vaultcher.events.*;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.menu.menus.NavigationMenu;
+import net.solostudio.vaultcher.utils.EventUtils;
 import net.solostudio.vaultcher.utils.MenuUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -66,7 +67,7 @@ public class CommandVaultcher {
         VaultcherData vaultcher = new VaultcherData(name, (command + " ").trim(), uses);
         database.createVaultcher(vaultcher.vaultcherName(), vaultcher.command(), vaultcher.uses());
         sender.sendMessage(MessageKeys.CREATED.getMessage());
-        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherCreateEvent((Player) sender, name, command, uses));
+        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherCreateEvent(EventUtils.handleConsoleEvent(sender).orElse(null), name, command, uses));
     }
 
     @Subcommand("delete")
@@ -81,7 +82,7 @@ public class CommandVaultcher {
 
         database.deleteVaultcher(name);
         sender.sendMessage(MessageKeys.DELETED.getMessage());
-        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherDeleteEvent((Player) sender, name));
+        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherDeleteEvent(EventUtils.handleConsoleEvent(sender).orElse(null), name));
     }
 
     @Subcommand("edituse")

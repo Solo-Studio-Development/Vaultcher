@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Getter
 public class SQLite extends AbstractDatabase {
@@ -86,8 +85,9 @@ public class SQLite extends AbstractDatabase {
             try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
                 preparedStatement.setString(1, name);
 
-                ResultSet resultSet = preparedStatement.executeQuery();
-                return resultSet.next();
+                return preparedStatement
+                        .executeQuery()
+                        .next();
             }
         } catch (SQLException exception) {
             LoggerUtils.error("Error checking if vaultcher exists: " + exception.getMessage());
@@ -171,6 +171,7 @@ public class SQLite extends AbstractDatabase {
                 selectStatement.setString(1, vaultcher);
 
                 ResultSet resultSet = selectStatement.executeQuery();
+
                 if (resultSet.next()) {
                     String ownersList = resultSet.getString("OWNERS");
                     return ownersList != null && ownersList.contains(Objects.requireNonNull(player.getName()));
@@ -192,6 +193,7 @@ public class SQLite extends AbstractDatabase {
                 preparedStatement.setString(1, vaultcher);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
+
                 if (resultSet.next()) {
                     int uses = resultSet.getInt("USES");
                     return uses == 0;
@@ -270,9 +272,8 @@ public class SQLite extends AbstractDatabase {
             selectStatement.setString(1, vaultcher);
             ResultSet resultSet = selectStatement.executeQuery();
             if (resultSet.next()) {
-                String owners = resultSet.getString("OWNERS");
                 List<String> ownerList = new ArrayList<>(Arrays
-                        .stream(owners.split(","))
+                        .stream(resultSet.getString("OWNERS").split(","))
                         .map(String::trim)
                         .toList());
 
@@ -280,10 +281,9 @@ public class SQLite extends AbstractDatabase {
 
                 if (index != -1) {
                     ownerList.set(index, newOwner);
-                    String updatedOwners = String.join(", ", ownerList);
 
                     try (PreparedStatement updateStatement = getConnection().prepareStatement(updateQuery)) {
-                        updateStatement.setString(1, updatedOwners);
+                        updateStatement.setString(1, String.join(", ", ownerList));
                         updateStatement.setString(2, vaultcher);
                         updateStatement.executeUpdate();
                     }

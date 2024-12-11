@@ -3,7 +3,7 @@ package net.solostudio.vaultcher;
 import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+
 import net.solostudio.vaultcher.config.Config;
 import net.solostudio.vaultcher.database.AbstractDatabase;
 import net.solostudio.vaultcher.database.MySQL;

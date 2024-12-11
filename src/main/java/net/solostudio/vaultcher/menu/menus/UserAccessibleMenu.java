@@ -9,7 +9,6 @@ import net.solostudio.vaultcher.menu.PaginatedMenu;
 import net.solostudio.vaultcher.utils.MenuUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -19,8 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.stream.IntStream;
 
-@SuppressWarnings("deprecation")
-public class UserAccessibleMenu extends PaginatedMenu implements Listener {
+@SuppressWarnings("all")
+public class UserAccessibleMenu extends PaginatedMenu {
+
     public UserAccessibleMenu(@NotNull MenuUtils menuUtils) {
         super(menuUtils);
     }
@@ -56,20 +56,19 @@ public class UserAccessibleMenu extends PaginatedMenu implements Listener {
         return ConfigKeys.USER_ACCESSIBLE_FILLER_GLASS.getBoolean();
     }
 
-
     @Override
     public void setMenuItems() {
         List<VaultcherData> vaultchers = Vaultcher.getDatabase().getVaultchers(menuUtils.getOwner());
+        int startIndex = page * getMaxItemsPerPage();
+        int endIndex = Math.min(startIndex + getMaxItemsPerPage(), vaultchers.size());
 
         inventory.clear();
         addMenuBorder();
 
-        if (vaultchers.isEmpty()) return;
-
-        int startIndex = page * getMaxItemsPerPage();
-        int endIndex = Math.min(startIndex + getMaxItemsPerPage(), vaultchers.size());
-
-        IntStream.range(startIndex, endIndex).forEach(index -> inventory.addItem(createCodeItem(vaultchers.get(index))));
+        vaultchers.subList(startIndex, endIndex)
+                .stream()
+                .map(this::createVaultcherItem)
+                .forEach(inventory::addItem);
     }
 
     @Override
@@ -81,53 +80,46 @@ public class UserAccessibleMenu extends PaginatedMenu implements Listener {
 
         List<VaultcherData> vaultchers = Vaultcher.getDatabase().getVaultchers(player);
 
-        if (event.getSlot() == ConfigKeys.USER_ACCESSIBLE_FORWARD_SLOT.getInt()) {
-            int nextPageIndex = page + 1;
-            int totalPages = (int) Math.ceil((double) vaultchers.size() / getMaxItemsPerPage());
+        int clickedSlot = event.getSlot();
 
-            if (nextPageIndex >= totalPages) {
-                player.sendMessage(MessageKeys.LAST_PAGE.getMessage());
-                return;
-            } else {
-                page++;
-                super.open();
-            }
-        }
-
-        if (event.getSlot() == ConfigKeys.USER_ACCESSIBLE_BACK_SLOT.getInt()) {
-            if (page == 0) {
-                player.sendMessage(MessageKeys.FIRST_PAGE.getMessage());
-                return;
-            } else {
-                page--;
-                super.open();
-            }
-        }
-
-        if (event.getSlot() < 0 || event.getSlot() >= vaultchers.size()) return;
-
-        Vaultcher.getDatabase().redeemVaultcher(vaultchers.get(event.getSlot()).vaultcherName(), player);
-        inventory.close();
-        player.sendMessage(MessageKeys.REDEEMED.getMessage());
+        if (clickedSlot == ConfigKeys.USER_ACCESSIBLE_FORWARD_SLOT.getInt()) handlePageChange(player, vaultchers.size(), true);
+        else if (clickedSlot == ConfigKeys.USER_ACCESSIBLE_BACK_SLOT.getInt()) handlePageChange(player, vaultchers.size(), false);
+        else if (clickedSlot >= 0 && clickedSlot < vaultchers.size()) redeemVaultcher(player, vaultchers.get(clickedSlot));
     }
-
 
     @EventHandler
     public void onClose(final InventoryCloseEvent event) {
         if (event.getInventory().equals(inventory)) close();
     }
 
-    private static ItemStack createCodeItem(@NotNull VaultcherData vaultcher) {
+    private ItemStack createVaultcherItem(@NotNull VaultcherData vaultcher) {
         ItemStack itemStack = ItemKeys.VAULTCHER_ITEM.getItem();
         ItemMeta meta = itemStack.getItemMeta();
 
         if (meta != null) {
-            String displayName = meta.getDisplayName()
-                    .replace("{name}", vaultcher.vaultcherName());
-            meta.setDisplayName(displayName);
+            meta.setDisplayName(meta.getDisplayName().replace("{name}", vaultcher.vaultcherName()));
+            itemStack.setItemMeta(meta);
         }
 
-        itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    private void handlePageChange(@NotNull Player player, int totalItems, boolean isForward) {
+        int totalPages = (int) Math.ceil((double) totalItems / getMaxItemsPerPage());
+        int newPage = page + (isForward ? 1 : -1);
+
+        if (newPage < 0 || newPage >= totalPages) {
+            player.sendMessage(isForward ? MessageKeys.LAST_PAGE.getMessage() : MessageKeys.FIRST_PAGE.getMessage());
+            return;
+        }
+
+        page = newPage;
+        super.open();
+    }
+
+    private void redeemVaultcher(@NotNull Player player, @NotNull VaultcherData vaultcher) {
+        Vaultcher.getDatabase().redeemVaultcher(vaultcher.vaultcherName(), player);
+        inventory.close();
+        player.sendMessage(MessageKeys.REDEEMED.getMessage());
     }
 }

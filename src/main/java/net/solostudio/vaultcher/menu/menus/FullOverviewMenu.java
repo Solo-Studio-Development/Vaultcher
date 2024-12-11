@@ -9,18 +9,17 @@ import net.solostudio.vaultcher.menu.PaginatedMenu;
 import net.solostudio.vaultcher.utils.MenuUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
-import java.util.stream.IntStream;
 
-@SuppressWarnings("deprecation")
-public class FullOverviewMenu extends PaginatedMenu implements Listener {
+@SuppressWarnings("all")
+public class FullOverviewMenu extends PaginatedMenu {
+
     public FullOverviewMenu(@NotNull MenuUtils menuUtils) {
         super(menuUtils);
     }
@@ -58,14 +57,17 @@ public class FullOverviewMenu extends PaginatedMenu implements Listener {
 
     @Override
     public void setMenuItems() {
-        List<VaultcherData> codes = Vaultcher.getDatabase().getEveryVaultcher();
+        List<VaultcherData> vaultchers = Vaultcher.getDatabase().getEveryVaultcher();
+        int startIndex = page * getMaxItemsPerPage();
+        int endIndex = Math.min(startIndex + getMaxItemsPerPage(), vaultchers.size());
+
         inventory.clear();
         addMenuBorder();
 
-        int startIndex = page * getMaxItemsPerPage();
-        int endIndex = Math.min(startIndex + getMaxItemsPerPage(), codes.size());
-
-        IntStream.range(startIndex, endIndex).forEach(index -> inventory.addItem(createCodeItem(codes.get(index))));
+        vaultchers.subList(startIndex, endIndex)
+                .stream()
+                .map(this::createVaultcherItem)
+                .forEach(inventory::addItem);
     }
 
     @Override
@@ -75,29 +77,11 @@ public class FullOverviewMenu extends PaginatedMenu implements Listener {
 
         event.setCancelled(true);
 
-        List<VaultcherData> codes = Vaultcher.getDatabase().getEveryVaultcher();
+        List<VaultcherData> vaultchers = Vaultcher.getDatabase().getVaultchers(player);
+        int clickedSlot = event.getSlot();
 
-        if (event.getSlot() == ConfigKeys.FULL_OVERVIEW_FORWARD_SLOT.getInt()) {
-            int nextPageIndex = page + 1;
-            int totalPages = (int) Math.ceil((double) codes.size() / getMaxItemsPerPage());
-
-            if (nextPageIndex >= totalPages) {
-                player.sendMessage(MessageKeys.LAST_PAGE.getMessage());
-                return;
-            } else {
-                page++;
-                super.open();
-            }
-        }
-
-        if (event.getSlot() == ConfigKeys.FULL_OVERVIEW_BACK_SLOT.getInt()) {
-            if (page == 0) {
-                player.sendMessage(MessageKeys.FIRST_PAGE.getMessage());
-            } else {
-                page--;
-                super.open();
-            }
-        }
+        if (clickedSlot == ConfigKeys.USER_ACCESSIBLE_FORWARD_SLOT.getInt()) handlePageChange(player, vaultchers.size(), true);
+        else if (clickedSlot == ConfigKeys.USER_ACCESSIBLE_BACK_SLOT.getInt()) handlePageChange(player, vaultchers.size(), false);
     }
 
     @EventHandler
@@ -105,17 +89,28 @@ public class FullOverviewMenu extends PaginatedMenu implements Listener {
         if (event.getInventory().equals(inventory)) close();
     }
 
-    private static ItemStack createCodeItem(@NotNull VaultcherData vaultcherData) {
+    private ItemStack createVaultcherItem(@NotNull VaultcherData vaultcherData) {
         ItemStack itemStack = ItemKeys.VAULTCHER_ITEM.getItem();
         ItemMeta meta = itemStack.getItemMeta();
 
         if (meta != null) {
-            String displayName = meta.getDisplayName()
-                    .replace("{name}", vaultcherData.vaultcherName());
-            meta.setDisplayName(displayName);
+            meta.setDisplayName(meta.getDisplayName().replace("{name}", vaultcherData.vaultcherName()));
+            itemStack.setItemMeta(meta);
         }
 
-        itemStack.setItemMeta(meta);
         return itemStack;
+    }
+
+    private void handlePageChange(Player player, int totalItems, boolean isForward) {
+        int totalPages = (int) Math.ceil((double) totalItems / getMaxItemsPerPage());
+        int newPage = page + (isForward ? 1 : -1);
+
+        if (newPage < 0 || newPage >= totalPages) {
+            player.sendMessage(isForward ? MessageKeys.LAST_PAGE.getMessage() : MessageKeys.FIRST_PAGE.getMessage());
+            return;
+        }
+
+        page = newPage;
+        super.open();
     }
 }

@@ -3,25 +3,29 @@ package net.solostudio.vaultcher.menu.menus;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.enums.keys.ItemKeys;
 import net.solostudio.vaultcher.menu.Menu;
-import net.solostudio.vaultcher.utils.ConfigUtils;
 import net.solostudio.vaultcher.utils.MenuUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class NavigationMenu extends Menu implements Listener {
+@SuppressWarnings("all")
+public class NavigationMenu extends Menu {
+
     public NavigationMenu(@NotNull MenuUtils menuUtils) {
         super(menuUtils);
     }
 
     @Override
-    public String getMenuName() { return ConfigKeys.NAVIGATION_MENU_TITLE.getString(); }
+    public String getMenuName() {
+        return ConfigKeys.NAVIGATION_MENU_TITLE.getString();
+    }
 
     @Override
-    public int getSlots() { return ConfigKeys.NAVIGATION_MENU_SIZE.getInt(); }
+    public int getSlots() {
+        return ConfigKeys.NAVIGATION_MENU_SIZE.getInt();
+    }
 
     @Override
     public boolean enableFillerGlass() {
@@ -35,24 +39,20 @@ public class NavigationMenu extends Menu implements Listener {
 
     @Override
     public void handleMenu(final InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (!event.getInventory().equals(inventory)) return;
+        if (!(event.getWhoClicked() instanceof Player player) || !event.getInventory().equals(inventory)) return;
 
         event.setCancelled(true);
 
-        if (event.getSlot() == ConfigKeys.NAVIGATION_USER_ACCESSIBLE_MENU_SLOT.getInt()) {
+        int slot = event.getSlot();
+
+        if (slot == ConfigKeys.NAVIGATION_USER_ACCESSIBLE_MENU_SLOT.getInt()) {
             inventory.close();
             new UserAccessibleMenu(MenuUtils.getMenuUtils(player)).open();
-        }
-
-        if (event.getSlot() == ConfigKeys.NAVIGATION_FULL_OVERVIEW_MENU_SLOT.getInt()) {
-            if (!player.hasPermission("vaultcher.all-menu")) {
+        } else if (slot == ConfigKeys.NAVIGATION_FULL_OVERVIEW_MENU_SLOT.getInt()) {
+            if (player.hasPermission("vaultcher.all-menu")) {
                 inventory.close();
-                return;
-            }
-
-            inventory.close();
-            new FullOverviewMenu(MenuUtils.getMenuUtils(player)).open();
+                new FullOverviewMenu(MenuUtils.getMenuUtils(player)).open();
+            } else inventory.close();
         }
     }
 

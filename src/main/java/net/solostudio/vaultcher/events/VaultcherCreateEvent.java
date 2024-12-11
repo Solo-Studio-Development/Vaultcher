@@ -1,7 +1,7 @@
 package net.solostudio.vaultcher.events;
 
 import lombok.Getter;
-import net.solostudio.vaultcher.Vaultcher;
+
 import net.solostudio.vaultcher.interfaces.PlaceholderProvider;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

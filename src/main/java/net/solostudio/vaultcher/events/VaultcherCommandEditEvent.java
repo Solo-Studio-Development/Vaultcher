@@ -6,7 +6,6 @@ import net.solostudio.vaultcher.interfaces.PlaceholderProvider;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
