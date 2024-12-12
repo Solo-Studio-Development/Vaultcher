@@ -34,6 +34,14 @@ public enum MessageKeys {
     INVALID_PLAYER("messages.invalid-player"),
     MISSING_ARGUMENT("messages.missing-argument"),
     TARGET_DOESNT_EXISTS("messages.target-doesnt-exists"),
+    CREATE_FORMAT("messages.create-format"),
+    DELETE_FORMAT("messages.delete-format"),
+    EDITUSE_FORMAT("messages.edituse-format"),
+    EDITCOMMAND_FORMAT("messages.editcommand-format"),
+    EDITNAME_FORMAT("messages.editname-format"),
+    ADD_FORMAT("messages.add-format"),
+    GIVE_FORMAT("messages.give-format"),
+    REDEEM_FORMAT("messages.redeem-format"),
     HELP("messages.help"),
     LAST_PAGE("messages.last-page");
 

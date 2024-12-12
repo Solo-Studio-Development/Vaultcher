@@ -43,15 +43,15 @@ implementation(files("libs/plugin.jar"))
 ## 📜 Commands
 
 - `/vaultcher reload` - Reloads the plugin.
-- `/vaultcher create <name> <uses> <command>` - Creates a new vaultcher.
+- `/vaultcher create name: <name> uses: <uses> command: <command>` - Creates a new vaultcher.
 - `/vaultcher menu` - Opens the vaultcher menu.
-- `/vaultcher delete <name>` - Deletes the vaultcher.
-- `/vaultcher edituse <name> <new use>` - Edits the uses of the vaultcher.
-- `/vaultcher editname <name> <new name>` - Edits the name of the vaultcher.
-- `/vaultcher editcommand <name> <new command>` - Edits the command of the vaultcher.
-- `/vaultcher add <name> <target>` - Adds a permission to the vaultcher.
-- `/vaultcher give <name> <target>` - Gives a permission to the vaultcher.
-- `/vaultcher redeem <name>` - Redeems the vaultcher.
+- `/vaultcher delete name: <name>` - Deletes the vaultcher.
+- `/vaultcher edituse name: <name> new: <new use>` - Edits the uses of the vaultcher.
+- `/vaultcher editname name: <name> new: <new name>` - Edits the name of the vaultcher.
+- `/vaultcher editcommand name: <name> new: <new command>` - Edits the command of the vaultcher.
+- `/vaultcher add name: <name> target: <target>` - Adds a permission to the vaultcher.
+- `/vaultcher give name: <name> target: <target>` - Gives a permission to the vaultcher.
+- `/vaultcher redeem name: <name>` - Redeems the vaultcher.
 
 ---
 

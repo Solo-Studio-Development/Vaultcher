@@ -39,4 +39,12 @@ messages:
   target-doesnt-exists: "&c&lVAULTCHER &8| &cTarget does not exist!"
   uses-zero: "&c&lVAULTCHER &8| &cYou can't redeem this vaultcher anymore!"
   already-owner: "&c&lVAULTCHER &8| &cThe player is already an owner!"
+  create-format: "&c&lVAULTCHER &8| &cThe correct format is &4/vaultcher create name: [name] uses: [uses] command: [command]"
+  delete-format: "&c&lVAULTCHER &8| &cThe correct format is &4/vaultcher delete name: [name]"
+  edituse-format: "&c&lVAULTCHER &8| &cThe correct format is &4/vaultcher edituse name: [name] new: [new]"
+  editname-format: "&c&lVAULTCHER &8| &cThe correct format is &4/vaultcher editname name: [name] new: [new]"
+  editcommand-format: "&c&lVAULTCHER &8| &cThe correct format is &4/vaultcher editcommand name: [name] new: [new]"
+  add-format: "&c&lVAULTCHER &8| &cThe correct format is &4/vaultcher add name: [name] target: [target]"
+  give-format: "&c&lVAULTCHER &8| &cThe correct format is &4/vaultcher give name: [name] target: [target]"
+  redeem-format: "&c&lVAULTCHER &8| &cThe correct format is &4/vaultcher redeem name: [name]"
 
