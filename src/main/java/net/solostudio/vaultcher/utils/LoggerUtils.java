@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public class LoggerUtils {
-
     private final Logger logger = LogManager.getLogger("Vaultcher");
 
     public void info(@NotNull String msg, @NotNull Object... objs) {

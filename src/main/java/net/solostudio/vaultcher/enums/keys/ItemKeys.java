@@ -14,6 +14,7 @@ public enum ItemKeys {
     NAVIGATION_USER_ACCESSIBLE_MENU_ITEM("navigation-menu.user-accessible-menu-item"),
     VAULTCHER_ITEM("vaultcher-item"),
     FILLER_GLASS_ITEM("filler-glass-item"),
+    BACK_TO_NAVIGATION_ITEM("back-to-navigation-item"),
     CLAIMED_FORWARD_ITEM("claimed-menu.forward-item");
 
     private final String path;

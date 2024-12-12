@@ -57,6 +57,18 @@ filler-glass-item:
   lore: [] # Empty lore as it is just a filler item
 
 # ==============================================================
+# Back to Navigation Menu Item Configuration
+# ==============================================================
+
+back-to-navigation-item:
+  material: COMPASS
+  name: "&eI want to look around more!"
+  lore:
+    - ""
+    - "&aClick here if you want to go back!"
+  slot: 49
+
+# ==============================================================
 # Menu Configuration - Accessible Vaultchers
 # ==============================================================
 

@@ -17,6 +17,7 @@ import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.Objects;
 
@@ -35,18 +36,20 @@ public final class Vaultcher extends JavaPlugin {
     public void onLoad() {
         instance = this;
         scheduler = UniversalScheduler.getScheduler(this);
-
-        checkVersion();
     }
 
     @Override
     public void onEnable() {
-        checkVM();
         saveDefaultConfig();
         initializeComponents();
         initializeDatabaseManager();
-        registerListenersAndCommands();
         checkUpdates();
+
+        try {
+            initialize();
+        } catch (ClassNotFoundException | InvocationTargetException | InstantiationException | NoSuchMethodException | IllegalAccessException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
 
         new Metrics(this, 24109);
     }

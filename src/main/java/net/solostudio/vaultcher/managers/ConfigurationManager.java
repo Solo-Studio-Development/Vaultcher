@@ -1,9 +1,10 @@
-package net.solostudio.vaultcher.utils;
+package net.solostudio.vaultcher.managers;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.solostudio.vaultcher.processor.MessageProcessor;
+import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -15,13 +16,13 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class ConfigUtils {
+public class ConfigurationManager {
 
     @Getter private YamlConfiguration yml;
     @Getter private String name;
     private File config;
 
-    public ConfigUtils(@NotNull String dir, @NotNull String name) {
+    public ConfigurationManager(@NotNull String dir, @NotNull String name) {
         File file = new File(dir);
 
         if (!file.exists()) {

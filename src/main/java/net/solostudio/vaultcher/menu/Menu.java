@@ -61,9 +61,9 @@ public abstract class Menu implements InventoryHolder {
     }
 
     public void updateMenuItems() {
-        if (inventory != null) {
-            setMenuItems();
-            menuController.owner().updateInventory();
-        }
+        if (inventory == null) return;
+
+        setMenuItems();
+        menuController.owner().updateInventory();
     }
 }

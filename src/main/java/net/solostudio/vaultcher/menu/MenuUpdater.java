@@ -7,33 +7,30 @@ import org.jetbrains.annotations.NotNull;
 public class MenuUpdater {
     private final Menu menu;
     private MyScheduledTask task;
-    private boolean running = true;
 
     public MenuUpdater(@NotNull Menu menu) {
         this.menu = menu;
     }
 
-    public void run() {
-        if (!running) {
-            stop();
-            return;
-        }
-
-        if (menu.getInventory().getViewers().contains(menu.menuController.owner())) menu.updateMenuItems();
-        else stop();
-    }
-
     public void start(int intervalTicks) {
-        if (task == null) task = Vaultcher.getInstance().getScheduler().runTaskTimer(this::run, intervalTicks, intervalTicks);
+        if (isRunning()) return;
+
+        task = Vaultcher.getInstance().getScheduler().runTaskTimer(this::updateMenu, intervalTicks, intervalTicks);
     }
 
     public void stop() {
-        running = false;
-
         if (task != null) {
             task.cancel();
             task = null;
         }
     }
 
+    private void updateMenu() {
+        if (menu.getInventory().getViewers().contains(menu.menuController.owner())) menu.updateMenuItems();
+        else stop();
+    }
+
+    public boolean isRunning() {
+        return task != null && !task.isCancelled();
+    }
 }

@@ -38,11 +38,12 @@ public class FullOverviewMenu extends PaginatedMenu {
     public void addMenuBorder() {
         inventory.setItem(ConfigKeys.FULL_OVERVIEW_BACK_SLOT.getInt(), ItemKeys.FULL_OVERVIEW_BACK_ITEM.getItem());
         inventory.setItem(ConfigKeys.FULL_OVERVIEW_FORWARD_SLOT.getInt(), ItemKeys.FULL_OVERVIEW_FORWARD_ITEM.getItem());
+        inventory.setItem(ConfigKeys.BACK_TO_NAVIGATION_SLOT.getInt(), ItemKeys.BACK_TO_NAVIGATION_ITEM.getItem());
     }
 
     @Override
     public int getMaxItemsPerPage() {
-        return ConfigKeys.FULL_OVERVIEW_MENU_SIZE.getInt() - 2;
+        return ConfigKeys.FULL_OVERVIEW_MENU_SIZE.getInt() - 3;
     }
 
     @Override
@@ -82,6 +83,7 @@ public class FullOverviewMenu extends PaginatedMenu {
 
         if (clickedSlot == ConfigKeys.USER_ACCESSIBLE_FORWARD_SLOT.getInt()) handlePageChange(player, vaultchers.size(), true);
         else if (clickedSlot == ConfigKeys.USER_ACCESSIBLE_BACK_SLOT.getInt()) handlePageChange(player, vaultchers.size(), false);
+        else if (clickedSlot == ConfigKeys.BACK_TO_NAVIGATION_SLOT.getInt()) new NavigationMenu(MenuController.getMenuUtils(player)).open();
     }
 
     @EventHandler

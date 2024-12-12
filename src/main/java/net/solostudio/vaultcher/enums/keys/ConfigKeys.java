@@ -9,6 +9,8 @@ public enum ConfigKeys {
     LANGUAGE("language"),
     USES_MUST_BE_BIGGER_THAN_ONE("uses-must-be-bigger-than-one"),
 
+    BACK_TO_NAVIGATION_SLOT("back-to-navigation-item.slot"),
+
     USER_ACCESSIBLE_MENU_TITLE("user-accessible-menu.title"),
     USER_ACCESSIBLE_MENU_TICK("user-accessible-menu.update-tick"),
     USER_ACCESSIBLE_MENU_SIZE("user-accessible-menu.size"),

@@ -38,11 +38,12 @@ public class UserAccessibleMenu extends PaginatedMenu {
     public void addMenuBorder() {
         inventory.setItem(ConfigKeys.USER_ACCESSIBLE_BACK_SLOT.getInt(), ItemKeys.USER_ACCESSIBLE_BACK_ITEM.getItem());
         inventory.setItem(ConfigKeys.USER_ACCESSIBLE_FORWARD_SLOT.getInt(), ItemKeys.USER_ACCESSIBLE_FORWARD_ITEM.getItem());
+        inventory.setItem(ConfigKeys.BACK_TO_NAVIGATION_SLOT.getInt(), ItemKeys.BACK_TO_NAVIGATION_ITEM.getItem());
     }
 
     @Override
     public int getMaxItemsPerPage() {
-        return ConfigKeys.USER_ACCESSIBLE_MENU_SIZE.getInt() - 2;
+        return ConfigKeys.USER_ACCESSIBLE_MENU_SIZE.getInt() - 3;
     }
 
     @Override
@@ -84,6 +85,7 @@ public class UserAccessibleMenu extends PaginatedMenu {
         if (clickedSlot == ConfigKeys.USER_ACCESSIBLE_FORWARD_SLOT.getInt()) handlePageChange(player, vaultchers.size(), true);
         else if (clickedSlot == ConfigKeys.USER_ACCESSIBLE_BACK_SLOT.getInt()) handlePageChange(player, vaultchers.size(), false);
         else if (clickedSlot >= 0 && clickedSlot < vaultchers.size()) redeemVaultcher(player, vaultchers.get(clickedSlot));
+        else if (clickedSlot == ConfigKeys.BACK_TO_NAVIGATION_SLOT.getInt()) new NavigationMenu(MenuController.getMenuUtils(player)).open();
     }
 
     @EventHandler
