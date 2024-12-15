@@ -31,6 +31,8 @@ public final class Vaultcher extends JavaPlugin {
     @Getter private static AbstractDatabase database;
     private Config config;
 
+    ///vaultcher create referral - Megcsinálja az egyedi kódodat
+    ///vaultcher redeem referral [kód] - Beaktiválja a referral-t és berak adatbázisba, hogy TE már NEM csinálhatod ezt többször.
 
     @Override
     public void onLoad() {

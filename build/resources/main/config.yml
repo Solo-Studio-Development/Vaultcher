@@ -18,14 +18,14 @@ uses-must-be-bigger-than-one: true # If true, the main menu will only display co
 # ==============================================================
 
 database:
-  type: sqlite # Supported types -> MYSQL, SQLITE
+  type: mysql # Supported types -> MYSQL, SQLITE
   # Type of the database you want to use. You can choose between 'SQLITE' or 'MYSQL'. Please type it in upper case!
   
   # MySQL-specific configuration
   mysql:
     host: localhost
     port: 3306
-    database: user
+    database: coma112
     username: root
     password: "" # Enter your MySQL password here (leave empty for no password)
     ssl: false

@@ -11,6 +11,28 @@ public abstract class AbstractDatabase {
 
     public abstract void disconnect();
 
+    public abstract void createTable();
+
+    public abstract void createPlayer(@NotNull String name);
+
+    public abstract void createReferralCode(@NotNull String name, @NotNull String referralCode);
+
+    public abstract boolean doesPlayerExists(@NotNull String name);
+
+    public abstract String generateSafeCode();
+
+    public abstract boolean doesReferralCodeExist(String code);
+
+    public abstract boolean activateReferral(@NotNull String name);
+
+    public abstract void incrementActivators(@NotNull String referralCode);
+
+    public abstract int getActivators(@NotNull String referralCode);
+
+    public abstract boolean isReferralActivated(@NotNull String name);
+
+    public abstract String getReferralCode(@NotNull String name);
+
     public abstract void createVaultcher(@NotNull String name, @NotNull String cmd, int uses);
 
     public abstract boolean exists(@NotNull String name);

@@ -37,15 +37,6 @@ public final class CommandExceptionHandler {
         if (handler != null) handler.accept(actor, exception);
     }
 
-    public static boolean handleNonTarget(@NotNull CommandSender sender, @NotNull OfflinePlayer target) {
-        if (!Vaultcher.getDatabase().exists(target.getName())) {
-            sender.sendMessage(MessageKeys.TARGET_DOESNT_EXISTS.getMessage());
-            return false;
-        }
-
-        return true;
-    }
-
     private static void sendMessage(@NotNull CommandActor actor, @NotNull String message) {
         if (actor instanceof BukkitActor bukkitActor) bukkitActor.getSender().sendMessage(message);
     }

@@ -275,4 +275,57 @@ public class CommandVaultcher {
                     .replace("{vaultcher}", name));
         } else player.sendMessage(MessageKeys.GIVE_FORMAT.getMessage());
     }
+
+    @Subcommand("referral create")
+    @CommandPermission("vaultcher.referral.create")
+    public void referralCreate(@NotNull Player player) {
+        AbstractDatabase database = Vaultcher.getDatabase();
+
+        // Ha már van kódja, értesítjük a játékost, és kilépünk
+        if (!database.getReferralCode(player.getName()).isEmpty()) {
+            player.sendMessage("Neked már van referral kódod!");
+            return;
+        }
+
+        // Új referral kód generálása és hozzárendelése a játékoshoz
+        String code = database.generateSafeCode();
+        database.createReferralCode(player.getName(), code);
+        player.sendMessage("Sikeresen létrehoztad a referral kódodat: " + code);
+    }
+
+    @Subcommand("referral redeem")
+    @CommandPermission("vaultcher.referral.redeem")
+    public void referralRedeem(@NotNull Player player, @NotNull String referral) {
+        AbstractDatabase database = Vaultcher.getDatabase();
+
+        // Ellenőrizzük, hogy a játékos már aktivált-e egy referral kódot
+        if (database.isReferralActivated(player.getName())) {
+            player.sendMessage("Te már aktiváltál egy referral kódot korábban!");
+            return;
+        }
+
+        // Ellenőrizzük, hogy a játékos nem a saját kódját próbálja aktiválni
+        String playerCode = database.getReferralCode(player.getName());
+        if (referral.equals(playerCode)) {
+            player.sendMessage("Nem aktiválhatod a saját referral kódodat!");
+            return;
+        }
+
+        // Ellenőrizzük, hogy a kód létezik-e az adatbázisban
+        if (!database.doesReferralCodeExist(referral)) {
+            player.sendMessage("Ez a referral kód nem létezik!");
+            return;
+        }
+
+        // Aktiváljuk a referral kódot a játékosnak
+        if (database.activateReferral(player.getName())) {
+            // Növeljük a kód tulajdonosának aktivátor számlálóját
+            database.incrementActivators(referral);
+
+            player.sendMessage("Sikeresen aktiváltad a referral kódot: " + referral);
+        } else {
+            player.sendMessage("Hiba történt a kód aktiválása közben.");
+        }
+    }
+
 }

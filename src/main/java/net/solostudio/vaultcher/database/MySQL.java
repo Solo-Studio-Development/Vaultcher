@@ -12,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
+import java.security.SecureRandom;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,14 +76,179 @@ public class MySQL extends AbstractDatabase {
         }
     }
 
+    @Override
     public void createTable() {
-        String query = "CREATE TABLE IF NOT EXISTS vaultcher (VAULTCHER VARCHAR(255) NOT NULL, COMMAND VARCHAR(255) NOT NULL, USES INT, OWNERS VARCHAR(255), PRIMARY KEY (VAULTCHER))";
+        String vaultcherTableQuery = "CREATE TABLE IF NOT EXISTS vaultcher (VAULTCHER VARCHAR(255) NOT NULL, COMMAND VARCHAR(255) NOT NULL, USES INT, OWNERS VARCHAR(255), PRIMARY KEY (VAULTCHER))";
+        String vaultcherPlayersTableQuery = "CREATE TABLE IF NOT EXISTS vaultcherplayers (NAME VARCHAR(255) NOT NULL, REFERRALCODE VARCHAR(7) NOT NULL, ACTIVATED BOOLEAN NOT NULL DEFAULT FALSE, ACTIVATORS INT NOT NULL DEFAULT 0, PRIMARY KEY (NAME))";
 
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
-            preparedStatement.execute();
+        try (PreparedStatement vaultcherTableStatement = getConnection().prepareStatement(vaultcherTableQuery)) {
+            vaultcherTableStatement.execute();
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
+
+        try (PreparedStatement vaultcherPlayersTableStatement = getConnection().prepareStatement(vaultcherPlayersTableQuery)) {
+            vaultcherPlayersTableStatement.execute();
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void createPlayer(@NotNull String playerName) {
+        String query = "INSERT IGNORE INTO vaultcherplayers (NAME, REFERRALCODE, ACTIVATED, ACTIVATORS) VALUES (?, '', FALSE, 0)";
+
+        try {
+            try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+                preparedStatement.setString(1, playerName);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error("Error creating player " + playerName + ": " + exception.getMessage());
+        }
+    }
+
+    @Override
+    public void createReferralCode(@NotNull String name, @NotNull String referralCode) {
+        String query = "UPDATE vaultcherplayers SET REFERRALCODE = ? WHERE NAME = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, referralCode);
+            preparedStatement.setString(2, name);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LoggerUtils.error("Error creating referral code for player " + name + ": " + exception.getMessage());
+        }
+    }
+
+
+    @Override
+    public boolean doesPlayerExists(@NotNull String name) {
+        String query = "SELECT 1 FROM vaultcherplayers WHERE NAME = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException exception) {
+            LoggerUtils.error("Error checking existence of player " + name + ": " + exception.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public String generateSafeCode() {
+        SecureRandom random = new SecureRandom();
+        String code;
+
+        do {
+            code = random.ints(48, 123)
+                    .filter(i -> (i <= 57) || (i >= 65 && i <= 90) || (i >= 97 && i <= 122))
+                    .limit(7)
+                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                    .toString();
+        } while (doesReferralCodeExist(code));
+
+        return code;
+    }
+
+    @Override
+    public boolean doesReferralCodeExist(String code) {
+        String query = "SELECT 1 FROM vaultcherplayers WHERE REFERRALCODE = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, code);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException exception) {
+            LoggerUtils.error("Error checking referral code existence: " + exception.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean activateReferral(@NotNull String name) {
+        String selectQuery = "SELECT ACTIVATED FROM vaultcherplayers WHERE NAME = ?";
+        String updateQuery = "UPDATE vaultcherplayers SET ACTIVATED = TRUE WHERE NAME = ?";
+
+        try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
+             PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+
+            selectStmt.setString(1, name);
+            ResultSet resultSet = selectStmt.executeQuery();
+
+            if (resultSet.next() && !resultSet.getBoolean("ACTIVATED")) {
+                updateStmt.setString(1, name);
+                updateStmt.executeUpdate();
+                return true;
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public void incrementActivators(@NotNull String referralCode) {
+        String query = "UPDATE vaultcherplayers SET ACTIVATORS = ACTIVATORS + 1 WHERE REFERRALCODE = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, referralCode);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public int getActivators(@NotNull String referralCode) {
+        String query = "SELECT ACTIVATORS FROM vaultcherplayers WHERE REFERRALCODE = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, referralCode);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("ACTIVATORS");
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean isReferralActivated(@NotNull String name) {
+        String query = "SELECT ACTIVATED FROM vaultcherplayers WHERE NAME = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getBoolean("ACTIVATED");
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public String getReferralCode(@NotNull String name) {
+        String query = "SELECT REFERRALCODE FROM vaultcherplayers WHERE NAME = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getString("REFERRALCODE");
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+        return null;
     }
 
     @Override
