@@ -28,6 +28,9 @@ public enum ConfigKeys {
     PLACEHOLDER_YES("placeholder.yes"),
     PLACEHOLDER_NO("placeholder.no"),
 
+    REFERRAL_COMMAND_CREATOR("referral.command-creator"),
+    REFERRAL_COMMAND_ACTIVATOR("referral.command-activator"),
+
     NAVIGATION_MENU_TITLE("navigation-menu.title"),
     NAVIGATION_USER_ACCESSIBLE_MENU_SLOT("navigation-menu.user-accessible-menu-item.slot"),
     NAVIGATION_FULL_OVERVIEW_MENU_SLOT("navigation-menu.full-overview-menu-item.slot"),

@@ -2,6 +2,7 @@ package net.solostudio.vaultcher.commands;
 
 import net.solostudio.vaultcher.Vaultcher;
 import net.solostudio.vaultcher.database.AbstractDatabase;
+import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.enums.keys.MessageKeys;
 import net.solostudio.vaultcher.events.*;
 import net.solostudio.vaultcher.managers.VaultcherData;
@@ -316,6 +317,8 @@ public class CommandVaultcher {
         database.incrementActivators(referral);
         database.activateReferral(player.getName());
         player.sendMessage(MessageKeys.SUCCESSFUL_REFERRAL_ACTIVATE.getMessage());
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ConfigKeys.REFERRAL_COMMAND_CREATOR.getString().replace("{player}", database.getReferralCodeOwner(referral)));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ConfigKeys.REFERRAL_COMMAND_ACTIVATOR.getString().replace("{player}", player.getName()));
         Vaultcher.getInstance().getServer().getPluginManager().callEvent(new ReferralActivateEvent(database.getReferralCodeOwner(referral), player.getName(), referral));
     }
 }

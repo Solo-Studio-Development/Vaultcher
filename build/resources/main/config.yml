@@ -89,6 +89,14 @@ user-accessible-menu:
   filler-glass: true # Filler glass to fill unused slots
 
 # ==============================================================
+# Placeholder Answers Configuration
+# ==============================================================
+
+placeholder:
+  yes: "Yes"
+  no: "No"
+
+# ==============================================================
 # Full Overview Menu Configuration
 # ==============================================================
 

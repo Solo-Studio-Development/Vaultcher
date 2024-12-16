@@ -11,8 +11,8 @@ import net.solostudio.vaultcher.database.SQLite;
 import net.solostudio.vaultcher.enums.DatabaseTypes;
 import net.solostudio.vaultcher.enums.LanguageTypes;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
+import net.solostudio.vaultcher.hook.PlaceholderAPI;
 import net.solostudio.vaultcher.language.Language;
-import net.solostudio.vaultcher.update.SpigotUpdateFetcher;
 import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import static net.solostudio.vaultcher.hook.PlaceholderAPI.registerHook;
 import static net.solostudio.vaultcher.update.SpigotUpdateFetcher.checkUpdates;
 import static net.solostudio.vaultcher.utils.StartingUtils.*;
 
@@ -30,9 +31,6 @@ public final class Vaultcher extends JavaPlugin {
     @Getter private Language language;
     @Getter private static AbstractDatabase database;
     private Config config;
-
-    ///vaultcher create referral - Megcsinálja az egyedi kódodat
-    ///vaultcher redeem referral [kód] - Beaktiválja a referral-t és berak adatbázisba, hogy TE már NEM csinálhatod ezt többször.
 
     @Override
     public void onLoad() {
@@ -45,6 +43,7 @@ public final class Vaultcher extends JavaPlugin {
         saveDefaultConfig();
         initializeComponents();
         initializeDatabaseManager();
+        registerHook();
         checkUpdates();
 
         try {

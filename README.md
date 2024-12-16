@@ -52,6 +52,8 @@ implementation(files("libs/plugin.jar"))
 - `/vaultcher add name: <name> target: <target>` - Adds a permission to the vaultcher.
 - `/vaultcher give name: <name> target: <target>` - Gives a permission to the vaultcher.
 - `/vaultcher redeem name: <name>` - Redeems the vaultcher.
+- `/vaultcher referral create` - Creates a new unique referral code.
+- `/vaultcher referral redeem <name>` - Redeems the referral code.
 
 ---
 
