@@ -67,31 +67,13 @@ public class SQLite extends AbstractDatabase {
     }
 
     @Override
-    public void createPlayer(@NotNull String playerName) {
-        String query = "INSERT IGNORE INTO vaultcherplayers (NAME, REFERRALCODE, ACTIVATED, ACTIVATORS) VALUES (?, '', FALSE, 0)";
-
-        try {
-            try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
-                preparedStatement.setString(1, playerName);
-                preparedStatement.executeUpdate();
-            }
-        } catch (SQLException exception) {
-            LoggerUtils.error("Error creating player " + playerName + ": " + exception.getMessage());
-        }
-    }
-
-    @Override
     public void createReferralCode(@NotNull String name, @NotNull String referralCode) {
-        String query = "INSERT INTO vaultcherplayers (NAME, REFERRALCODE) VALUES (?, ?)";
+        String query = "UPDATE vaultcherplayers SET REFERRALCODE = ? WHERE NAME = ?";
 
-        try {
-            if (!doesPlayerExists(name)) {
-                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                    preparedStatement.setString(1, name);
-                    preparedStatement.setString(2, referralCode);
-                    preparedStatement.executeUpdate();
-                }
-            } else LoggerUtils.error("Player " + name + " already exists in the database.");
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, referralCode);
+            preparedStatement.setString(2, name);
+            preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             LoggerUtils.error("Error creating referral code for player " + name + ": " + exception.getMessage());
         }
@@ -109,7 +91,6 @@ public class SQLite extends AbstractDatabase {
         } catch (SQLException exception) {
             LoggerUtils.error("Error checking existence of player " + name + ": " + exception.getMessage());
         }
-
         return false;
     }
 
@@ -146,7 +127,7 @@ public class SQLite extends AbstractDatabase {
     @Override
     public void activateReferral(@NotNull String name) {
         String selectQuery = "SELECT ACTIVATED FROM vaultcherplayers WHERE NAME = ?";
-        String updateQuery = "UPDATE vaultcherplayers SET ACTIVATED = TRUE WHERE NAME = ?";
+        String updateQuery = "UPDATE vaultcherplayers SET ACTIVATED = 1 WHERE NAME = ?";
 
         try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
              PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
@@ -191,6 +172,21 @@ public class SQLite extends AbstractDatabase {
     }
 
     @Override
+    public int getActivatorsFromPlayer(@NotNull String name) {
+        String query = "SELECT ACTIVATORS FROM vaultcherplayers WHERE NAME = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) return resultSet.getInt("ACTIVATORS");
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+        return 0;
+    }
+
+    @Override
     public boolean isReferralActivated(@NotNull String name) {
         String query = "SELECT ACTIVATED FROM vaultcherplayers WHERE NAME = ?";
 
@@ -198,7 +194,7 @@ public class SQLite extends AbstractDatabase {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) return resultSet.getBoolean("ACTIVATED");
+            if (resultSet.next()) return resultSet.getInt("ACTIVATED") == 1;
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
@@ -236,18 +232,17 @@ public class SQLite extends AbstractDatabase {
     }
 
     @Override
-    public int getActivatorsFromPlayer(@NotNull String name) {
-        String query = "SELECT ACTIVATORS FROM vaultcherplayers WHERE NAME = ?";
+    public void createPlayer(@NotNull String playerName) {
+        String query = "INSERT OR IGNORE INTO vaultcherplayers (NAME, REFERRALCODE, ACTIVATED, ACTIVATORS) VALUES (?, '', 0, 0)";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) return resultSet.getInt("ACTIVATORS");
+        try {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, playerName);
+                preparedStatement.executeUpdate();
+            }
         } catch (SQLException exception) {
-            LoggerUtils.error(exception.getMessage());
+            LoggerUtils.error("Error creating player " + playerName + ": " + exception.getMessage());
         }
-        return 0;
     }
 
     @Override

@@ -25,8 +25,9 @@ public enum ConfigKeys {
     FULL_OVERVIEW_FILLER_GLASS("full-overview-menu.filler-glass"),
     FULL_OVERVIEW_FORWARD_SLOT("full-overview-menu.forward-item.slot"),
 
-    PLACEHOLDER_YES("placeholder.yes"),
-    PLACEHOLDER_NO("placeholder.no"),
+    PLACEHOLDER_YES("placeholders.yes-holder"),
+    PLACEHOLDER_NO("placeholders.no-holder"),
+    PLACEHOLDER_NO_CODE("placeholders.no-code-holder"),
 
     REFERRAL_COMMAND_CREATOR("referral.command-creator"),
     REFERRAL_COMMAND_ACTIVATOR("referral.command-activator"),

@@ -43,7 +43,6 @@ public final class Vaultcher extends JavaPlugin {
         saveDefaultConfig();
         initializeComponents();
         initializeDatabaseManager();
-        registerHook();
         checkUpdates();
 
         try {
@@ -53,6 +52,7 @@ public final class Vaultcher extends JavaPlugin {
         }
 
         new Metrics(this, 24109);
+        registerHook();
     }
 
     @Override

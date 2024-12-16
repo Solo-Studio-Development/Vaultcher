@@ -92,9 +92,10 @@ user-accessible-menu:
 # Placeholder Answers Configuration
 # ==============================================================
 
-placeholder:
-  yes: "Yes"
-  no: "No"
+placeholders:
+  yes-holder: "Yes"
+  no-holder: "No"
+  no-code-holder: "No code"
 
 # ==============================================================
 # Full Overview Menu Configuration

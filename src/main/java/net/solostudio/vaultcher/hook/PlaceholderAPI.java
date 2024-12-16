@@ -40,8 +40,8 @@ public class PlaceholderAPI extends PlaceholderExpansion {
 
         return switch (params) {
             case "activators" -> String.valueOf(database.getActivatorsFromPlayer(player.getName()));
-            case "code" -> database.getReferralCode(player.getName());
-            case "is_activated" -> database.isReferralActivated(player.getName()) ? "Yes" : "No";
+            case "code" -> database.getReferralCode(player.getName()).isEmpty() ? ConfigKeys.PLACEHOLDER_NO_CODE.getString() : database.getReferralCode(player.getName());
+            case "is_activated" -> database.isReferralActivated(player.getName()) ? ConfigKeys.PLACEHOLDER_YES.getString() : ConfigKeys.PLACEHOLDER_NO.getString();
 
             default -> "";
         };
