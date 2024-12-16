@@ -21,6 +21,10 @@ public class VaultcherUseEditEvent extends Event implements PlaceholderProvider 
         this.newUses = newUses;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
@@ -35,9 +39,5 @@ public class VaultcherUseEditEvent extends Event implements PlaceholderProvider 
         placeholders.put("{vaultcher}", getName());
 
         return placeholders;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 }

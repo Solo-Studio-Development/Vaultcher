@@ -129,6 +129,7 @@ public class MySQL extends AbstractDatabase {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             return resultSet.next();
         } catch (SQLException exception) {
             LoggerUtils.error("Error checking existence of player " + name + ": " + exception.getMessage());
@@ -167,25 +168,23 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public boolean activateReferral(@NotNull String name) {
+    public void activateReferral(@NotNull String name) {
         String selectQuery = "SELECT ACTIVATED FROM vaultcherplayers WHERE NAME = ?";
         String updateQuery = "UPDATE vaultcherplayers SET ACTIVATED = TRUE WHERE NAME = ?";
 
-        try (PreparedStatement selectStmt = connection.prepareStatement(selectQuery);
-             PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery);
+             PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
 
-            selectStmt.setString(1, name);
-            ResultSet resultSet = selectStmt.executeQuery();
+            selectStatement.setString(1, name);
+            ResultSet resultSet = selectStatement.executeQuery();
 
-            if (resultSet.next() && !resultSet.getBoolean("ACTIVATED")) {
-                updateStmt.setString(1, name);
-                updateStmt.executeUpdate();
-                return true;
+            if (resultSet.next()) {
+                updateStatement.setString(1, name);
+                updateStatement.executeUpdate();
             }
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
-        return false;
     }
 
     @Override
@@ -208,9 +207,22 @@ public class MySQL extends AbstractDatabase {
             preparedStatement.setString(1, referralCode);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                return resultSet.getInt("ACTIVATORS");
-            }
+            if (resultSet.next()) return resultSet.getInt("ACTIVATORS");
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+        return 0;
+    }
+
+    @Override
+    public int getActivatorsFromPlayer(@NotNull String name) {
+        String query = "SELECT ACTIVATORS FROM vaultcherplayers WHERE NAME = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) return resultSet.getInt("ACTIVATORS");
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
@@ -225,13 +237,26 @@ public class MySQL extends AbstractDatabase {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                return resultSet.getBoolean("ACTIVATED");
-            }
+            if (resultSet.next()) return resultSet.getBoolean("ACTIVATED");
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }
         return false;
+    }
+
+    @Override
+    public String getReferralCodeOwner(@NotNull String referralCode) {
+        String query = "SELECT NAME FROM vaultcherplayers WHERE REFERRALCODE = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, referralCode);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) return resultSet.getString("NAME");
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+        return null;
     }
 
     @Override
@@ -242,9 +267,7 @@ public class MySQL extends AbstractDatabase {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                return resultSet.getString("REFERRALCODE");
-            }
+            if (resultSet.next()) return resultSet.getString("REFERRALCODE");
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
         }

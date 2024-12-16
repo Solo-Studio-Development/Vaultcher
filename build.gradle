@@ -10,13 +10,14 @@ version = '1.0.2'
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.papermc.io/repository/maven-public/' }
     maven { url 'https://oss.sonatype.org/content/groups/public/' }
     maven { url = "https://jitpack.io" }
+    maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
 }
 
 dependencies {
     compileOnly "org.projectlombok:lombok:1.18.36"
+    compileOnly 'me.clip:placeholderapi:2.11.6'
     implementation "com.zaxxer:HikariCP:6.2.1"
     implementation "mysql:mysql-connector-java:8.0.33"
     implementation 'com.github.Revxrsal.Lamp:common:3.2.1'

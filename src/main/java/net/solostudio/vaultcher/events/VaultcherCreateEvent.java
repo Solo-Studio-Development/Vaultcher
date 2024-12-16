@@ -27,6 +27,10 @@ public class VaultcherCreateEvent extends Event implements PlaceholderProvider {
         this.uses = uses;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
@@ -42,10 +46,6 @@ public class VaultcherCreateEvent extends Event implements PlaceholderProvider {
         placeholders.put("{command}", getCommand());
 
         return placeholders;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 }
 

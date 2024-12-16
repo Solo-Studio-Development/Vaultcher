@@ -21,6 +21,10 @@ public class VaultcherNameEditEvent extends Event implements PlaceholderProvider
         this.newName = newName;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
@@ -35,9 +39,5 @@ public class VaultcherNameEditEvent extends Event implements PlaceholderProvider
         placeholders.put("{vaultcher}", getName());
 
         return placeholders;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 }

@@ -25,6 +25,9 @@ public enum ConfigKeys {
     FULL_OVERVIEW_FILLER_GLASS("full-overview-menu.filler-glass"),
     FULL_OVERVIEW_FORWARD_SLOT("full-overview-menu.forward-item.slot"),
 
+    PLACEHOLDER_YES("placeholder.yes"),
+    PLACEHOLDER_NO("placeholder.no"),
+
     NAVIGATION_MENU_TITLE("navigation-menu.title"),
     NAVIGATION_USER_ACCESSIBLE_MENU_SLOT("navigation-menu.user-accessible-menu-item.slot"),
     NAVIGATION_FULL_OVERVIEW_MENU_SLOT("navigation-menu.full-overview-menu-item.slot"),

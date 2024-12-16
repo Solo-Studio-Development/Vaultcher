@@ -28,7 +28,12 @@ public class WebhookListener implements Listener {
     }
 
     @EventHandler
-    public void onCommandEdit(final VaultcherCommandEditEvent event) {
-        handleEvent("webhook.vaultcher-editcommand-embed", event);
+    public void onReferralCreate(final ReferralCreateEvent event) {
+        handleEvent("webhook.referral-created-embed", event);
+    }
+
+    @EventHandler
+    public void onReferralActivate(final ReferralActivateEvent event) {
+        handleEvent("webhook.referral-activated-embed", event);
     }
 }

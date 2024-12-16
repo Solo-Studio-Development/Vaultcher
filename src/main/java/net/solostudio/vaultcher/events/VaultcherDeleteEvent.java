@@ -22,6 +22,10 @@ public class VaultcherDeleteEvent extends Event implements PlaceholderProvider {
         this.name = name;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
@@ -35,9 +39,5 @@ public class VaultcherDeleteEvent extends Event implements PlaceholderProvider {
         placeholders.put("{vaultcher}", getName());
 
         return placeholders;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 }

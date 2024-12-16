@@ -89,6 +89,14 @@ user-accessible-menu:
   filler-glass: true # Filler glass to fill unused slots
 
 # ==============================================================
+# Placeholder Answers Configuration
+# ==============================================================
+
+placeholder:
+  yes: "Yes"
+  no: "No"
+
+# ==============================================================
 # Full Overview Menu Configuration
 # ==============================================================
 
@@ -145,28 +153,51 @@ webhook:
   vaultcher-delete-embed:
     url: "WEBHOOK URL HERE!!!"
     enabled: false
-    title: "VAULTCHER DELETED!" # Title for the vaultcher deletion webhook embed
-    description: "{player} deleted a vaultcher: {vaultcher}" # Description for vaultcher deletion event
+    title: "VAULTCHER DELETED!"
+    description: "{player} deleted a vaultcher: {vaultcher}"
     color: "RED"
     footer-text: "SENT BY VAULTCHER"
   vaultcher-edituse-embed:
     url: "WEBHOOK URL HERE!!!"
     enabled: false
-    title: "USES EDIT!" # Title when the uses of a vaultcher are edited
-    description: "{vaultcher}'s uses has been changed from {old} to {new}" # Description template showing the old and new uses
+    title: "USES EDIT!"
+    description: "{vaultcher}'s uses has been changed from {old} to {new}"
     color: "RED"
     footer-text: "SENT BY VAULTCHER"
   vaultcher-editcommand-embed:
     url: "WEBHOOK URL HERE!!!"
     enabled: false
-    title: "COMMAND EDIT!" # Title when the command of a vaultcher is edited
-    description: "{vaultcher}'s command has been changed from {old} to {new}" # Old vs new command description
+    title: "COMMAND EDIT!"
+    description: "{vaultcher}'s command has been changed from {old} to {new}"
     color: "RED"
     footer-text: "SENT BY VAULTCHER"
   vaultcher-editname-embed:
     url: "WEBHOOK URL HERE!!!"
     enabled: false
-    title: "NAME EDIT!" # Title for the name editing embed
-    description: "{vaultcher}'s name has been changed from {old} to {new}" # Description for changing the vaultcher's name
+    title: "NAME EDIT!"
+    description: "{vaultcher}'s name has been changed from {old} to {new}"
     color: "RED"
     footer-text: "SENT BY VAULTCHER"
+  referral-created-embed:
+    url: "WEBHOOK URL HERE!!!"
+    enabled: false
+    title: "REFERRAL CREATED!"
+    description: "{creator} created the referral code {code}!"
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"
+  referral-activated-embed:
+    url: "WEBHOOK URL HERE!!!"
+    enabled: false
+    title: "REFERRAL ACTIVATED!"
+    description: "{creator}'s code ({code}) has been activated by {activator}!"
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"
+
+
+# ==============================================================
+# Referral Configuration
+# ==============================================================
+
+referral:
+  command-creator: "msg {player} nice!" # This command will run for THE CODE CREATOR when someone activates their code.
+  command-activator: "msg {player} nice job!" # This command will run when someone activates a command.

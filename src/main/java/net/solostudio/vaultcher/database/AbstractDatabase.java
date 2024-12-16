@@ -23,15 +23,19 @@ public abstract class AbstractDatabase {
 
     public abstract boolean doesReferralCodeExist(String code);
 
-    public abstract boolean activateReferral(@NotNull String name);
+    public abstract void activateReferral(@NotNull String name);
 
     public abstract void incrementActivators(@NotNull String referralCode);
 
     public abstract int getActivators(@NotNull String referralCode);
 
+    public abstract int getActivatorsFromPlayer(@NotNull String name);
+
     public abstract boolean isReferralActivated(@NotNull String name);
 
     public abstract String getReferralCode(@NotNull String name);
+
+    public abstract String getReferralCodeOwner(@NotNull String referralCode);
 
     public abstract void createVaultcher(@NotNull String name, @NotNull String cmd, int uses);
 

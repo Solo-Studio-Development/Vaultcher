@@ -69,6 +69,14 @@ implementation(files("libs/plugin.jar"))
 
 ---
 
+## 🔌 Placeholders
+
+- `%v_activators%` - It shows how many people have activated your code so far.
+- `%v_code%` - Shows your code.
+- `%v_is_activated%` - Shows whether you have already activated a code.
+
+---
+
 ## 🤝 Contributing
 
 Contributions are always welcome! If you have ideas for improvements, feel free to join the Discord server and open a ticket. Let's build something awesome together!

@@ -235,9 +235,7 @@ public class CommandVaultcher {
 
             database.redeemVaultcher(name, player);
             player.sendMessage(MessageKeys.REDEEMED.getMessage());
-        } else {
-            player.sendMessage(MessageKeys.REDEEM_FORMAT.getMessage());
-        }
+        } else player.sendMessage(MessageKeys.REDEEM_FORMAT.getMessage());
     }
 
     @Subcommand("give")
@@ -281,16 +279,18 @@ public class CommandVaultcher {
     public void referralCreate(@NotNull Player player) {
         AbstractDatabase database = Vaultcher.getDatabase();
 
-        // Ha már van kódja, értesítjük a játékost, és kilépünk
         if (!database.getReferralCode(player.getName()).isEmpty()) {
-            player.sendMessage("Neked már van referral kódod!");
+            player.sendMessage(MessageKeys.ALREADY_HAVE_REFERRAL.getMessage());
             return;
         }
 
-        // Új referral kód generálása és hozzárendelése a játékoshoz
         String code = database.generateSafeCode();
+
         database.createReferralCode(player.getName(), code);
-        player.sendMessage("Sikeresen létrehoztad a referral kódodat: " + code);
+        player.sendMessage(MessageKeys.SUCCESSFUL_REFERRAL_CREATE
+                .getMessage()
+                .replace("{code}", code));
+        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new ReferralCreateEvent(player.getName(), code));
     }
 
     @Subcommand("referral redeem")
@@ -298,34 +298,24 @@ public class CommandVaultcher {
     public void referralRedeem(@NotNull Player player, @NotNull String referral) {
         AbstractDatabase database = Vaultcher.getDatabase();
 
-        // Ellenőrizzük, hogy a játékos már aktivált-e egy referral kódot
         if (database.isReferralActivated(player.getName())) {
-            player.sendMessage("Te már aktiváltál egy referral kódot korábban!");
+            player.sendMessage(MessageKeys.ALREADY_ACTIVATED_REFERRAL.getMessage());
             return;
         }
 
-        // Ellenőrizzük, hogy a játékos nem a saját kódját próbálja aktiválni
-        String playerCode = database.getReferralCode(player.getName());
-        if (referral.equals(playerCode)) {
-            player.sendMessage("Nem aktiválhatod a saját referral kódodat!");
+        if (referral.equals(database.getReferralCode(player.getName()))) {
+            player.sendMessage(MessageKeys.CANT_ACTIVATE_OWN_REFERRAL.getMessage());
             return;
         }
 
-        // Ellenőrizzük, hogy a kód létezik-e az adatbázisban
         if (!database.doesReferralCodeExist(referral)) {
-            player.sendMessage("Ez a referral kód nem létezik!");
+            player.sendMessage(MessageKeys.REFERRAL_NOT_EXISTS.getMessage());
             return;
         }
 
-        // Aktiváljuk a referral kódot a játékosnak
-        if (database.activateReferral(player.getName())) {
-            // Növeljük a kód tulajdonosának aktivátor számlálóját
-            database.incrementActivators(referral);
-
-            player.sendMessage("Sikeresen aktiváltad a referral kódot: " + referral);
-        } else {
-            player.sendMessage("Hiba történt a kód aktiválása közben.");
-        }
+        database.incrementActivators(referral);
+        database.activateReferral(player.getName());
+        player.sendMessage(MessageKeys.SUCCESSFUL_REFERRAL_ACTIVATE.getMessage());
+        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new ReferralActivateEvent(database.getReferralCodeOwner(referral), player.getName(), referral));
     }
-
 }

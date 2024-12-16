@@ -42,6 +42,12 @@ public enum MessageKeys {
     ADD_FORMAT("messages.add-format"),
     GIVE_FORMAT("messages.give-format"),
     REDEEM_FORMAT("messages.redeem-format"),
+    ALREADY_HAVE_REFERRAL("messages.already-have-referral"),
+    SUCCESSFUL_REFERRAL_CREATE("messages.successful-referral-create"),
+    ALREADY_ACTIVATED_REFERRAL("messages.already-activated-referral"),
+    CANT_ACTIVATE_OWN_REFERRAL("messages.cant-activate-own-referral"),
+    REFERRAL_NOT_EXISTS("messages.referral-not-exists"),
+    SUCCESSFUL_REFERRAL_ACTIVATE("messages.successful-referral-activate"),
     HELP("messages.help"),
     LAST_PAGE("messages.last-page");
 

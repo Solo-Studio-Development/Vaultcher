@@ -21,6 +21,10 @@ public class VaultcherCommandEditEvent extends Event implements PlaceholderProvi
         this.newCommand = newCommand;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
@@ -35,10 +39,6 @@ public class VaultcherCommandEditEvent extends Event implements PlaceholderProvi
         placeholders.put("{vaultcher}", getName());
 
         return placeholders;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 }
 
