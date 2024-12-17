@@ -47,4 +47,11 @@ messages:
   add-format: "&c&lVAULTCHER &8| &cDas korrekte Format ist &4/vaultcher add name: [name] target: [target]"
   give-format: "&c&lVAULTCHER &8| &cDas korrekte Format ist &4/vaultcher give name: [name] target: [target]"
   redeem-format: "&c&lVAULTCHER &8| &cDas korrekte Format ist &4/vaultcher redeem name: [name]"
+  already-have-referral: "&c&lVAULTCHER &8| &cDu hast bereits einen Empfehlungscode erstellt!"
+  successful-referral-create: "&c&lVAULTCHER &8| &aDu hast deinen Code erfolgreich generiert! Code: &2{code}"
+  already-activated-referral: "&c&lVAULTCHER &8| &cDu hast bereits einen Empfehlungscode aktiviert!"
+  cant-activate-own-referral: "&c&lVAULTCHER &8| &cDu kannst deinen eigenen Empfehlungscode nicht aktivieren!"
+  referral-not-exists: "&c&lVAULTCHER &8| &cDieser Empfehlungscode existiert nicht!"
+  successful-referral-activate: "&c&lVAULTCHER &8| &aDu hast den Empfehlungscode erfolgreich aktiviert."
+
 

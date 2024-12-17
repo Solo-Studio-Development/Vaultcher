@@ -3,15 +3,11 @@ package net.solostudio.vaultcher.utils;
 import net.solostudio.vaultcher.Vaultcher;
 import net.solostudio.vaultcher.commands.CommandVaultcher;
 import net.solostudio.vaultcher.exception.CommandExceptionHandler;
+import net.solostudio.vaultcher.managers.VaultcherData;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.reflections.Reflections;
-import revxrsal.commands.bukkit.BukkitCommandHandler;
-import revxrsal.commands.bukkit.exception.InvalidPlayerException;
-import revxrsal.commands.bukkit.exception.SenderNotPlayerException;
-import revxrsal.commands.exception.InvalidNumberException;
-import revxrsal.commands.exception.MissingArgumentException;
-import revxrsal.commands.exception.NoPermissionException;
+import revxrsal.commands.bukkit.BukkitLamp;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -41,17 +37,15 @@ public class RegisterUtils {
     public static void registerCommands() {
         LoggerUtils.info("### Registering commands... ###");
 
-        BukkitCommandHandler handler = BukkitCommandHandler.create(Vaultcher.getInstance());
+        var lamp = BukkitLamp.builder(Vaultcher.getInstance())
+                .exceptionHandler(new CommandExceptionHandler())
+                .suggestionProviders(providers -> {
+                    providers.addProvider(String.class, context -> Vaultcher.getDatabase().getEveryVaultcher().stream().map(VaultcherData::vaultcherName).toList());
+                })
+                .build();
 
-        handler.register(new CommandVaultcher());
-        LoggerUtils.info("### Successfully registered {} command(s). ###", handler.getCommands().size());
-        LoggerUtils.info("### Registering exception handlers... ###");
-        handler.registerExceptionHandler(SenderNotPlayerException.class, CommandExceptionHandler::handleException);
-        handler.registerExceptionHandler(InvalidNumberException.class, CommandExceptionHandler::handleException);
-        handler.registerExceptionHandler(NoPermissionException.class, CommandExceptionHandler::handleException);
-        handler.registerExceptionHandler(MissingArgumentException.class, CommandExceptionHandler::handleException);
-        handler.registerExceptionHandler(InvalidPlayerException.class, CommandExceptionHandler::handleException);
-        handler.registerBrigadier();
+        lamp.register(new CommandVaultcher());
+
         LoggerUtils.info("### Successfully registered exception handlers... ###");
     }
 }

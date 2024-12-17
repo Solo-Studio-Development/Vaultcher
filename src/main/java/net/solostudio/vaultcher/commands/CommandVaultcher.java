@@ -14,9 +14,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import revxrsal.commands.annotation.Command;
-import revxrsal.commands.annotation.DefaultFor;
-import revxrsal.commands.annotation.Subcommand;
+import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
 import java.util.regex.Matcher;
@@ -24,7 +22,7 @@ import java.util.regex.Pattern;
 
 @Command({"vaultcher", "voucher"})
 public class CommandVaultcher {
-    @DefaultFor({"vaultcher", "voucher"})
+    @CommandPlaceholder
     public void defaultCommand(@NotNull CommandSender sender) {
         help(sender);
     }
@@ -38,6 +36,7 @@ public class CommandVaultcher {
 
     @Subcommand("reload")
     @CommandPermission("vaultcher.reload")
+    @Description("Reloads the plugin.")
     public void reload(@NotNull CommandSender sender) {
         Vaultcher.getInstance().getLanguage().reload();
         Vaultcher.getInstance().getConfiguration().reload();
@@ -46,12 +45,15 @@ public class CommandVaultcher {
 
     @Subcommand("menu")
     @CommandPermission("vaultcher.menu")
+    @Description("Opens the vaultcher menu.")
     public void menu(@NotNull Player player) {
         new NavigationMenu(MenuController.getMenuUtils(player)).open();
     }
 
     @Subcommand("create")
     @CommandPermission("vaultcher.create")
+    @Usage("/vaultcher create name: <name> uses: <uses> command: <command>")
+    @Description("Creates a new vaultcher.")
     public void create(@NotNull CommandSender sender, @NotNull String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         input = input.trim();
@@ -91,6 +93,8 @@ public class CommandVaultcher {
 
     @Subcommand("delete")
     @CommandPermission("vaultcher.delete")
+    @Usage("vaultcher delete name: <name>")
+    @Description("Deletes the vaultcher.")
     public void delete(@NotNull CommandSender sender, @NotNull String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*)");
@@ -112,6 +116,8 @@ public class CommandVaultcher {
 
     @Subcommand("edituse")
     @CommandPermission("vaultcher.edituse")
+    @Usage("/vaultcher edituse name: <name> new: <new use>")
+    @Description("Edits the uses of the vaultcher.")
     public void edituse(@NotNull CommandSender sender, @NotNull String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+new:\\s*(\\d+)");
@@ -145,6 +151,8 @@ public class CommandVaultcher {
 
     @Subcommand("editname")
     @CommandPermission("vaultcher.editname")
+    @Usage("/vaultcher editname name: <name> new: <new name>")
+    @Description("Edits the name of the vaultcher.")
     public void editname(@NotNull CommandSender sender, @NotNull String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+new:\\s*(.*)");
@@ -167,6 +175,8 @@ public class CommandVaultcher {
 
     @Subcommand("editcommand")
     @CommandPermission("vaultcher.editcommand")
+    @Usage("/vaultcher editcommand name: <name> new: <new command>")
+    @Description("Edits the command of the vaultcher.")
     public void editcommand(@NotNull CommandSender sender, @NotNull String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+new:\\s*(.*)");
@@ -189,6 +199,8 @@ public class CommandVaultcher {
 
     @Subcommand("add")
     @CommandPermission("vaultcher.add")
+    @Usage("/vaultcher add name: <name> target: <target>")
+    @Description("Adds a permission to the vaultcher.")
     public void add(@NotNull CommandSender sender, @NotNull String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+target:\\s*(.*)");
@@ -211,6 +223,8 @@ public class CommandVaultcher {
 
     @Subcommand("redeem")
     @CommandPermission("vaultcher.redeem")
+    @Usage("/vaultcher redeem name: <name>")
+    @Description("Redeems the vaultcher.")
     public void redeem(@NotNull Player player, @NotNull String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*)");
@@ -241,6 +255,8 @@ public class CommandVaultcher {
 
     @Subcommand("give")
     @CommandPermission("vaultcher.give")
+    @Usage("/vaultcher give name: <name> target: <target>")
+    @Description("Gives a permission to the vaultcher.")
     public void give(@NotNull Player player, @NotNull String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+target:\\s*(.*)");
@@ -277,6 +293,7 @@ public class CommandVaultcher {
 
     @Subcommand("referral create")
     @CommandPermission("vaultcher.referral.create")
+    @Description("Creates a new unique referral code.")
     public void referralCreate(@NotNull Player player) {
         AbstractDatabase database = Vaultcher.getDatabase();
 
@@ -296,6 +313,8 @@ public class CommandVaultcher {
 
     @Subcommand("referral redeem")
     @CommandPermission("vaultcher.referral.redeem")
+    @Usage("/vaultcher referral redeem <name>")
+    @Description("Redeems the referral code.")
     public void referralRedeem(@NotNull Player player, @NotNull String referral) {
         AbstractDatabase database = Vaultcher.getDatabase();
 
