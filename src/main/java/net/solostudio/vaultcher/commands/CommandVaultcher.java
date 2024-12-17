@@ -1,6 +1,7 @@
 package net.solostudio.vaultcher.commands;
 
 import net.solostudio.vaultcher.Vaultcher;
+import net.solostudio.vaultcher.annotations.VaultcherCommand;
 import net.solostudio.vaultcher.database.AbstractDatabase;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.enums.keys.MessageKeys;
@@ -54,7 +55,7 @@ public class CommandVaultcher {
     @CommandPermission("vaultcher.create")
     @Usage("/vaultcher create name: <name> uses: <uses> command: <command>")
     @Description("Creates a new vaultcher.")
-    public void create(@NotNull CommandSender sender, @NotNull String input) {
+    public void create(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         input = input.trim();
         Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+uses:\\s*(\\d+)\\s+command:\\s*(.*)");
@@ -95,7 +96,7 @@ public class CommandVaultcher {
     @CommandPermission("vaultcher.delete")
     @Usage("vaultcher delete name: <name>")
     @Description("Deletes the vaultcher.")
-    public void delete(@NotNull CommandSender sender, @NotNull String input) {
+    public void delete(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*)");
         Matcher matcher = pattern.matcher(input.trim());
@@ -118,7 +119,7 @@ public class CommandVaultcher {
     @CommandPermission("vaultcher.edituse")
     @Usage("/vaultcher edituse name: <name> new: <new use>")
     @Description("Edits the uses of the vaultcher.")
-    public void edituse(@NotNull CommandSender sender, @NotNull String input) {
+    public void edituse(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+new:\\s*(\\d+)");
         Matcher matcher = pattern.matcher(input.trim());
@@ -153,7 +154,7 @@ public class CommandVaultcher {
     @CommandPermission("vaultcher.editname")
     @Usage("/vaultcher editname name: <name> new: <new name>")
     @Description("Edits the name of the vaultcher.")
-    public void editname(@NotNull CommandSender sender, @NotNull String input) {
+    public void editname(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+new:\\s*(.*)");
         Matcher matcher = pattern.matcher(input.trim());
@@ -177,7 +178,7 @@ public class CommandVaultcher {
     @CommandPermission("vaultcher.editcommand")
     @Usage("/vaultcher editcommand name: <name> new: <new command>")
     @Description("Edits the command of the vaultcher.")
-    public void editcommand(@NotNull CommandSender sender, @NotNull String input) {
+    public void editcommand(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+new:\\s*(.*)");
         Matcher matcher = pattern.matcher(input.trim());
@@ -201,7 +202,7 @@ public class CommandVaultcher {
     @CommandPermission("vaultcher.add")
     @Usage("/vaultcher add name: <name> target: <target>")
     @Description("Adds a permission to the vaultcher.")
-    public void add(@NotNull CommandSender sender, @NotNull String input) {
+    public void add(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+target:\\s*(.*)");
         Matcher matcher = pattern.matcher(input.trim());
@@ -225,7 +226,7 @@ public class CommandVaultcher {
     @CommandPermission("vaultcher.redeem")
     @Usage("/vaultcher redeem name: <name>")
     @Description("Redeems the vaultcher.")
-    public void redeem(@NotNull Player player, @NotNull String input) {
+    public void redeem(@NotNull Player player, @NotNull @VaultcherCommand String input) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Pattern pattern = Pattern.compile("name:\\s*(.*)");
         Matcher matcher = pattern.matcher(input.trim());

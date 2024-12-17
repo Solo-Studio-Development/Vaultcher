@@ -7,6 +7,33 @@ authors: [ Solo Studio ]
 description: A clever fusion of "Vault" and "Voucher," this name emphasizes security ("vault") and the essence of the plugin's purpose ("voucher"). Perfect for a plugin that ensures safe and efficient management of digital vouchers on Minecraft servers!
 website: https://discord.gg/CxawDwDZtd
 folia-supported: true
+
+permissions:
+  vaultcher.reload:
+    default: op
+  vaultcher.menu:
+    default: op
+  vaultcher.create:
+    default: op
+  vaultcher.delete:
+    default: op
+  vaultcher.edituse:
+    default: op
+  vaultcher.editname:
+    default: op
+  vaultcher.editcommand:
+    default: op
+  vaultcher.add:
+    default: op
+  vaultcher.give:
+    default: op
+  vaultcher.redeem:
+    default: op
+  vaultcher.referral.create:
+    default: op
+  vaultcher.referral.redeem:
+    default: op
+
 dependencies:
   server:
     PlaceholderAPI:

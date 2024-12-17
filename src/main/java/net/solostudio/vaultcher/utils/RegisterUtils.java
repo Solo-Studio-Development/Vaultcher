@@ -1,15 +1,20 @@
 package net.solostudio.vaultcher.utils;
 
 import net.solostudio.vaultcher.Vaultcher;
+import net.solostudio.vaultcher.annotations.VaultcherCommand;
 import net.solostudio.vaultcher.commands.CommandVaultcher;
+import net.solostudio.vaultcher.database.AbstractDatabase;
 import net.solostudio.vaultcher.exception.CommandExceptionHandler;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.reflections.Reflections;
 import revxrsal.commands.bukkit.BukkitLamp;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RegisterUtils {
@@ -40,9 +45,24 @@ public class RegisterUtils {
         var lamp = BukkitLamp.builder(Vaultcher.getInstance())
                 .exceptionHandler(new CommandExceptionHandler())
                 .suggestionProviders(providers -> {
-                    providers.addProvider(String.class, context -> Vaultcher.getDatabase().getEveryVaultcher().stream().map(VaultcherData::vaultcherName).toList());
+                    providers.addProviderForAnnotation(VaultcherCommand.class, vaultcherCommand -> context -> {
+                        AbstractDatabase database = Vaultcher.getDatabase();
+
+                        if (context.actor().sender().hasPermission("vaultcher.admin")) {
+                            return database.getEveryVaultcher()
+                                    .stream()
+                                    .map(VaultcherData::vaultcherName)
+                                    .toList();
+                        } else {
+                            return database.getVaultchers(Objects.requireNonNull(context.actor().asPlayer()))
+                                    .stream()
+                                    .map(VaultcherData::vaultcherName)
+                                    .toList();
+                        }
+                    });
                 })
                 .build();
+
 
         lamp.register(new CommandVaultcher());
 
