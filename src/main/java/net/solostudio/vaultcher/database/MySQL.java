@@ -315,7 +315,9 @@ public class MySQL extends AbstractDatabase {
         String selectQuery = "SELECT USES, COMMAND, OWNERS FROM vaultcher WHERE VAULTCHER = ?";
         String updateQuery = "UPDATE vaultcher SET USES = USES - 1 WHERE VAULTCHER = ?";
         String deleteQuery = "DELETE FROM vaultcher WHERE VAULTCHER = ?";
-        String updateOwnersQuery = "UPDATE vaultcher SET OWNERS = TRIM(BOTH ', ' FROM REPLACE(CONCAT(', ', OWNERS, ', '), CONCAT(', ', ?, ', '), ', ')) WHERE VAULTCHER = ?";
+        String updateOwnersQuery = "UPDATE vaultcher\n" +
+                "SET OWNERS = TRIM(BOTH ', ' FROM REPLACE(OWNERS, ?, ''))\n" +
+                "WHERE VAULTCHER = ?";
 
         try {
             int currentUses = 0;

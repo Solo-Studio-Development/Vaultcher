@@ -7,11 +7,10 @@ import lombok.Getter;
 import net.solostudio.vaultcher.config.Config;
 import net.solostudio.vaultcher.database.AbstractDatabase;
 import net.solostudio.vaultcher.database.MySQL;
-import net.solostudio.vaultcher.database.SQLite;
+import net.solostudio.vaultcher.database.H2;
 import net.solostudio.vaultcher.enums.DatabaseTypes;
 import net.solostudio.vaultcher.enums.LanguageTypes;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
-import net.solostudio.vaultcher.hook.PlaceholderAPI;
 import net.solostudio.vaultcher.language.Language;
 import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bstats.bukkit.Metrics;
@@ -84,13 +83,13 @@ public final class Vaultcher extends JavaPlugin {
                     mySQL.createTable();
                     LoggerUtils.info("### MySQL database has been successfully initialized! ###");
                 }
-                case SQLITE -> {
-                    LoggerUtils.info("### SQLite support found! Starting to initializing it... ###");
-                    database = new SQLite();
-                    SQLite sqlite = (SQLite) database;
+                case H2 -> {
+                    LoggerUtils.info("### H2 support found! Starting to initializing it... ###");
+                    database = new H2();
+                    H2 h2 = (H2) database;
 
-                    sqlite.createTable();
-                    LoggerUtils.info("### SQLite database has been successfully initialized! ###");
+                    h2.createTable();
+                    LoggerUtils.info("### H2 database has been successfully initialized! ###");
                 }
                 default -> throw new SQLException("Unsupported database type!");
             }

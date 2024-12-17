@@ -18,9 +18,8 @@ uses-must-be-bigger-than-one: true # If true, the main menu will only display co
 # ==============================================================
 
 database:
-  type: sqlite # Supported types -> MYSQL, SQLITE
-  # Type of the database you want to use. You can choose between 'SQLITE' or 'MYSQL'. Please type it in upper case!
-  
+  type: h2 # Supported types -> MYSQL, H2
+
   # MySQL-specific configuration
   mysql:
     host: localhost
@@ -32,6 +31,7 @@ database:
     certificateverification: false
     poolsize: 10
     lifetime: 1800000
+
   # This section is only necessary for MySQL. If using SQLite, you can ignore this part.
   # Provides configuration for the MySQL connection, including host, port, and other settings.
 

@@ -28,10 +28,6 @@ public class StartingUtils {
         }
     }
 
-    public static void loadEveryVaultcher() {
-
-    }
-
     private static void registerListenersAndCommands() {
         RegisterUtils.registerListeners();
         RegisterUtils.registerCommands();

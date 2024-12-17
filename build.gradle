@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id "io.freefair.lombok" version "8.11"
-    id "com.gradleup.shadow" version "8.3.0"
+    id "com.gradleup.shadow" version "8.3.2"
     id "io.papermc.paperweight.userdev" version "1.7.7"
 }
 
@@ -16,15 +16,17 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.projectlombok:lombok:1.18.36"
-    compileOnly 'me.clip:placeholderapi:2.11.6'
-    implementation "com.zaxxer:HikariCP:6.2.1"
     implementation "mysql:mysql-connector-java:8.0.33"
     implementation 'io.github.revxrsal:lamp.common:4.0.0-beta.20'
     implementation 'io.github.revxrsal:lamp.bukkit:4.0.0-beta.20'
+    implementation 'io.github.revxrsal:lamp.brigadier:4.0.0-beta.20'
     implementation "org.bstats:bstats-bukkit:3.0.2"
     implementation "com.github.Anon8281:UniversalScheduler:0.1.6"
     implementation 'org.reflections:reflections:0.10.2'
+    implementation 'com.h2database:h2:2.3.232'
+    implementation "com.zaxxer:HikariCP:6.2.1"
+    compileOnly "org.projectlombok:lombok:1.18.36"
+    compileOnly 'me.clip:placeholderapi:2.11.6'
 
     paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
 }
@@ -39,18 +41,23 @@ compileJava {
     options.compilerArgs += ["-parameters"]
 }
 
-shadowJar {
-    relocate "org.bstats", "net.solostudio.vaultcher"
-    relocate "com.github.Anon8281.universalScheduler", "net.solostudio.vaultcher"
+tasks {
+    build {
+        dependsOn(shadowJar)
+    }
 
-    exclude("lamp_pt.properties")
-    exclude("lamp_en.properties")
-    exclude("lamp_it.properties")
-    exclude("lamp_fr.properties")
-    exclude("lamp-bukkit_pt.properties")
-    exclude("lamp-bukkit_it.properties")
-    exclude("lamp-bukkit_fr.properties")
-    exclude("lamp-bukkit_en.properties")
+    shadowJar {
+        relocate "org.bstats", "net.solostudio.vaultcher.libs.bstats"
+        relocate "com.github.Anon8281.universalScheduler", "net.solostudio.vaultcher.libs.scheduler"
+        relocate "org.h2", "net.solostudio.vaultcher.libs.h2"
 
-    minimize()
+        exclude("lamp_pt.properties")
+        exclude("lamp_en.properties")
+        exclude("lamp_it.properties")
+        exclude("lamp_fr.properties")
+        exclude("lamp-bukkit_pt.properties")
+        exclude("lamp-bukkit_it.properties")
+        exclude("lamp-bukkit_fr.properties")
+        exclude("lamp-bukkit_en.properties")
+    }
 }

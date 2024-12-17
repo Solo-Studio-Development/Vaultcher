@@ -18,9 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Command({"vaultcher", "voucher"})
 public class CommandVaultcher {
     @CommandPlaceholder
@@ -55,241 +52,169 @@ public class CommandVaultcher {
     @CommandPermission("vaultcher.create")
     @Usage("/vaultcher create name: <name> uses: <uses> command: <command>")
     @Description("Creates a new vaultcher.")
-    public void create(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
+    public void create(@NotNull CommandSender sender, @NotNull @Flag(shorthand = 'a') String name, @Flag(shorthand = 'b') int uses, @NotNull @Flag(shorthand = 'c') String command) {
         AbstractDatabase database = Vaultcher.getDatabase();
-        input = input.trim();
-        Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+uses:\\s*(\\d+)\\s+command:\\s*(.*)");
-        Matcher matcher = pattern.matcher(input);
 
-        if (matcher.matches()) {
-            String name = matcher.group(1).trim();
-            int uses;
+        if (database.exists(name)) {
+            sender.sendMessage(MessageKeys.ALREADY_EXISTS.getMessage());return;
+        }
 
-            try {
-                uses = Integer.parseInt(matcher.group(2).trim());
-            } catch (NumberFormatException exception) {
-                sender.sendMessage(MessageKeys.INVALID_NUMBER.getMessage());
-                return;
-            }
-            String command = matcher.group(3).trim();
+        if (uses < 0) {
+            sender.sendMessage(MessageKeys.CANT_BE_NEGATIVE.getMessage());
+            return;
+        }
 
-            if (database.exists(name)) {
-                sender.sendMessage(MessageKeys.ALREADY_EXISTS.getMessage());
-                return;
-            }
-
-            if (uses < 0) {
-                sender.sendMessage(MessageKeys.CANT_BE_NEGATIVE.getMessage());
-                return;
-            }
-
-            VaultcherData vaultcher = new VaultcherData(name, command, uses);
-            database.createVaultcher(vaultcher.vaultcherName(), vaultcher.command(), vaultcher.uses());
-            sender.sendMessage(MessageKeys.CREATED.getMessage());
-            Vaultcher.getInstance().getServer().getPluginManager().callEvent(
-                    new VaultcherCreateEvent(EventUtils.handleConsoleEvent(sender).orElse(null), name, command, uses)
-            );
-        } else sender.sendMessage(MessageKeys.CREATE_FORMAT.getMessage());
+        VaultcherData vaultcher = new VaultcherData(name, command, uses);
+        database.createVaultcher(vaultcher.vaultcherName(), vaultcher.command(), vaultcher.uses());
+        sender.sendMessage(MessageKeys.CREATED.getMessage());
+        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherCreateEvent(EventUtils.handleConsoleEvent(sender).orElse(null), name, command, uses));
     }
 
     @Subcommand("delete")
     @CommandPermission("vaultcher.delete")
     @Usage("vaultcher delete name: <name>")
     @Description("Deletes the vaultcher.")
-    public void delete(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
+    public void delete(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'd') String name) {
         AbstractDatabase database = Vaultcher.getDatabase();
-        Pattern pattern = Pattern.compile("name:\\s*(.*)");
-        Matcher matcher = pattern.matcher(input.trim());
 
-        if (matcher.matches()) {
-            String name = matcher.group(1).trim();
+        if (!database.exists(name)) {
+            sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
+            return;
+        }
 
-            if (!database.exists(name)) {
-                sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
-                return;
-            }
-
-            database.deleteVaultcher(name);
-            sender.sendMessage(MessageKeys.DELETED.getMessage());
-            Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherDeleteEvent(EventUtils.handleConsoleEvent(sender).orElse(null), name));
-        } else sender.sendMessage(MessageKeys.DELETE_FORMAT.getMessage());
+        database.deleteVaultcher(name);
+        sender.sendMessage(MessageKeys.DELETED.getMessage());
+        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherDeleteEvent(EventUtils.handleConsoleEvent(sender).orElse(null), name));
     }
 
     @Subcommand("edituse")
     @CommandPermission("vaultcher.edituse")
     @Usage("/vaultcher edituse name: <name> new: <new use>")
     @Description("Edits the uses of the vaultcher.")
-    public void edituse(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
+    public void edituse(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'e') String name, @Flag(shorthand = 'f') int nuse) {
         AbstractDatabase database = Vaultcher.getDatabase();
-        Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+new:\\s*(\\d+)");
-        Matcher matcher = pattern.matcher(input.trim());
 
-        if (matcher.matches()) {
-            String name = matcher.group(1).trim();
-            int newUse;
-            try {
-                newUse = Integer.parseInt(matcher.group(2).trim());
-            } catch (NumberFormatException e) {
-                sender.sendMessage("Hiba: A 'newUse' paraméter nem érvényes szám.");
-                return;
-            }
+        if (!database.exists(name)) {
+            sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
+            return;
+        }
 
-            if (!database.exists(name)) {
-                sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
-                return;
-            }
+        if (nuse < 0) {
+            sender.sendMessage(MessageKeys.CANT_BE_NEGATIVE.getMessage());
+            return;
+        }
 
-            if (newUse < 0) {
-                sender.sendMessage(MessageKeys.CANT_BE_NEGATIVE.getMessage());
-                return;
-            }
-
-            Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherUseEditEvent(name, newUse));
-            database.changeUses(name, newUse);
-            sender.sendMessage(MessageKeys.EDIT_USES.getMessage());
-        } else sender.sendMessage(MessageKeys.EDITUSE_FORMAT.getMessage());
+        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherUseEditEvent(name, nuse));
+        database.changeUses(name, nuse);
+        sender.sendMessage(MessageKeys.EDIT_USES.getMessage());
     }
 
     @Subcommand("editname")
     @CommandPermission("vaultcher.editname")
     @Usage("/vaultcher editname name: <name> new: <new name>")
     @Description("Edits the name of the vaultcher.")
-    public void editname(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
+    public void editname(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'g') String name, @Flag(shorthand = 'h') String nname) {
         AbstractDatabase database = Vaultcher.getDatabase();
-        Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+new:\\s*(.*)");
-        Matcher matcher = pattern.matcher(input.trim());
 
-        if (matcher.matches()) {
-            String name = matcher.group(1).trim();
-            String newName = matcher.group(2).trim();
+        if (!database.exists(name)) {
+            sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
+            return;
+        }
 
-            if (!database.exists(name)) {
-                sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
-                return;
-            }
-
-            Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherNameEditEvent(name, newName));
-            database.changeName(name, newName);
-            sender.sendMessage(MessageKeys.EDIT_NAME.getMessage());
-        } else sender.sendMessage(MessageKeys.EDITNAME_FORMAT.getMessage());
+        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherNameEditEvent(name, nname));
+        database.changeName(name, nname);
+        sender.sendMessage(MessageKeys.EDIT_NAME.getMessage());
     }
 
     @Subcommand("editcommand")
     @CommandPermission("vaultcher.editcommand")
     @Usage("/vaultcher editcommand name: <name> new: <new command>")
     @Description("Edits the command of the vaultcher.")
-    public void editcommand(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
+    public void editcommand(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'i') String name, @Flag(shorthand = 'k') String ncommand) {
         AbstractDatabase database = Vaultcher.getDatabase();
-        Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+new:\\s*(.*)");
-        Matcher matcher = pattern.matcher(input.trim());
 
-        if (matcher.matches()) {
-            String name = matcher.group(1).trim();
-            String newCommand = matcher.group(2).trim();
+        if (!database.exists(name)) {
+            sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
+            return;
+        }
 
-            if (!database.exists(name)) {
-                sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
-                return;
-            }
-
-            Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherCommandEditEvent(name, newCommand));
-            database.changeCommand(name, newCommand);
-            sender.sendMessage(MessageKeys.EDIT_CMD.getMessage());
-        } else sender.sendMessage(MessageKeys.EDITCOMMAND_FORMAT.getMessage());
+        Vaultcher.getInstance().getServer().getPluginManager().callEvent(new VaultcherCommandEditEvent(name, ncommand));
+        database.changeCommand(name, ncommand);
+        sender.sendMessage(MessageKeys.EDIT_CMD.getMessage());
     }
 
     @Subcommand("add")
     @CommandPermission("vaultcher.add")
     @Usage("/vaultcher add name: <name> target: <target>")
     @Description("Adds a permission to the vaultcher.")
-    public void add(@NotNull CommandSender sender, @NotNull @VaultcherCommand String input) {
+    public void add(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'l') String name, @NotNull @Flag(shorthand = 'm') String target) {
         AbstractDatabase database = Vaultcher.getDatabase();
-        Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+target:\\s*(.*)");
-        Matcher matcher = pattern.matcher(input.trim());
+        OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(target);
 
-        if (matcher.matches()) {
-            String name = matcher.group(1).trim();
-            String target = matcher.group(2).trim();
-            OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(target);
+        if (!database.exists(name)) {
+            sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
+            return;
+        }
 
-            if (!database.exists(name)) {
-                sender.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
-                return;
-            }
-
-            database.giveVaultcher(name, targetPlayer);
-            sender.sendMessage(MessageKeys.SUCCESSFUL_ADD.getMessage());
-        } else sender.sendMessage(MessageKeys.ADD_FORMAT.getMessage());
+        database.giveVaultcher(name, targetPlayer);
+        sender.sendMessage(MessageKeys.SUCCESSFUL_ADD.getMessage());
     }
 
     @Subcommand("redeem")
     @CommandPermission("vaultcher.redeem")
     @Usage("/vaultcher redeem name: <name>")
     @Description("Redeems the vaultcher.")
-    public void redeem(@NotNull Player player, @NotNull @VaultcherCommand String input) {
+    public void redeem(@NotNull Player player, @NotNull @VaultcherCommand @Flag(shorthand = 'n') String name) {
         AbstractDatabase database = Vaultcher.getDatabase();
-        Pattern pattern = Pattern.compile("name:\\s*(.*)");
-        Matcher matcher = pattern.matcher(input.trim());
 
-        if (matcher.matches()) {
-            String name = matcher.group(1).trim();
+        if (!database.exists(name)) {
+            player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
+            return;
+        }
 
-            if (!database.exists(name)) {
-                player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
-                return;
-            }
+        if (database.isUsesZero(name)) {
+            player.sendMessage(MessageKeys.USES_ZERO.getMessage());
+            return;
+        }
 
-            if (database.isUsesZero(name)) {
-                player.sendMessage(MessageKeys.USES_ZERO.getMessage());
-                return;
-            }
+        if (!database.isOwned(name, player)) {
+            player.sendMessage(MessageKeys.NOT_AN_OWNER.getMessage());
+            return;
+        }
 
-            if (!database.isOwned(name, player)) {
-                player.sendMessage(MessageKeys.NOT_AN_OWNER.getMessage());
-                return;
-            }
-
-            database.redeemVaultcher(name, player);
-            player.sendMessage(MessageKeys.REDEEMED.getMessage());
-        } else player.sendMessage(MessageKeys.REDEEM_FORMAT.getMessage());
+        database.redeemVaultcher(name, player);
+        player.sendMessage(MessageKeys.REDEEMED.getMessage());
     }
 
     @Subcommand("give")
     @CommandPermission("vaultcher.give")
     @Usage("/vaultcher give name: <name> target: <target>")
     @Description("Gives a permission to the vaultcher.")
-    public void give(@NotNull Player player, @NotNull String input) {
+    public void give(@NotNull Player player, @NotNull @VaultcherCommand @Flag(shorthand = 'o') String name, @NotNull @Flag(shorthand = 'p') String target) {
         AbstractDatabase database = Vaultcher.getDatabase();
-        Pattern pattern = Pattern.compile("name:\\s*(.*?)\\s+target:\\s*(.*)");
-        Matcher matcher = pattern.matcher(input.trim());
+        Player targetPlayer = Bukkit.getPlayer(target);
 
-        if (matcher.matches()) {
-            String name = matcher.group(1).trim();
-            String target = matcher.group(2).trim();
-            Player targetPlayer = Bukkit.getPlayer(target);
+        if (!database.exists(name)) {
+            player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
+            return;
+        }
 
-            if (!database.exists(name)) {
-                player.sendMessage(MessageKeys.NOT_EXISTS.getMessage());
-                return;
-            }
+        if (!database.isOwned(name, player)) {
+            player.sendMessage(MessageKeys.NOT_AN_OWNER.getMessage());
+            return;
+        }
 
-            if (!database.isOwned(name, player)) {
-                player.sendMessage(MessageKeys.NOT_AN_OWNER.getMessage());
-                return;
-            }
+        if (targetPlayer == null || !targetPlayer.isOnline()) {
+            player.sendMessage(MessageKeys.OFFLINE_PLAYER.getMessage());
+            return;
+        }
 
-            if (targetPlayer == null || !targetPlayer.isOnline()) {
-                player.sendMessage(MessageKeys.OFFLINE_PLAYER.getMessage());
-                return;
-            }
-
-            database.takeVaultcher(name, player.getName(), targetPlayer.getName());
-            player.sendMessage(MessageKeys.PLAYER_GIVE.getMessage());
-            targetPlayer.sendMessage(MessageKeys.TARGET_GIVE
-                    .getMessage()
-                    .replace("{player}", player.getName())
-                    .replace("{vaultcher}", name));
-        } else player.sendMessage(MessageKeys.GIVE_FORMAT.getMessage());
+        database.takeVaultcher(name, player.getName(), targetPlayer.getName());
+        player.sendMessage(MessageKeys.PLAYER_GIVE.getMessage());
+        targetPlayer.sendMessage(MessageKeys.TARGET_GIVE
+                .getMessage()
+                .replace("{player}", player.getName())
+                .replace("{vaultcher}", name));
     }
 
     @Subcommand("referral create")
@@ -316,7 +241,7 @@ public class CommandVaultcher {
     @CommandPermission("vaultcher.referral.redeem")
     @Usage("/vaultcher referral redeem <name>")
     @Description("Redeems the referral code.")
-    public void referralRedeem(@NotNull Player player, @NotNull String referral) {
+    public void referralRedeem(@NotNull Player player, @NotNull @Flag(shorthand = 'q') String referral) {
         AbstractDatabase database = Vaultcher.getDatabase();
 
         if (database.isReferralActivated(player.getName())) {
