@@ -43,17 +43,17 @@ implementation(files("libs/plugin.jar"))
 ## 📜 Commands
 
 - `/vaultcher reload` - Reloads the plugin.
-- `/vaultcher create name: <name> uses: <uses> command: <command>` - Creates a new vaultcher.
+- `/vaultcher create --name "<name>" --uses <uses> --command "<command>"` - Creates a new vaultcher.
 - `/vaultcher menu` - Opens the vaultcher menu.
-- `/vaultcher delete name: <name>` - Deletes the vaultcher.
-- `/vaultcher edituse name: <name> new: <new use>` - Edits the uses of the vaultcher.
-- `/vaultcher editname name: <name> new: <new name>` - Edits the name of the vaultcher.
-- `/vaultcher editcommand name: <name> new: <new command>` - Edits the command of the vaultcher.
-- `/vaultcher add name: <name> target: <target>` - Adds a permission to the vaultcher.
-- `/vaultcher give name: <name> target: <target>` - Gives a permission to the vaultcher.
-- `/vaultcher redeem name: <name>` - Redeems the vaultcher.
+- `/vaultcher delete --name "<name>"` - Deletes the vaultcher.
+- `/vaultcher edituse --name "<name>" --nuse: <new use>` - Edits the uses of the vaultcher.
+- `/vaultcher editname --name "<name>" --nname: "<new name>`" - Edits the name of the vaultcher.
+- `/vaultcher editcommand --name "<name>" --ncommand "<new command>"` - Edits the command of the vaultcher.
+- `/vaultcher add --name "<name>" --target "<target>"` - Adds a permission to the vaultcher.
+- `/vaultcher give --name "<name>" --target "<target>"` - Gives a permission to the vaultcher.
+- `/vaultcher redeem --name "<name>"` - Redeems the vaultcher.
 - `/vaultcher referral create` - Creates a new unique referral code.
-- `/vaultcher referral redeem <name>` - Redeems the referral code.
+- `/vaultcher referral --redeem "<name>"` - Redeems the referral code.
 
 ---
 
@@ -68,6 +68,10 @@ implementation(files("libs/plugin.jar"))
 - `vaultcher.editcommand`
 - `vaultcher.add`
 - `vaultcher.give`
+- `vaultcher.all-menu`
+- `vaultcher.admin`
+- `vaultcher.referral.create`
+- `vaultcher.referral.redeem`
 
 ---
 

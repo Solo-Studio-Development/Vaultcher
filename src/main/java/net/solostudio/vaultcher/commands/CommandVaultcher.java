@@ -33,8 +33,8 @@ public class CommandVaultcher {
     }
 
     @Subcommand("reload")
-    @CommandPermission("vaultcher.reload")
     @Description("Reloads the plugin.")
+    @CommandPermission("vaultcher.reload")
     public void reload(@NotNull CommandSender sender) {
         Vaultcher.getInstance().getLanguage().reload();
         Vaultcher.getInstance().getConfiguration().reload();

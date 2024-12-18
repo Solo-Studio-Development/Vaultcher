@@ -13,7 +13,6 @@ import org.reflections.Reflections;
 import revxrsal.commands.bukkit.BukkitLamp;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 

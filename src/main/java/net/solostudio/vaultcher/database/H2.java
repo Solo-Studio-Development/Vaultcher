@@ -28,16 +28,17 @@ public class H2 extends AbstractDatabase {
     public H2() throws SQLException, ClassNotFoundException {
         Class.forName("net.solostudio.vaultcher.libs.h2.Driver");
 
-        HikariConfig config = new HikariConfig();
+        HikariConfig hikariConfig = new HikariConfig();
 
         String url = "jdbc:h2:" + Vaultcher.getInstance().getDataFolder().getAbsolutePath() + "/database;MODE=MySQL";
 
-        config.setJdbcUrl(url);
-        config.setUsername("sa");
-        config.setPassword("");
-        config.setMaximumPoolSize(10);
+        hikariConfig.setJdbcUrl(url);
+        hikariConfig.setUsername("sa");
+        hikariConfig.setPassword("");
+        hikariConfig.setMaximumPoolSize(10);
+        hikariConfig.setPoolName("VaultcherPool");
 
-        dataSource = new HikariDataSource(config);
+        dataSource = new HikariDataSource(hikariConfig);
         connection = dataSource.getConnection();
     }
 

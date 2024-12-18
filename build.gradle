@@ -17,9 +17,9 @@ repositories {
 
 dependencies {
     implementation "mysql:mysql-connector-java:8.0.33"
-    implementation 'io.github.revxrsal:lamp.common:4.0.0-beta.20'
-    implementation 'io.github.revxrsal:lamp.bukkit:4.0.0-beta.20'
-    implementation 'io.github.revxrsal:lamp.brigadier:4.0.0-beta.20'
+    implementation 'io.github.revxrsal:lamp.common:4.0.0-beta.23'
+    implementation 'io.github.revxrsal:lamp.bukkit:4.0.0-beta.23'
+    implementation 'io.github.revxrsal:lamp.brigadier:4.0.0-beta.23'
     implementation "org.bstats:bstats-bukkit:3.0.2"
     implementation "com.github.Anon8281:UniversalScheduler:0.1.6"
     implementation 'org.reflections:reflections:0.10.2'
