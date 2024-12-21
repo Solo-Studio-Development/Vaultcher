@@ -3,7 +3,7 @@ plugins {
     id "io.freefair.lombok" version "8.11"
     id "com.gradleup.shadow" version "8.3.2"
     id "io.papermc.paperweight.userdev" version "1.7.7"
-    id "io.github.revxrsal.zapper" version "1.0.0"
+    id "io.github.revxrsal.zapper" version "1.0.2"
 }
 
 group = 'net.solostudio'
@@ -17,9 +17,13 @@ repositories {
 }
 
 dependencies {
+    implementation("io.github.revxrsal:lamp.bukkit:4.0.0-beta.23") {
+        exclude(module: "lamp.common")
+        exclude(module: "lamp.brigadier")
+    }
+
     zap("mysql:mysql-connector-java:8.0.33")
     zap("io.github.revxrsal:lamp.common:4.0.0-beta.23")
-    zap("io.github.revxrsal:lamp.bukkit:4.0.0-beta.23")
     zap("io.github.revxrsal:lamp.brigadier:4.0.0-beta.23")
     zap("org.bstats:bstats-bukkit:3.0.2")
     zap("com.github.Anon8281:UniversalScheduler:0.1.6")

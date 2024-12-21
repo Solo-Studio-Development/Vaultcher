@@ -14,7 +14,6 @@ import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.language.Language;
 import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.plugin.java.JavaPlugin;
 import revxrsal.zapper.ZapperJavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;
