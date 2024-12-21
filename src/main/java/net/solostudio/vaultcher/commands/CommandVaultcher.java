@@ -50,7 +50,7 @@ public class CommandVaultcher {
 
     @Subcommand("create")
     @CommandPermission("vaultcher.create")
-    @Usage("/vaultcher create name: <name> uses: <uses> command: <command>")
+    @Usage("/vaultcher create --name 'name' --uses uses --command 'command'")
     @Description("Creates a new vaultcher.")
     public void create(@NotNull CommandSender sender, @NotNull @Flag(shorthand = 'a') String name, @Flag(shorthand = 'b') int uses, @NotNull @Flag(shorthand = 'c') String command) {
         AbstractDatabase database = Vaultcher.getDatabase();
@@ -72,7 +72,7 @@ public class CommandVaultcher {
 
     @Subcommand("delete")
     @CommandPermission("vaultcher.delete")
-    @Usage("vaultcher delete name: <name>")
+    @Usage("vaultcher delete --name 'name'")
     @Description("Deletes the vaultcher.")
     public void delete(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'd') String name) {
         AbstractDatabase database = Vaultcher.getDatabase();
@@ -89,7 +89,7 @@ public class CommandVaultcher {
 
     @Subcommand("edituse")
     @CommandPermission("vaultcher.edituse")
-    @Usage("/vaultcher edituse name: <name> new: <new use>")
+    @Usage("/vaultcher edituse --name 'name' --nuse <new use>")
     @Description("Edits the uses of the vaultcher.")
     public void edituse(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'e') String name, @Flag(shorthand = 'f') int nuse) {
         AbstractDatabase database = Vaultcher.getDatabase();
@@ -111,7 +111,7 @@ public class CommandVaultcher {
 
     @Subcommand("editname")
     @CommandPermission("vaultcher.editname")
-    @Usage("/vaultcher editname name: <name> new: <new name>")
+    @Usage("/vaultcher editname --name 'name' --nname 'new name'")
     @Description("Edits the name of the vaultcher.")
     public void editname(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'g') String name, @Flag(shorthand = 'h') String nname) {
         AbstractDatabase database = Vaultcher.getDatabase();
@@ -128,7 +128,7 @@ public class CommandVaultcher {
 
     @Subcommand("editcommand")
     @CommandPermission("vaultcher.editcommand")
-    @Usage("/vaultcher editcommand name: <name> new: <new command>")
+    @Usage("/vaultcher editcommand --name 'name' --ncommand 'new command'")
     @Description("Edits the command of the vaultcher.")
     public void editcommand(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'i') String name, @Flag(shorthand = 'k') String ncommand) {
         AbstractDatabase database = Vaultcher.getDatabase();
@@ -145,7 +145,7 @@ public class CommandVaultcher {
 
     @Subcommand("add")
     @CommandPermission("vaultcher.add")
-    @Usage("/vaultcher add name: <name> target: <target>")
+    @Usage("/vaultcher add --name 'name' --target 'target'")
     @Description("Adds a permission to the vaultcher.")
     public void add(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'l') String name, @NotNull @Flag(shorthand = 'm') String target) {
         AbstractDatabase database = Vaultcher.getDatabase();
@@ -162,7 +162,7 @@ public class CommandVaultcher {
 
     @Subcommand("redeem")
     @CommandPermission("vaultcher.redeem")
-    @Usage("/vaultcher redeem name: <name>")
+    @Usage("/vaultcher redeem --name 'name'")
     @Description("Redeems the vaultcher.")
     public void redeem(@NotNull Player player, @NotNull @VaultcherCommand @Flag(shorthand = 'n') String name) {
         AbstractDatabase database = Vaultcher.getDatabase();
@@ -188,7 +188,7 @@ public class CommandVaultcher {
 
     @Subcommand("give")
     @CommandPermission("vaultcher.give")
-    @Usage("/vaultcher give name: <name> target: <target>")
+    @Usage("/vaultcher give --name 'name' --target 'target'")
     @Description("Gives a permission to the vaultcher.")
     public void give(@NotNull Player player, @NotNull @VaultcherCommand @Flag(shorthand = 'o') String name, @NotNull @Flag(shorthand = 'p') String target) {
         AbstractDatabase database = Vaultcher.getDatabase();
@@ -239,7 +239,7 @@ public class CommandVaultcher {
 
     @Subcommand("referral redeem")
     @CommandPermission("vaultcher.referral.redeem")
-    @Usage("/vaultcher referral redeem <name>")
+    @Usage("/vaultcher referral redeem --referral 'name'")
     @Description("Redeems the referral code.")
     public void referralRedeem(@NotNull Player player, @NotNull @Flag(shorthand = 'q') String referral) {
         AbstractDatabase database = Vaultcher.getDatabase();

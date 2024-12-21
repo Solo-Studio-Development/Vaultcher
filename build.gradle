@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'net.solostudio'
-version = '1.0.3'
+version = '1.0.4'
 
 repositories {
     mavenCentral()
@@ -22,10 +22,8 @@ dependencies {
     implementation 'io.github.revxrsal:lamp.brigadier:4.0.0-beta.23'
     implementation "org.bstats:bstats-bukkit:3.0.2"
     implementation "com.github.Anon8281:UniversalScheduler:0.1.6"
-    implementation 'org.reflections:reflections:0.10.2'
     implementation 'com.h2database:h2:2.3.232'
     implementation "com.zaxxer:HikariCP:6.2.1"
-    compileOnly "org.projectlombok:lombok:1.18.36"
     compileOnly 'me.clip:placeholderapi:2.11.6'
 
     paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
@@ -47,6 +45,10 @@ tasks {
     }
 
     shadowJar {
+        minimize {
+            exclude(dependency("com.h2database:h2"))
+        }
+
         relocate "org.bstats", "net.solostudio.vaultcher.libs.bstats"
         relocate "com.github.Anon8281.universalScheduler", "net.solostudio.vaultcher.libs.scheduler"
         relocate "org.h2", "net.solostudio.vaultcher.libs.h2"

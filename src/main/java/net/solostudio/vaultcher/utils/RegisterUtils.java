@@ -5,16 +5,13 @@ import net.solostudio.vaultcher.annotations.VaultcherCommand;
 import net.solostudio.vaultcher.commands.CommandVaultcher;
 import net.solostudio.vaultcher.database.AbstractDatabase;
 import net.solostudio.vaultcher.exception.CommandExceptionHandler;
+import net.solostudio.vaultcher.listeners.DatabaseListener;
+import net.solostudio.vaultcher.listeners.WebhookListener;
 import net.solostudio.vaultcher.managers.VaultcherData;
+import net.solostudio.vaultcher.listeners.MenuListener;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.reflections.Reflections;
 import revxrsal.commands.bukkit.BukkitLamp;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class RegisterUtils {
     private static final String BASE_PACKAGE = "net.solostudio.vaultcher";
@@ -22,20 +19,11 @@ public class RegisterUtils {
     public static void registerListeners() {
         LoggerUtils.info("### Registering listeners... ###");
 
-        AtomicInteger count = new AtomicInteger();
+        Bukkit.getPluginManager().registerEvents(new DatabaseListener(), Vaultcher.getInstance());
+        Bukkit.getPluginManager().registerEvents(new WebhookListener(), Vaultcher.getInstance());
+        Bukkit.getPluginManager().registerEvents(new MenuListener(), Vaultcher.getInstance());
 
-        new Reflections(BASE_PACKAGE)
-                .getSubTypesOf(Listener.class)
-                .forEach(listenerClass -> {
-                    try {
-                        Bukkit.getServer().getPluginManager().registerEvents(listenerClass.getDeclaredConstructor().newInstance(), Vaultcher.getInstance());
-                        count.getAndIncrement();
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException exception) {
-                        LoggerUtils.error(exception.getMessage());
-                    }
-                });
-
-        LoggerUtils.info("### Successfully registered {} listener. ###", count.get());
+        LoggerUtils.info("### Successfully registered 3 listener. ###");
     }
 
     public static void registerCommands() {

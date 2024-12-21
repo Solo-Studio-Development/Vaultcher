@@ -4,7 +4,6 @@ import com.github.Anon8281.universalScheduler.UniversalScheduler;
 import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import lombok.Getter;
 
-import net.solostudio.vaultcher.commands.CommandVaultcher;
 import net.solostudio.vaultcher.config.Config;
 import net.solostudio.vaultcher.database.AbstractDatabase;
 import net.solostudio.vaultcher.database.MySQL;
@@ -16,8 +15,6 @@ import net.solostudio.vaultcher.language.Language;
 import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
-import revxrsal.commands.bukkit.BukkitLamp;
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.Objects;
