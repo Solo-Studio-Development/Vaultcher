@@ -32,7 +32,7 @@ database:
     poolsize: 10
     lifetime: 1800000
 
-  # This section is only necessary for MySQL. If using SQLite, you can ignore this part.
+  # This section is only necessary for MySQL. If using H2, you can ignore this part.
   # Provides configuration for the MySQL connection, including host, port, and other settings.
 
 # ==============================================================

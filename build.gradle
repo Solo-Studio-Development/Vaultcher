@@ -3,10 +3,11 @@ plugins {
     id "io.freefair.lombok" version "8.11"
     id "com.gradleup.shadow" version "8.3.2"
     id "io.papermc.paperweight.userdev" version "1.7.7"
+    id "io.github.revxrsal.zapper" version "1.0.0"
 }
 
 group = 'net.solostudio'
-version = '1.0.4'
+version = '1.0.5'
 
 repositories {
     mavenCentral()
@@ -16,15 +17,17 @@ repositories {
 }
 
 dependencies {
-    implementation "mysql:mysql-connector-java:8.0.33"
-    implementation 'io.github.revxrsal:lamp.common:4.0.0-beta.23'
-    implementation 'io.github.revxrsal:lamp.bukkit:4.0.0-beta.23'
-    implementation 'io.github.revxrsal:lamp.brigadier:4.0.0-beta.23'
-    implementation "org.bstats:bstats-bukkit:3.0.2"
-    implementation "com.github.Anon8281:UniversalScheduler:0.1.6"
-    implementation 'com.h2database:h2:2.3.232'
-    implementation "com.zaxxer:HikariCP:6.2.1"
-    compileOnly 'me.clip:placeholderapi:2.11.6'
+    zap("mysql:mysql-connector-java:8.0.33")
+    zap("io.github.revxrsal:lamp.common:4.0.0-beta.23")
+    zap("io.github.revxrsal:lamp.bukkit:4.0.0-beta.23")
+    zap("io.github.revxrsal:lamp.brigadier:4.0.0-beta.23")
+    zap("org.bstats:bstats-bukkit:3.0.2")
+    zap("com.github.Anon8281:UniversalScheduler:0.1.6")
+    zap("com.h2database:h2:2.3.232")
+    zap("com.zaxxer:HikariCP:6.2.1")
+
+    compileOnly("me.clip:placeholderapi:2.11.6")
+    compileOnly("org.projectlombok:lombok:1.18.36")
 
     paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
 }
@@ -39,27 +42,24 @@ compileJava {
     options.compilerArgs += ["-parameters"]
 }
 
-tasks {
-    build {
-        dependsOn(shadowJar)
-    }
+zapper {
+    libsFolder = "libs"
+    relocationPrefix = "net.solostudio.vaultcher.libs"
 
-    shadowJar {
-        minimize {
-            exclude(dependency("com.h2database:h2"))
-        }
+    repositories { it.includeProjectRepositories() }
 
-        relocate "org.bstats", "net.solostudio.vaultcher.libs.bstats"
-        relocate "com.github.Anon8281.universalScheduler", "net.solostudio.vaultcher.libs.scheduler"
-        relocate "org.h2", "net.solostudio.vaultcher.libs.h2"
+    relocate("org.bstats", "bstats")
+    relocate("org.h2", "h2")
+    relocate("com.github.Anon8281.universalScheduler", "universalScheduler")
+}
 
-        exclude("lamp_pt.properties")
-        exclude("lamp_en.properties")
-        exclude("lamp_it.properties")
-        exclude("lamp_fr.properties")
-        exclude("lamp-bukkit_pt.properties")
-        exclude("lamp-bukkit_it.properties")
-        exclude("lamp-bukkit_fr.properties")
-        exclude("lamp-bukkit_en.properties")
-    }
+shadowJar {
+    exclude("lamp_pt.properties")
+    exclude("lamp_en.properties")
+    exclude("lamp_it.properties")
+    exclude("lamp_fr.properties")
+    exclude("lamp-bukkit_pt.properties")
+    exclude("lamp-bukkit_it.properties")
+    exclude("lamp-bukkit_fr.properties")
+    exclude("lamp-bukkit_en.properties")
 }

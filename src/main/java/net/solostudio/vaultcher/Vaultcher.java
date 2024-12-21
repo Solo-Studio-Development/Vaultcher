@@ -15,6 +15,8 @@ import net.solostudio.vaultcher.language.Language;
 import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
+import revxrsal.zapper.ZapperJavaPlugin;
+
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.Objects;
@@ -23,7 +25,7 @@ import static net.solostudio.vaultcher.hook.PlaceholderAPI.registerHook;
 import static net.solostudio.vaultcher.update.SpigotUpdateFetcher.checkUpdates;
 import static net.solostudio.vaultcher.utils.StartingUtils.*;
 
-public final class Vaultcher extends JavaPlugin {
+public final class Vaultcher extends ZapperJavaPlugin {
     @Getter private static Vaultcher instance;
     @Getter private TaskScheduler scheduler;
     @Getter private Language language;

@@ -1,0 +1,3 @@
+org.bstats:net.solostudio.vaultcher.libs.bstats
+org.h2:net.solostudio.vaultcher.libs.h2
+com.github.Anon8281.universalScheduler:net.solostudio.vaultcher.libs.universalScheduler

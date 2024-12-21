@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.security.SecureRandom;
 import java.sql.*;
 import java.util.ArrayList;
