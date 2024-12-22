@@ -4,6 +4,7 @@ plugins {
     id "com.gradleup.shadow" version "8.3.2"
     id "io.papermc.paperweight.userdev" version "1.7.7"
     id "io.github.revxrsal.zapper" version "1.0.2"
+    id "maven-publish"
 }
 
 group = 'net.solostudio'
@@ -66,4 +67,12 @@ shadowJar {
     exclude("lamp-bukkit_it.properties")
     exclude("lamp-bukkit_fr.properties")
     exclude("lamp-bukkit_en.properties")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 }
