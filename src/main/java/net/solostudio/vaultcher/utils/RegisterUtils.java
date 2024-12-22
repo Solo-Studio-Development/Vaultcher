@@ -1,6 +1,7 @@
 package net.solostudio.vaultcher.utils;
 
 import net.solostudio.vaultcher.Vaultcher;
+import net.solostudio.vaultcher.annotations.DatabasePlayers;
 import net.solostudio.vaultcher.annotations.VaultcherCommand;
 import net.solostudio.vaultcher.commands.CommandVaultcher;
 import net.solostudio.vaultcher.database.AbstractDatabase;
@@ -27,13 +28,13 @@ public class RegisterUtils {
     }
 
     public static void registerCommands() {
+        AbstractDatabase database = Vaultcher.getDatabase();
         LoggerUtils.info("### Registering commands... ###");
 
         var lamp = BukkitLamp.builder(Vaultcher.getInstance())
                 .exceptionHandler(new CommandExceptionHandler())
                 .suggestionProviders(providers -> {
                     providers.addProviderForAnnotation(VaultcherCommand.class, vaultcherCommand -> context -> {
-                        AbstractDatabase database = Vaultcher.getDatabase();
 
                         if (context.actor().sender().hasPermission("vaultcher.admin")) {
                             return database.getEveryVaultcher()
@@ -48,6 +49,13 @@ public class RegisterUtils {
                         }
                     });
                 })
+
+                .suggestionProviders(providers -> {
+                    providers.addProviderForAnnotation(DatabasePlayers.class, databasePlayers -> context -> database.getEveryPlayerInDatabase()
+                            .stream()
+                            .toList());
+                })
+
                 .build();
 
 

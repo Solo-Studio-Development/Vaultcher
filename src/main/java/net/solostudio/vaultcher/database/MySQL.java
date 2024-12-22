@@ -7,7 +7,6 @@ import net.solostudio.vaultcher.Vaultcher;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.utils.LoggerUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @Getter
 public class MySQL extends AbstractDatabase {
@@ -311,61 +309,29 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public void redeemVaultcher(@NotNull String name, @NotNull OfflinePlayer player) {
-        String selectQuery = "SELECT USES, COMMAND, OWNERS FROM vaultcher WHERE VAULTCHER = ?";
-        String updateQuery = "UPDATE vaultcher SET USES = USES - 1 WHERE VAULTCHER = ?";
-        String deleteQuery = "DELETE FROM vaultcher WHERE VAULTCHER = ?";
-        String updateOwnersQuery = "UPDATE vaultcher\n" +
-                "SET OWNERS = TRIM(BOTH ', ' FROM REPLACE(OWNERS, ?, ''))\n" +
-                "WHERE VAULTCHER = ?";
+    public void giveVaultcher(@NotNull String vaultcher, @NotNull OfflinePlayer player) {
+        String updateOwnersQuery = "UPDATE vaultcher SET OWNERS = ? WHERE VAULTCHER = ?";
+        String playerName = player.getName();
 
         try {
-            int currentUses = 0;
-            String command = "";
+            String currentOwnersQuery = "SELECT OWNERS FROM vaultcher WHERE VAULTCHER = ?";
+            try (PreparedStatement currentOwnersStatement = getConnection().prepareStatement(currentOwnersQuery)) {
+                currentOwnersStatement.setString(1, vaultcher);
 
-            try (PreparedStatement selectStatement = getConnection().prepareStatement(selectQuery)) {
-                selectStatement.setString(1, name);
+                ResultSet resultSet = currentOwnersStatement.executeQuery();
+                String updatedOwners = playerName;
 
-                ResultSet resultSet = selectStatement.executeQuery();
                 if (resultSet.next()) {
-                    currentUses = resultSet.getInt("USES");
-                    command = resultSet.getString("COMMAND");
-                }
-            }
+                    String existingOwners = resultSet.getString("OWNERS");
 
-            if (currentUses <= 0) {
-                try (PreparedStatement deleteStatement = getConnection().prepareStatement(deleteQuery)) {
-                    deleteStatement.setString(1, name);
-                    deleteStatement.executeUpdate();
-                }
-            } else {
-                try (PreparedStatement updateStatement = getConnection().prepareStatement(updateQuery)) {
-                    updateStatement.setString(1, name);
-                    updateStatement.executeUpdate();
+                    if (existingOwners != null && !existingOwners.trim().isEmpty()) updatedOwners = existingOwners + ", " + playerName;
                 }
 
                 try (PreparedStatement updateOwnersStatement = getConnection().prepareStatement(updateOwnersQuery)) {
-                    updateOwnersStatement.setString(1, player.getName());
-                    updateOwnersStatement.setString(2, name);
+                    updateOwnersStatement.setString(1, updatedOwners);
+                    updateOwnersStatement.setString(2, vaultcher);
                     updateOwnersStatement.executeUpdate();
                 }
-
-                if (!command.isEmpty()) Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", Objects.requireNonNull(player.getName())));
-            }
-        } catch (SQLException exception) {
-            LoggerUtils.error(exception.getMessage());
-        }
-    }
-
-    @Override
-    public void giveVaultcher(@NotNull String vaultcher, @NotNull OfflinePlayer player) {
-        String updateOwnersQuery = "UPDATE vaultcher SET OWNERS = CONCAT(IFNULL(OWNERS,''), ?, ', ') WHERE VAULTCHER = ?";
-
-        try {
-            try (PreparedStatement updateOwnersStatement = getConnection().prepareStatement(updateOwnersQuery)) {
-                updateOwnersStatement.setString(1, player.getName());
-                updateOwnersStatement.setString(2, vaultcher);
-                updateOwnersStatement.executeUpdate();
             }
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
@@ -473,7 +439,7 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public void takeVaultcher(@NotNull String vaultcher, @NotNull String oldOwner, @NotNull String newOwner) {
+    public void takeVaultcher(@NotNull String vaultcher, @NotNull String ownerToRemove) {
         String query = "SELECT OWNERS FROM vaultcher WHERE VAULTCHER = ?";
         String updateQuery = "UPDATE vaultcher SET OWNERS = ? WHERE VAULTCHER = ?";
 
@@ -482,18 +448,16 @@ public class MySQL extends AbstractDatabase {
             ResultSet resultSet = selectStatement.executeQuery();
 
             if (resultSet.next()) {
-                List<String> ownerList = Arrays
-                        .stream(resultSet.getString("OWNERS").split(","))
-                        .map(String::trim)
-                        .collect(Collectors.toList());
+                String owners = resultSet.getString("OWNERS");
+                if (owners != null && !owners.trim().isEmpty()) {
+                    List<String> ownerList = new ArrayList<>(Arrays.asList(owners.split(",")));
+                    ownerList.replaceAll(String::trim);
+                    ownerList.remove(ownerToRemove);
 
-                int index = ownerList.indexOf(oldOwner);
-
-                if (index != -1) {
-                    ownerList.set(index, newOwner);
+                    String updatedOwners = ownerList.isEmpty() ? null : String.join(", ", ownerList);
 
                     try (PreparedStatement updateStatement = getConnection().prepareStatement(updateQuery)) {
-                        updateStatement.setString(1, String.join(", ", ownerList));
+                        updateStatement.setString(1, updatedOwners);
                         updateStatement.setString(2, vaultcher);
                         updateStatement.executeUpdate();
                     }
@@ -503,6 +467,19 @@ public class MySQL extends AbstractDatabase {
             LoggerUtils.error(exception.getMessage());
         }
     }
+
+    @Override
+    public void decrementUses(@NotNull String vaultcherName) {
+        String query = "UPDATE vaultcher SET USES = USES - 1 WHERE VAULTCHER = ? AND USES > 0";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, vaultcherName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            LoggerUtils.error("Error decrementing USES for vaultcher: " + vaultcherName + " - " + exception.getMessage());
+        }
+    }
+
 
     @Override
     public void deleteVaultcher(@NotNull String vaultcher) {
@@ -566,10 +543,12 @@ public class MySQL extends AbstractDatabase {
     @Override
     public List<VaultcherData> getVaultchers(@NotNull OfflinePlayer player) {
         List<VaultcherData> vaultchers = new ArrayList<>();
-        String query = "SELECT * FROM vaultcher WHERE USES >= 1 AND OWNERS LIKE ?";
+        String query = "SELECT * FROM vaultcher WHERE USES >= 1 AND OWNERS REGEXP ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, "%" + player.getName() + "%");
+            // A regex biztosítja, hogy csak azokat a neveket találjuk meg, amelyek pontos egyezést alkotnak
+            String regex = "(^|,|\\s)" + player.getName() + "(,|\\s|$)";
+            preparedStatement.setString(1, regex);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String name = resultSet.getString("VAULTCHER");
@@ -582,6 +561,26 @@ public class MySQL extends AbstractDatabase {
         }
 
         return vaultchers;
+    }
+
+    @Override
+    public List<String> getEveryPlayerInDatabase() {
+        List<String> players = new ArrayList<>();
+        String query = "SELECT NAME FROM vaultcherplayers";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String name = resultSet.getString("NAME");
+
+                players.add(name);
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+
+        return players;
     }
 
     @Override

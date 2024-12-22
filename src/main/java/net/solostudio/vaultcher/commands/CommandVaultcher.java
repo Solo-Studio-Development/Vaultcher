@@ -1,6 +1,7 @@
 package net.solostudio.vaultcher.commands;
 
 import net.solostudio.vaultcher.Vaultcher;
+import net.solostudio.vaultcher.annotations.DatabasePlayers;
 import net.solostudio.vaultcher.annotations.VaultcherCommand;
 import net.solostudio.vaultcher.database.AbstractDatabase;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
@@ -10,6 +11,7 @@ import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.menu.menus.NavigationMenu;
 import net.solostudio.vaultcher.utils.EventUtils;
 import net.solostudio.vaultcher.managers.MenuController;
+import net.solostudio.vaultcher.utils.VaultcherUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -147,7 +149,7 @@ public class CommandVaultcher {
     @CommandPermission("vaultcher.add")
     @Usage("/vaultcher add --name 'name' --target 'target'")
     @Description("Adds a permission to the vaultcher.")
-    public void add(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'l') String name, @NotNull @Flag(shorthand = 'm') String target) {
+    public void add(@NotNull CommandSender sender, @NotNull @VaultcherCommand @Flag(shorthand = 'l') String name, @NotNull @DatabasePlayers @Flag(shorthand = 'm') String target) {
         AbstractDatabase database = Vaultcher.getDatabase();
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(target);
 
@@ -182,15 +184,14 @@ public class CommandVaultcher {
             return;
         }
 
-        database.redeemVaultcher(name, player);
-        player.sendMessage(MessageKeys.REDEEMED.getMessage());
+        VaultcherUtils.redeemVaultcher(player, name);
     }
 
     @Subcommand("give")
     @CommandPermission("vaultcher.give")
     @Usage("/vaultcher give --name 'name' --target 'target'")
     @Description("Gives a permission to the vaultcher.")
-    public void give(@NotNull Player player, @NotNull @VaultcherCommand @Flag(shorthand = 'o') String name, @NotNull @Flag(shorthand = 'p') String target) {
+    public void give(@NotNull Player player, @NotNull @VaultcherCommand @Flag(shorthand = 'o') String name, @NotNull @DatabasePlayers @Flag(shorthand = 'p') String target) {
         AbstractDatabase database = Vaultcher.getDatabase();
         Player targetPlayer = Bukkit.getPlayer(target);
 
@@ -209,7 +210,8 @@ public class CommandVaultcher {
             return;
         }
 
-        database.takeVaultcher(name, player.getName(), targetPlayer.getName());
+        database.takeVaultcher(name, player.getName());
+        database.giveVaultcher(name, targetPlayer);
         player.sendMessage(MessageKeys.PLAYER_GIVE.getMessage());
         targetPlayer.sendMessage(MessageKeys.TARGET_GIVE
                 .getMessage()

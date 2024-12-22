@@ -41,8 +41,6 @@ public abstract class AbstractDatabase {
 
     public abstract boolean exists(@NotNull String name);
 
-    public abstract void redeemVaultcher(@NotNull String name, @NotNull OfflinePlayer player);
-
     public abstract void giveVaultcher(@NotNull String code, @NotNull OfflinePlayer player);
 
     public abstract boolean isOwned(@NotNull String code, @NotNull OfflinePlayer player);
@@ -55,7 +53,9 @@ public abstract class AbstractDatabase {
 
     public abstract String getName(@NotNull String code);
 
-    public abstract void takeVaultcher(@NotNull String code, @NotNull String oldOwner, @NotNull String newOwner);
+    public abstract void takeVaultcher(@NotNull String vaultcher, @NotNull String ownerToRemove);
+
+    public abstract void decrementUses(@NotNull String vaultcherName);
 
     public abstract void deleteVaultcher(@NotNull String code);
 
@@ -66,6 +66,8 @@ public abstract class AbstractDatabase {
     public abstract void changeUses(@NotNull String name, int newUses);
 
     public abstract List<VaultcherData> getVaultchers(@NotNull OfflinePlayer player);
+
+    public abstract List<String> getEveryPlayerInDatabase();
 
     public abstract List<VaultcherData> getEveryVaultcher();
 

@@ -7,6 +7,10 @@ import net.solostudio.vaultcher.enums.keys.MessageKeys;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.menu.PaginatedMenu;
 import net.solostudio.vaultcher.managers.MenuController;
+import net.solostudio.vaultcher.utils.VaultcherUtils;
+import org.bukkit.Particle;
+import org.bukkit.Registry;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -16,6 +20,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 @SuppressWarnings("all")
 public class UserAccessibleMenu extends PaginatedMenu {
@@ -84,7 +90,11 @@ public class UserAccessibleMenu extends PaginatedMenu {
 
         if (clickedSlot == ConfigKeys.USER_ACCESSIBLE_FORWARD_SLOT.getInt()) handlePageChange(player, vaultchers.size(), true);
         else if (clickedSlot == ConfigKeys.USER_ACCESSIBLE_BACK_SLOT.getInt()) handlePageChange(player, vaultchers.size(), false);
-        else if (clickedSlot >= 0 && clickedSlot < vaultchers.size()) redeemVaultcher(player, vaultchers.get(clickedSlot));
+        else if (clickedSlot >= 0 && clickedSlot < vaultchers.size()) {
+            VaultcherUtils.redeemVaultcher(player, vaultchers.get(clickedSlot).vaultcherName());
+            inventory.close();
+        }
+
         else if (clickedSlot == ConfigKeys.BACK_TO_NAVIGATION_SLOT.getInt()) new NavigationMenu(MenuController.getMenuUtils(player)).open();
     }
 
@@ -116,11 +126,5 @@ public class UserAccessibleMenu extends PaginatedMenu {
 
         page = newPage;
         super.open();
-    }
-
-    private void redeemVaultcher(@NotNull Player player, @NotNull VaultcherData vaultcher) {
-        Vaultcher.getDatabase().redeemVaultcher(vaultcher.vaultcherName(), player);
-        inventory.close();
-        player.sendMessage(MessageKeys.REDEEMED.getMessage());
     }
 }

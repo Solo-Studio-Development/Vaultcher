@@ -36,7 +36,13 @@ public enum ConfigKeys {
     NAVIGATION_USER_ACCESSIBLE_MENU_SLOT("navigation-menu.user-accessible-menu-item.slot"),
     NAVIGATION_FULL_OVERVIEW_MENU_SLOT("navigation-menu.full-overview-menu-item.slot"),
     NAVIGATION_MENU_SIZE("navigation-menu.size"),
-    NAVIGATION_MENU_FILLER_GLASS("navigation-menu.filler-glass");
+    NAVIGATION_MENU_FILLER_GLASS("navigation-menu.filler-glass"),
+
+    REDEEM_PARTICLE("redeem.particle.name"),
+    REDEEM_IS_PARTICLE_ENABLED("redeem.particle.enabled"),
+    REDEEM_PLAY_SOUND_AT_LOCATION("redeem.play-sound-at-location"),
+    REDEEM_IS_SOUND_ENABLED("redeem.sound.enabled"),
+    REDEEM_SOUND("redeem.sound.name");
 
     private final String path;
 
