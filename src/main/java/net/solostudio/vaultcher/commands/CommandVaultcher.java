@@ -264,8 +264,8 @@ public class CommandVaultcher {
         database.incrementActivators(referral);
         database.activateReferral(player.getName());
         player.sendMessage(MessageKeys.SUCCESSFUL_REFERRAL_ACTIVATE.getMessage());
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ConfigKeys.REFERRAL_COMMAND_CREATOR.getString().replace("{player}", database.getReferralCodeOwner(referral)));
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ConfigKeys.REFERRAL_COMMAND_ACTIVATOR.getString().replace("{player}", player.getName()));
+        ConfigKeys.REFERRAL_COMMAND_CREATOR.getList().forEach(currentCommand -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), currentCommand.replace("{player}", database.getReferralCodeOwner(referral))));
+        ConfigKeys.REFERRAL_COMMAND_ACTIVATOR.getList().forEach(currentCommand -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), currentCommand.replace("{player}", player.getName())));
         Vaultcher.getInstance().getServer().getPluginManager().callEvent(new ReferralActivateEvent(database.getReferralCodeOwner(referral), player.getName(), referral));
     }
 }

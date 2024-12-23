@@ -68,6 +68,7 @@ public final class Vaultcher extends ZapperJavaPlugin {
 
         saveResourceIfNotExists("locales/messages_en.yml");
         saveResourceIfNotExists("locales/messages_de.yml");
+        saveResourceIfNotExists("config.yml");
 
         language = new Language("messages_" + LanguageTypes.valueOf(ConfigKeys.LANGUAGE.getString()));
     }

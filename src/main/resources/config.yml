@@ -200,8 +200,12 @@ webhook:
 # ==============================================================
 
 referral:
-  command-creator: "msg {player} nice!" # This command will run for THE CODE CREATOR when someone activates their code.
-  command-activator: "msg {player} nice job!" # This command will run when someone activates a command.
+  command-creator: # These/this command(s) will run for THE CODE CREATOR when someone activates their code.
+    - "msg {player} nice!"
+    - "msg {player} you are so sigma"
+  command-activator: # These/this command(s) will run for THE CODE ACTIVATOR when someone activates a command.
+    - "msg {player} nice job!"
+    - "msg {player} test"
 
 # ==============================================================
 # Redeem Configuration
@@ -210,8 +214,11 @@ referral:
 redeem:
   particle:
     enabled: true
-    name: "FIREWORKS_SPARK"
+    name:
+      - "FIREWORKS_SPARK"
+      - "CRIT"
   sound:
     enabled: true
-    name: "BLOCK_NOTE_BLOCK_BELL"
+    name:
+      - "BLOCK_NOTE_BLOCK_BELL"
   play-sound-at-location: false # If it's on true then everyone will hear the sound.

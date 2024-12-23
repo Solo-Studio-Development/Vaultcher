@@ -4,6 +4,8 @@ import net.solostudio.vaultcher.Vaultcher;
 import net.solostudio.vaultcher.processor.MessageProcessor;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public enum ConfigKeys {
     DATABASE("database.type"),
     LANGUAGE("language"),
@@ -60,5 +62,9 @@ public enum ConfigKeys {
 
     public int getInt() {
         return Vaultcher.getInstance().getConfiguration().getInt(path);
+    }
+
+    public List<String> getList() {
+        return Vaultcher.getInstance().getConfiguration().getList(path);
     }
 }

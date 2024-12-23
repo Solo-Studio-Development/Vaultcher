@@ -15,8 +15,6 @@ import revxrsal.commands.bukkit.BukkitLamp;
 import java.util.Objects;
 
 public class RegisterUtils {
-    private static final String BASE_PACKAGE = "net.solostudio.vaultcher";
-
     public static void registerListeners() {
         LoggerUtils.info("### Registering listeners... ###");
 

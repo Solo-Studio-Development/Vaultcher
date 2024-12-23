@@ -37,7 +37,9 @@ public abstract class AbstractDatabase {
 
     public abstract String getReferralCodeOwner(@NotNull String referralCode);
 
-    public abstract void createVaultcher(@NotNull String name, @NotNull String cmd, int uses);
+    public abstract void createVaultcher(@NotNull String name, @NotNull String command, int uses);
+
+    public abstract void redeemVaultcher(@NotNull String vaultcherName, @NotNull OfflinePlayer player);
 
     public abstract boolean exists(@NotNull String name);
 

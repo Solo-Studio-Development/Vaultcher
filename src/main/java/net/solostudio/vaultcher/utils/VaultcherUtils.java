@@ -4,13 +4,12 @@ import lombok.experimental.UtilityClass;
 import net.solostudio.vaultcher.Vaultcher;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.enums.keys.MessageKeys;
-import net.solostudio.vaultcher.managers.VaultcherData;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @SuppressWarnings("deprecation")
@@ -25,11 +24,11 @@ public class VaultcherUtils {
                 double yOffset = Math.random();
                 double zOffset = Math.random() - 0.5;
 
-                player.getWorld().spawnParticle(Particle.valueOf(ConfigKeys.REDEEM_PARTICLE.getString()),
+                ConfigKeys.REDEEM_PARTICLE.getList().forEach(currentParticle -> player.getWorld().spawnParticle(Particle.valueOf(currentParticle),
                         player.getLocation().add(0, 1, 0),
                         10,
                         xOffset, yOffset, zOffset,
-                        0.1);
+                        0.1));
             });
         });
     }
@@ -37,19 +36,23 @@ public class VaultcherUtils {
     private void playSound(@NotNull Player player) {
         if (!ConfigKeys.REDEEM_IS_SOUND_ENABLED.getBoolean()) return;
 
-        Optional<String> optionalSoundName = Optional.of(ConfigKeys.REDEEM_SOUND.getString());
+        List<String> soundNames = ConfigKeys.REDEEM_SOUND.getList();
 
-        optionalSoundName.ifPresent(soundName -> {
-            Sound sound = Sound.valueOf(soundName.toUpperCase());
-
-            if (ConfigKeys.REDEEM_PLAY_SOUND_AT_LOCATION.getBoolean()) player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
-            else player.playSound(player, sound, 1.0f, 1.0f);
-        });
+        if (ConfigKeys.REDEEM_PLAY_SOUND_AT_LOCATION.getBoolean()) {
+            soundNames.stream()
+                    .map(name -> Sound.valueOf(name.toUpperCase()))
+                    .forEach(sound -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));
+        } else {
+            soundNames.stream()
+                    .map(name -> Sound.valueOf(name.toUpperCase()))
+                    .forEach(sound -> player.playSound(player, sound, 1.0f, 1.0f));
+        }
     }
 
     public void redeemVaultcher(@NotNull Player player, @NotNull String name) {
         Vaultcher.getDatabase().takeVaultcher(name, player.getName());
         Vaultcher.getDatabase().decrementUses(name);
+        Vaultcher.getDatabase().redeemVaultcher(name, player);
 
         playParticle(player);
         playSound(player);

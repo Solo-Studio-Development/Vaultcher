@@ -7,6 +7,7 @@ import net.solostudio.vaultcher.Vaultcher;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.utils.LoggerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -273,17 +274,41 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
-    public void createVaultcher(@NotNull String name, @NotNull String cmd, int uses) {
+    public void createVaultcher(@NotNull String name, @NotNull String command, int uses) {
+        String[] commands = command.split(",");
+        String commandString = String.join(", ", commands);
         String query = "INSERT IGNORE INTO vaultcher (VAULTCHER, COMMAND, USES) VALUES (?, ?, ?)";
 
         try {
             if (!exists(name)) {
                 try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
                     preparedStatement.setString(1, name);
-                    preparedStatement.setString(2, cmd);
+                    preparedStatement.setString(2, commandString);
                     preparedStatement.setInt(3, uses);
                     preparedStatement.executeUpdate();
                 }
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void redeemVaultcher(@NotNull String vaultcherName, @NotNull OfflinePlayer player) {
+        String query = "SELECT COMMAND FROM vaultcher WHERE VAULTCHER = ?";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, vaultcherName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String commands = resultSet.getString("COMMAND");
+
+                Arrays.stream(commands.split(","))
+                        .toList()
+                        .forEach(command -> {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.trim().replace("%player%", Objects.requireNonNull(player.getName())));
+                });
             }
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());

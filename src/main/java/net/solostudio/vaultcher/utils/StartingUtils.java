@@ -23,9 +23,8 @@ public class StartingUtils {
 
     public static void saveResourceIfNotExists(@NotNull String resourcePath) {
         File targetFile = new File(Vaultcher.getInstance().getDataFolder(), resourcePath);
-        if (!targetFile.exists()) {
-            Vaultcher.getInstance().saveResource(resourcePath, false);
-        }
+
+        if (!targetFile.exists()) Vaultcher.getInstance().saveResource(resourcePath, false);
     }
 
     private static void registerListenersAndCommands() {
@@ -39,9 +38,7 @@ public class StartingUtils {
             return;
         }
 
-        if (!checkVersion()) {
-            disablePlugin("### Unsupported server version. Please update your server to a supported version. ###");
-        }
+        if (!checkVersion()) disablePlugin("### Unsupported server version. Please update your server to a supported version. ###");
     }
 
     private static boolean checkVMVersion() {
@@ -103,15 +100,14 @@ public class StartingUtils {
         if (matcher.find()) {
             try {
                 return Integer.parseInt(matcher.group(1));
-            } catch (NumberFormatException ignored) {
-            }
+            } catch (NumberFormatException ignored) {}
         }
 
         LoggerUtils.error("### Unable to detect Java version from string: {} ###", javaVersion);
         return -1;
     }
 
-    private static void disablePlugin(String errorMessage) {
+    private static void disablePlugin(@NotNull String errorMessage) {
         LoggerUtils.error(errorMessage);
         Bukkit.getPluginManager().disablePlugin(Vaultcher.getInstance());
     }

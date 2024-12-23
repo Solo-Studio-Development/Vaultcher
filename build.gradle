@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'net.solostudio'
-version = '1.0.6'
+version = '1.0.7'
 
 repositories {
     mavenCentral()
@@ -58,12 +58,12 @@ zapper {
 }
 
 shadowJar {
-    exclude("lamp_pt.properties")
-    exclude("lamp_en.properties")
-    exclude("lamp_it.properties")
-    exclude("lamp_fr.properties")
-    exclude("lamp-bukkit_pt.properties")
-    exclude("lamp-bukkit_it.properties")
-    exclude("lamp-bukkit_fr.properties")
-    exclude("lamp-bukkit_en.properties")
+    exclude("lamp.lamp_pt.properties")
+    exclude("lamp.lamp_en.properties")
+    exclude("lamp.lamp_it.properties")
+    exclude("lamp.lamp_fr.properties")
+    exclude("lamp.lamp-bukkit_pt.properties")
+    exclude("lamp.lamp-bukkit_it.properties")
+    exclude("lamp.lamp-bukkit_fr.properties")
+    exclude("lamp.lamp-bukkit_en.properties")
 }

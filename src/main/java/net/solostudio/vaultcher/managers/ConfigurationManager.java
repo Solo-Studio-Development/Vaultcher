@@ -52,7 +52,7 @@ public class ConfigurationManager {
         save();
     }
 
-    public void set(@NotNull String path, Object value) {
+    public void set(@NotNull String path, @NotNull Object value) {
         yml.set(path, value);
         save();
     }
