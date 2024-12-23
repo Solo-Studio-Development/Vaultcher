@@ -5,6 +5,10 @@ Vaultcher is a powerful plugin that combines **security** (vault) with the core 
 
 ---
 
+#### To see the basics go to the [GitBook Page](https://solo-studio-1.gitbook.io/vaultcher)!
+
+---
+
 ## 🚀 For Developers
 
 Although the plugin is not officially listed as a library, you can still integrate it into your project by following these steps:
