@@ -21,7 +21,7 @@ public enum VersionTypes {
     v1_21_R4;
 
     @Getter
-    private static VersionTypes serverVersion;
+    public static VersionTypes serverVersion;
 
     static {
         String bukkitVersion = Bukkit.getVersion();

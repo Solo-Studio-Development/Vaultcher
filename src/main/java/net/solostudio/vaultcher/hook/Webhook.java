@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Data
@@ -42,13 +43,26 @@ public class Webhook {
         this.embeds.add(embed);
     }
 
+    public static int countEnabledWebhooks() {
+        ConfigurationSection section = Vaultcher.getInstance().getWebhookFile().getSection("webhook");
+
+        if (section == null) return 0;
+
+        return section.getKeys(false).stream()
+                .filter(key -> section.getBoolean(key + ".enabled", false))
+                .mapToInt(key -> 1)
+                .sum();
+    }
+
     public static void sendWebhookFromString(@NotNull String path, @Nullable PlaceholderProvider event) throws IOException, URISyntaxException {
-        ConfigurationSection section = Vaultcher.getInstance().getConfiguration().getSection(path);
+        ConfigurationSection section = Vaultcher.getInstance().getWebhookFile().getSection(path);
 
         if (section == null) return;
 
+        String globalUrl = Vaultcher.getInstance().getWebhookFile().getString("global-url");
         boolean isEnabled = section.getBoolean("enabled", false);
-        String url = section.getString("url");
+        String url = Optional.ofNullable(section.getString("url")).filter(urlStr -> !urlStr.isEmpty()).orElse(globalUrl);
+
         String description = Optional.ofNullable(section.getString("description")).orElse("");
         String color = Optional.ofNullable(section.getString("color")).orElse("BLACK");
         String authorName = Optional.ofNullable(section.getString("author-name")).orElse("");
@@ -87,6 +101,7 @@ public class Webhook {
                         .setAuthor(authorName, authorURL, authorIconURL)
                         .setImage(imageURL)
                 );
+
             } catch (NoSuchFieldException | IllegalAccessException exception) {
                 LoggerUtils.error(exception.getMessage());
 
@@ -102,6 +117,8 @@ public class Webhook {
             }
 
             webhook.execute();
+        } else {
+            LoggerUtils.warn("Webhook is either not enabled or URL is missing.");
         }
     }
 

@@ -1,21 +1,21 @@
-# ==============================================================
-# Language Configuration Section
-# ==============================================================
+# ============================================================== #
+# Language Configuration Section                                 #
+# ============================================================== #
 
 language: "en" # Supported languages -> de, en
 console-in-webhook: "CONSOLE"
 # If you want to change the language of your plugin, choose from the available options: 'de' (German) or 'en' (English)
 
-# ==============================================================
-# Main Menu Configuration
-# ==============================================================
+# ============================================================== #
+# Main Menu Configuration Section                                #
+# ============================================================== #
 
 uses-must-be-bigger-than-one: true # If true, the main menu will only display codes where the 'USES' is greater than 1
 # This is a toggle to control whether vaults with less than one use should be excluded from the menu
 
-# ==============================================================
-# Database Configuration
-# ==============================================================
+# ============================================================== #
+# Database Configuration Section                                 #
+# ============================================================== #
 
 database:
   type: h2 # Supported types -> MYSQL, H2
@@ -35,9 +35,9 @@ database:
   # This section is only necessary for MySQL. If using H2, you can ignore this part.
   # Provides configuration for the MySQL connection, including host, port, and other settings.
 
-# ==============================================================
-# Vaultcher Item Configuration
-# ==============================================================
+# ============================================================== #
+# Vaultcher Item Configuration Section                           #
+# ============================================================== #
 
 vaultcher-item:
   amount: 1
@@ -47,18 +47,18 @@ vaultcher-item:
     - ""
     - "&aClick if you want to redeem the vaultcher!" # Description when hovering or clicking on the vaultcher item
 
-# ==============================================================
-# Filler Glass Item Configuration
-# ==============================================================
+# ============================================================== #
+# Filler Glass Item Configuration Section                        #
+# ============================================================== #
 
 filler-glass-item:
   material: GRAY_STAINED_GLASS_PANE
   name: " " # An empty name for the filler glass
   lore: [] # Empty lore as it is just a filler item
 
-# ==============================================================
-# Back to Navigation Menu Item Configuration
-# ==============================================================
+# ============================================================== #
+# Back to Navigation Menu Item Configuration                     #
+# ============================================================== #
 
 back-to-navigation-item:
   material: COMPASS
@@ -68,9 +68,9 @@ back-to-navigation-item:
     - "&aClick here if you want to go back!"
   slot: 49
 
-# ==============================================================
-# Menu Configuration - Accessible Vaultchers
-# ==============================================================
+# ============================================================== #
+# Menu Configuration - Accessible Vaultchers                     #
+# ============================================================== #
 
 user-accessible-menu:
   title: "&c&lACCESSIBLE VAULTCHERS" # The title of the menu (with color codes)
@@ -88,18 +88,18 @@ user-accessible-menu:
     slot: 53 # Slot position in the menu
   filler-glass: true # Filler glass to fill unused slots
 
-# ==============================================================
-# Placeholder Answers Configuration
-# ==============================================================
+# ============================================================== #
+# Placeholder Answers Configuration Section                      #
+# ============================================================== #
 
 placeholders:
   yes-holder: "Yes"
   no-holder: "No"
   no-code-holder: "No code"
 
-# ==============================================================
-# Full Overview Menu Configuration
-# ==============================================================
+# ============================================================== #
+# Full Overview Menu Configuration                               #
+# ============================================================== #
 
 full-overview-menu:
   title: "&c&lFULL OVERVIEW" # The title of the full overview menu
@@ -117,9 +117,9 @@ full-overview-menu:
     slot: 53
   filler-glass: true # Same filler glass setting as in the accessible vaultcher menu
 
-# ==============================================================
-# Navigation Menu Configuration
-# ==============================================================
+# ============================================================== #
+# Navigation Menu Configuration                                  #
+# ============================================================== #
 
 navigation-menu:
   title: "&c&lNAVIGATION MENU" # Title of the navigation menu
@@ -137,67 +137,9 @@ navigation-menu:
     name: "&4&lALL" # Cauldron item representing the full overview of vaultchers
     slot: 5 # Slot where the item will appear
 
-# ==============================================================
-# Webhook Configuration
-# ==============================================================
-
-webhook:
-  # Webhook embeds for various events
-  vaultcher-create-embed:
-    url: "WEBHOOK URL HERE!!!"
-    enabled: false
-    title: "NEW VAULTCHER CREATED!" # Title of the embed message for a new vaultcher creation
-    description: "{player} created a new vaultcher: {vaultcher} (Uses: {uses}, Command: {command})" # Description template for the created vaultcher
-    color: "RED" # Embed color
-    author-name: "" # Optional author name
-    footer-text: "SENT BY VAULTCHER" # Footer text
-  vaultcher-delete-embed:
-    url: "WEBHOOK URL HERE!!!"
-    enabled: false
-    title: "VAULTCHER DELETED!"
-    description: "{player} deleted a vaultcher: {vaultcher}"
-    color: "RED"
-    footer-text: "SENT BY VAULTCHER"
-  vaultcher-edituse-embed:
-    url: "WEBHOOK URL HERE!!!"
-    enabled: false
-    title: "USES EDIT!"
-    description: "{vaultcher}'s uses has been changed from {old} to {new}"
-    color: "RED"
-    footer-text: "SENT BY VAULTCHER"
-  vaultcher-editcommand-embed:
-    url: "WEBHOOK URL HERE!!!"
-    enabled: false
-    title: "COMMAND EDIT!"
-    description: "{vaultcher}'s command has been changed from {old} to {new}"
-    color: "RED"
-    footer-text: "SENT BY VAULTCHER"
-  vaultcher-editname-embed:
-    url: "WEBHOOK URL HERE!!!"
-    enabled: false
-    title: "NAME EDIT!"
-    description: "{vaultcher}'s name has been changed from {old} to {new}"
-    color: "RED"
-    footer-text: "SENT BY VAULTCHER"
-  referral-created-embed:
-    url: "WEBHOOK URL HERE!!!"
-    enabled: false
-    title: "REFERRAL CREATED!"
-    description: "{creator} created the referral code {code}!"
-    color: "RED"
-    footer-text: "SENT BY VAULTCHER"
-  referral-activated-embed:
-    url: "WEBHOOK URL HERE!!!"
-    enabled: false
-    title: "REFERRAL ACTIVATED!"
-    description: "{creator}'s code ({code}) has been activated by {activator}!"
-    color: "RED"
-    footer-text: "SENT BY VAULTCHER"
-
-
-# ==============================================================
-# Referral Configuration
-# ==============================================================
+# ============================================================== #
+# Referral Configuration                                         #
+# ============================================================== #
 
 referral:
   command-creator: # These/this command(s) will run for THE CODE CREATOR when someone activates their code.
@@ -207,9 +149,9 @@ referral:
     - "msg {player} nice job!"
     - "msg {player} test"
 
-# ==============================================================
-# Redeem Configuration
-# ==============================================================
+# ============================================================== #
+# Redeem Configuration                                           #
+# ============================================================== #
 
 redeem:
   particle:
@@ -222,3 +164,12 @@ redeem:
     name:
       - "BLOCK_NOTE_BLOCK_BELL"
   play-sound-at-location: false # If it's on true then everyone will hear the sound.
+
+# ============================================================== #
+# Command Settings                                               #
+# ============================================================== #
+
+aliases:
+  - "vaultcher"
+  - "voucher"
+

@@ -53,5 +53,22 @@ messages:
   cant-activate-own-referral: "&c&lVAULTCHER &8| &cDu kannst deinen eigenen Empfehlungscode nicht aktivieren!"
   referral-not-exists: "&c&lVAULTCHER &8| &cDieser Empfehlungscode existiert nicht!"
   successful-referral-activate: "&c&lVAULTCHER &8| &aDu hast den Empfehlungscode erfolgreich aktiviert."
+  false: "&cFalsch"
+  true: "&aWahr"
+  about-message: # It accepts placeholderapi too!
+    - ""
+    - "&8&l━━━━━━━━━━━━━━━━━━━━[━━&c&lVAULTCHER&8&l━━]━━━━━━━━━━━━━━━━━━━━"
+    - "Hallo %player_name%"
+    - "&c&lPLUGIN VERSION: &a[currentPluginVersion] &7/ &a[latestPluginVersion]"
+    - "&c&lSERVER VERSION: &a[serverVersion]"
+    - "&c&lAKTIVIERTE WEBHOOKS: &a[enabledWebhooks]"
+    - "&c&lDATENBANKTYP: &a[databaseType]"
+    - "&c&lIST DIE DATENBANK GESCHLOSSEN: [isDatabaseConnected]"
+    - "&c&lGEGEBENSCHEINE ERSTELLT: &a[vaultchersCreated]"
+    - "&c&lSPRACHE: &a[language]"
+    - "&c&lAUTOR: &a[author]"
+    - ""
+    - "&8&l━━━━━━━━━━━━━━━━━━━━[━━&c&lVAULTCHER&8&l━━]━━━━━━━━━━━━━━━━━━━━"
+    - ""
 
 

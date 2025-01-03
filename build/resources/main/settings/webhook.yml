@@ -1,0 +1,58 @@
+# ============================================================== #
+# Webhook Configuration Section                                  #
+# ============================================================== #
+
+global-url: "https://bla-bla-bla" # If you want to send everything in one place but don't want to enter the links, you can do it here and then all webhooks will be connected to this link. If you don't want to use this, leave it blank.
+
+webhook:
+  # Webhook embeds for various events
+  vaultcher-create-embed:
+    url: "WEBHOOK URL HERE OTHERWISE LEAVE IT BLANK!!!"
+    enabled: true
+    title: "NEW VAULTCHER CREATED!" # Title of the embed message for a new vaultcher creation
+    description: "{player} created a new vaultcher: {vaultcher} (Uses: {uses}, Command: {command})" # Description template for the created vaultcher
+    color: "RED" # Embed color
+    author-name: "" # Optional author name
+    footer-text: "SENT BY VAULTCHER" # Footer text
+  vaultcher-delete-embed:
+    url: "WEBHOOK URL HERE OTHERWISE LEAVE IT BLANK!!!"
+    enabled: false
+    title: "VAULTCHER DELETED!"
+    description: "{player} deleted a vaultcher: {vaultcher}"
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"
+  vaultcher-edituse-embed:
+    url: "WEBHOOK URL HERE OTHERWISE LEAVE IT BLANK!!!"
+    enabled: false
+    title: "USES EDIT!"
+    description: "{vaultcher}'s uses has been changed from {old} to {new}"
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"
+  vaultcher-editcommand-embed:
+    url: "WEBHOOK URL HERE OTHERWISE LEAVE IT BLANK!!!"
+    enabled: false
+    title: "COMMAND EDIT!"
+    description: "{vaultcher}'s command has been changed from {old} to {new}"
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"
+  vaultcher-editname-embed:
+    url: "WEBHOOK URL HERE OTHERWISE LEAVE IT BLANK!!!"
+    enabled: false
+    title: "NAME EDIT!"
+    description: "{vaultcher}'s name has been changed from {old} to {new}"
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"
+  referral-created-embed:
+    url: "WEBHOOK URL HERE OTHERWISE LEAVE IT BLANK!!!"
+    enabled: false
+    title: "REFERRAL CREATED!"
+    description: "{creator} created the referral code {code}!"
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"
+  referral-activated-embed:
+    url: "WEBHOOK URL HERE OTHERWISE LEAVE IT BLANK!!!"
+    enabled: false
+    title: "REFERRAL ACTIVATED!"
+    description: "{creator}'s code ({code}) has been activated by {activator}!"
+    color: "RED"
+    footer-text: "SENT BY VAULTCHER"

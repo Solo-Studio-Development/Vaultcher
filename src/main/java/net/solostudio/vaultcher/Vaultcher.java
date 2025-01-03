@@ -11,6 +11,7 @@ import net.solostudio.vaultcher.database.H2;
 import net.solostudio.vaultcher.enums.DatabaseTypes;
 import net.solostudio.vaultcher.enums.LanguageTypes;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
+import net.solostudio.vaultcher.hook.WebhookFile;
 import net.solostudio.vaultcher.language.Language;
 import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bstats.bukkit.Metrics;
@@ -28,6 +29,7 @@ public final class Vaultcher extends ZapperJavaPlugin {
     @Getter private static Vaultcher instance;
     @Getter private TaskScheduler scheduler;
     @Getter private Language language;
+    @Getter private WebhookFile webhookFile;
     @Getter private static AbstractDatabase database;
     private Config config;
 
@@ -69,8 +71,10 @@ public final class Vaultcher extends ZapperJavaPlugin {
         saveResourceIfNotExists("locales/messages_en.yml");
         saveResourceIfNotExists("locales/messages_de.yml");
         saveResourceIfNotExists("config.yml");
+        saveResourceIfNotExists("settings/webhook.yml");
 
         language = new Language("messages_" + LanguageTypes.valueOf(ConfigKeys.LANGUAGE.getString()));
+        webhookFile = new WebhookFile();
     }
 
     private void initializeDatabaseManager() {

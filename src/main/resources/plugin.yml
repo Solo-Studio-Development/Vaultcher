@@ -1,14 +1,10 @@
 name: Vaultcher
-version: '1.0.7'
+version: '1.0.8'
 main: net.solostudio.vaultcher.Vaultcher
 api-version: '1.20'
 authors: [ Solo Studio ]
-description: A clever fusion of "Vault" and "Voucher," this name emphasizes security ("vault") and the essence of the plugin's purpose ("voucher"). Perfect for a plugin that ensures safe and efficient management of digital vouchers on Minecraft servers!
+description: A clever fusion of "Vault" and "Voucher" this name emphasizes security ("vault") and the essence of the plugin's purpose ("voucher"). Perfect for a plugin that ensures safe and efficient management of digital vouchers on Minecraft servers!
 website: https://discord.gg/CxawDwDZtd
 folia-supported: true
-
-dependencies:
-  server:
-    PlaceholderAPI:
-      load: BEFORE
-      required: false
+softdepend: [PlaceholderAPI]
+loadbefore: [PlaceholderAPI]

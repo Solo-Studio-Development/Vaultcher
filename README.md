@@ -58,6 +58,7 @@ implementation(files("libs/plugin.jar"))
 - `/vaultcher redeem --name "<name>"` - Redeems the vaultcher.
 - `/vaultcher referral create` - Creates a new unique referral code.
 - `/vaultcher referral --redeem "<name>"` - Redeems the referral code.
+- `/vaultcher about` - Gives information about the plugin.
 
 ---
 
@@ -76,6 +77,7 @@ implementation(files("libs/plugin.jar"))
 - `vaultcher.admin`
 - `vaultcher.referral.create`
 - `vaultcher.referral.redeem`
+- `vaultcher.about`
 
 ---
 

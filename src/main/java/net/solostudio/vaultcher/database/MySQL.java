@@ -94,6 +94,22 @@ public class MySQL extends AbstractDatabase {
     }
 
     @Override
+    public int countVaultchers() {
+        String query = "SELECT COUNT(*) AS total FROM vaultcher";
+        int totalVaultchers = 0;
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) totalVaultchers = resultSet.getInt("total");
+        } catch (SQLException exception) {
+            LoggerUtils.error("Error counting vaultchers: " + exception.getMessage());
+        }
+
+        return totalVaultchers;
+    }
+
+    @Override
     public void createPlayer(@NotNull String playerName) {
         String query = "INSERT IGNORE INTO vaultcherplayers (NAME, REFERRALCODE, ACTIVATED, ACTIVATORS) VALUES (?, '', FALSE, 0)";
 

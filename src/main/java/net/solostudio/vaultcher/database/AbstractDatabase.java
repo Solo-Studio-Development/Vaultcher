@@ -13,6 +13,8 @@ public abstract class AbstractDatabase {
 
     public abstract void createTable();
 
+    public abstract int countVaultchers();
+
     public abstract void createPlayer(@NotNull String name);
 
     public abstract void createReferralCode(@NotNull String name, @NotNull String referralCode);

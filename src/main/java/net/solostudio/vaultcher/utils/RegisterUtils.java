@@ -5,6 +5,7 @@ import net.solostudio.vaultcher.annotations.DatabasePlayers;
 import net.solostudio.vaultcher.annotations.VaultcherCommand;
 import net.solostudio.vaultcher.commands.CommandVaultcher;
 import net.solostudio.vaultcher.database.AbstractDatabase;
+import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.exception.CommandExceptionHandler;
 import net.solostudio.vaultcher.listeners.DatabaseListener;
 import net.solostudio.vaultcher.listeners.WebhookListener;
@@ -12,6 +13,8 @@ import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.listeners.MenuListener;
 import org.bukkit.Bukkit;
 import revxrsal.commands.bukkit.BukkitLamp;
+import revxrsal.commands.orphan.Orphans;
+
 import java.util.Objects;
 
 public class RegisterUtils {
@@ -56,8 +59,7 @@ public class RegisterUtils {
 
                 .build();
 
-
-        lamp.register(new CommandVaultcher());
+        lamp.register(Orphans.path(ConfigKeys.ALIASES.getList().toArray(String[]::new)).handler(new CommandVaultcher()));
 
         LoggerUtils.info("### Successfully registered exception handlers... ###");
     }

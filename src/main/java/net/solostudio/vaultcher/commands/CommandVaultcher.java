@@ -4,11 +4,15 @@ import net.solostudio.vaultcher.Vaultcher;
 import net.solostudio.vaultcher.annotations.DatabasePlayers;
 import net.solostudio.vaultcher.annotations.VaultcherCommand;
 import net.solostudio.vaultcher.database.AbstractDatabase;
+import net.solostudio.vaultcher.enums.VersionTypes;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.enums.keys.MessageKeys;
 import net.solostudio.vaultcher.events.*;
+import net.solostudio.vaultcher.hook.PlaceholderAPI;
+import net.solostudio.vaultcher.hook.Webhook;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.menu.menus.NavigationMenu;
+import net.solostudio.vaultcher.update.SpigotUpdateFetcher;
 import net.solostudio.vaultcher.utils.EventUtils;
 import net.solostudio.vaultcher.managers.MenuController;
 import net.solostudio.vaultcher.utils.VaultcherUtils;
@@ -19,9 +23,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import revxrsal.commands.annotation.*;
 import revxrsal.commands.bukkit.annotation.CommandPermission;
+import revxrsal.commands.orphan.OrphanCommand;
 
-@Command({"vaultcher", "voucher"})
-public class CommandVaultcher {
+@SuppressWarnings("deprecation")
+public class CommandVaultcher implements OrphanCommand {
     @CommandPlaceholder
     public void defaultCommand(@NotNull CommandSender sender) {
         help(sender);
@@ -34,12 +39,36 @@ public class CommandVaultcher {
                 .forEach(sender::sendMessage);
     }
 
+    @Subcommand("about")
+    @CommandPermission("vaultcher.about")
+    public void about(@NotNull CommandSender sender) {
+        boolean isRegistered = PlaceholderAPI.isRegistered;
+
+        MessageKeys.ABOUT_MESSAGE.getMessages().stream()
+                .map(message -> {
+                    String modifiedMessage = isRegistered ? me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((Player) sender, message) : message;
+
+                    return modifiedMessage
+                            .replace("[currentPluginVersion]", "v" + Vaultcher.getInstance().getDescription().getVersion())
+                            .replace("[latestPluginVersion]", "v" + SpigotUpdateFetcher.getLatestVersion())
+                            .replace("[serverVersion]", String.valueOf(VersionTypes.getServerVersion()))
+                            .replace("[databaseType]", ConfigKeys.DATABASE.getString().toUpperCase())
+                            .replace("[language]", ConfigKeys.LANGUAGE.getString().toUpperCase())
+                            .replace("[author]", "User-19fff")
+                            .replace("[enabledWebhooks]", String.valueOf(Webhook.countEnabledWebhooks()))
+                            .replace("[isDatabaseConnected]", Vaultcher.getDatabase().isConnected() ? MessageKeys.TRUE.getMessage() : MessageKeys.FALSE.getMessage())
+                            .replace("[vaultchersCreated]", String.valueOf(Vaultcher.getDatabase().countVaultchers()));
+                })
+                .forEach(sender::sendMessage);
+    }
+
     @Subcommand("reload")
     @Description("Reloads the plugin.")
     @CommandPermission("vaultcher.reload")
     public void reload(@NotNull CommandSender sender) {
         Vaultcher.getInstance().getLanguage().reload();
         Vaultcher.getInstance().getConfiguration().reload();
+        Vaultcher.getInstance().getWebhookFile().reload();
         sender.sendMessage(MessageKeys.RELOAD.getMessage());
     }
 
@@ -58,7 +87,8 @@ public class CommandVaultcher {
         AbstractDatabase database = Vaultcher.getDatabase();
 
         if (database.exists(name)) {
-            sender.sendMessage(MessageKeys.ALREADY_EXISTS.getMessage());return;
+            sender.sendMessage(MessageKeys.ALREADY_EXISTS.getMessage());
+            return;
         }
 
         if (uses < 0) {

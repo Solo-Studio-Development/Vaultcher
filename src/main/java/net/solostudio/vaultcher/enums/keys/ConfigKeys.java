@@ -10,6 +10,7 @@ public enum ConfigKeys {
     DATABASE("database.type"),
     LANGUAGE("language"),
     USES_MUST_BE_BIGGER_THAN_ONE("uses-must-be-bigger-than-one"),
+    ALIASES("aliases"),
 
     BACK_TO_NAVIGATION_SLOT("back-to-navigation-item.slot"),
 

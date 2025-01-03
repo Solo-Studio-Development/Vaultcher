@@ -48,6 +48,9 @@ public enum MessageKeys {
     CANT_ACTIVATE_OWN_REFERRAL("messages.cant-activate-own-referral"),
     REFERRAL_NOT_EXISTS("messages.referral-not-exists"),
     SUCCESSFUL_REFERRAL_ACTIVATE("messages.successful-referral-activate"),
+    FALSE("messages.false"),
+    TRUE("messages.true"),
+    ABOUT_MESSAGE("messages.about-message"),
     HELP("messages.help"),
     LAST_PAGE("messages.last-page");
 
