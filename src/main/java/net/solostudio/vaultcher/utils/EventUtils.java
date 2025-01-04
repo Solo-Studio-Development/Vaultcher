@@ -1,6 +1,6 @@
 package net.solostudio.vaultcher.utils;
 
-import net.solostudio.vaultcher.hook.Webhook;
+import net.solostudio.vaultcher.hooks.Webhook;
 import net.solostudio.vaultcher.interfaces.PlaceholderProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

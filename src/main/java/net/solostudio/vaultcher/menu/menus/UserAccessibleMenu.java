@@ -4,13 +4,10 @@ import net.solostudio.vaultcher.Vaultcher;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.enums.keys.ItemKeys;
 import net.solostudio.vaultcher.enums.keys.MessageKeys;
+import net.solostudio.vaultcher.managers.MenuController;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.menu.PaginatedMenu;
-import net.solostudio.vaultcher.managers.MenuController;
 import net.solostudio.vaultcher.utils.VaultcherUtils;
-import org.bukkit.Particle;
-import org.bukkit.Registry;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -20,8 +17,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.IntStream;
 
 @SuppressWarnings("all")
 public class UserAccessibleMenu extends PaginatedMenu {

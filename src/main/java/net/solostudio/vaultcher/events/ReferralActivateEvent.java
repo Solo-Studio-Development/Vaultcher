@@ -2,9 +2,8 @@ package net.solostudio.vaultcher.events;
 
 import lombok.Getter;
 import net.solostudio.vaultcher.Vaultcher;
-import net.solostudio.vaultcher.commands.CommandVaultcher;
-import net.solostudio.vaultcher.database.AbstractDatabase;
 import net.solostudio.vaultcher.interfaces.PlaceholderProvider;
+import net.solostudio.vaultcher.interfaces.VaultcherDatabase;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -32,11 +31,11 @@ public class ReferralActivateEvent extends Event implements PlaceholderProvider 
     @Override
     public Map<String, String> getPlaceholders() {
         Map<String, String> placeholders = new HashMap<>();
-        AbstractDatabase database = Vaultcher.getDatabase();
+        VaultcherDatabase vaultcherDatabase = Vaultcher.getDatabase();
 
-        placeholders.put("{creator}", database.getReferralCodeOwner(database.getReferralCode(creator)));
+        placeholders.put("{creator}", vaultcherDatabase.getReferralCodeOwner(vaultcherDatabase.getReferralCode(creator)));
         placeholders.put("{activator}", activator);
-        placeholders.put("{code}", database.getReferralCode(creator));
+        placeholders.put("{code}", vaultcherDatabase.getReferralCode(creator));
 
         return placeholders;
     }

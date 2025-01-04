@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import net.solostudio.vaultcher.Vaultcher;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
+import net.solostudio.vaultcher.interfaces.VaultcherDatabase;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bukkit.Bukkit;
@@ -13,7 +14,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.SecureRandom;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +25,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Getter
-public class MySQL extends AbstractDatabase {
+public class MySQL implements VaultcherDatabase {
     private final Connection connection;
 
     public MySQL(@NotNull ConfigurationSection section) throws SQLException {
@@ -323,8 +327,8 @@ public class MySQL extends AbstractDatabase {
                 Arrays.stream(commands.split(","))
                         .toList()
                         .forEach(command -> {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.trim().replace("%player%", Objects.requireNonNull(player.getName())));
-                });
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.trim().replace("%player%", Objects.requireNonNull(player.getName())));
+                        });
             }
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());

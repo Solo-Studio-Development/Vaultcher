@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 import net.solostudio.vaultcher.Vaultcher;
 import net.solostudio.vaultcher.enums.keys.ConfigKeys;
+import net.solostudio.vaultcher.interfaces.VaultcherDatabase;
 import net.solostudio.vaultcher.managers.VaultcherData;
 import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bukkit.Bukkit;
@@ -12,14 +13,17 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.SecureRandom;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 @Getter
-public class H2 extends AbstractDatabase {
+public class H2 implements VaultcherDatabase {
     private final Connection connection;
     private final HikariDataSource dataSource;
 

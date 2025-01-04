@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Vaultcher.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Vaultcher.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Vaultcher.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Vaultcher.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/net.solostudio.Vaultcher.test.iml" filepath="$PROJECT_DIR$/.idea/modules/net.solostudio.Vaultcher.test.iml" />
     </modules>
   </component>
 </project>

@@ -41,4 +41,3 @@ public class VaultcherCommandEditEvent extends Event implements PlaceholderProvi
         return placeholders;
     }
 }
-

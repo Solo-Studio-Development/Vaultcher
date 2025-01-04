@@ -8,7 +8,7 @@ webhook:
   # Webhook embeds for various events
   vaultcher-create-embed:
     url: "WEBHOOK URL HERE OTHERWISE LEAVE IT BLANK!!!"
-    enabled: true
+    enabled: false
     title: "NEW VAULTCHER CREATED!" # Title of the embed message for a new vaultcher creation
     description: "{player} created a new vaultcher: {vaultcher} (Uses: {uses}, Command: {command})" # Description template for the created vaultcher
     color: "RED" # Embed color
