@@ -51,7 +51,8 @@ public enum MessageKeys {
     FALSE("messages.false"),
     TRUE("messages.true"),
     ABOUT_MESSAGE("messages.about-message"),
-    HELP("messages.help"),
+    PLAYER_HELP("messages.player-help"),
+    ADMIN_HELP("messages.admin-help"),
     LAST_PAGE("messages.last-page");
 
     private final String path;

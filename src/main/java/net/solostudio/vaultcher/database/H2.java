@@ -145,7 +145,7 @@ public class H2 implements VaultcherDatabase {
         do {
             code = random.ints(48, 123)
                     .filter(i -> (i <= 57) || (i >= 65 && i <= 90) || (i >= 97 && i <= 122))
-                    .limit(7)
+                    .limit(ConfigKeys.REFERRAL_LENGTH.getInt())
                     .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                     .toString();
         } while (doesReferralCodeExist(code));
@@ -291,6 +291,36 @@ public class H2 implements VaultcherDatabase {
             }
         } catch (SQLException exception) {
             LoggerUtils.error(exception.getMessage());
+        }
+    }
+
+    @Override
+    public void addCommand(@NotNull String vaultcherName, @NotNull String newCommand) {
+        String selectQuery = "SELECT COMMAND FROM vaultcher WHERE VAULTCHER = ?";
+        String updateQuery = "UPDATE vaultcher SET COMMAND = ? WHERE VAULTCHER = ?";
+
+        try (PreparedStatement selectStatement = getConnection().prepareStatement(selectQuery)) {
+            selectStatement.setString(1, vaultcherName);
+            ResultSet resultSet = selectStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String existingCommands = resultSet.getString("COMMAND");
+                List<String> commandsList = new ArrayList<>();
+
+                if (existingCommands != null && !existingCommands.trim().isEmpty()) commandsList.addAll(Arrays.asList(existingCommands.split(",")));
+
+                commandsList.add(newCommand.trim());
+
+                String updatedCommandString = String.join(", ", commandsList);
+
+                try (PreparedStatement updateStatement = getConnection().prepareStatement(updateQuery)) {
+                    updateStatement.setString(1, updatedCommandString);
+                    updateStatement.setString(2, vaultcherName);
+                    updateStatement.executeUpdate();
+                }
+            }
+        } catch (SQLException exception) {
+            LoggerUtils.error("Error adding command to vaultcher: " + exception.getMessage());
         }
     }
 

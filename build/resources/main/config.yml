@@ -142,6 +142,7 @@ navigation-menu:
 # ============================================================== #
 
 referral:
+  length: 10 # Length of the referral code
   command-creator: # These/this command(s) will run for THE CODE CREATOR when someone activates their code.
     - "msg {player} nice!"
     - "msg {player} you are so sigma"

@@ -32,6 +32,7 @@ public enum ConfigKeys {
     PLACEHOLDER_NO("placeholders.no-holder"),
     PLACEHOLDER_NO_CODE("placeholders.no-code-holder"),
 
+    REFERRAL_LENGTH("referral.length"),
     REFERRAL_COMMAND_CREATOR("referral.command-creator"),
     REFERRAL_COMMAND_ACTIVATOR("referral.command-activator"),
 

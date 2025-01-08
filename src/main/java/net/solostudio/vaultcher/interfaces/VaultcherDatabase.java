@@ -39,6 +39,8 @@ public interface VaultcherDatabase {
 
     String getReferralCodeOwner(@NotNull String referralCode);
 
+    void addCommand(@NotNull String vaultcherName, @NotNull String newCommand);
+
     void createVaultcher(@NotNull String name, @NotNull String command, int uses);
 
     void redeemVaultcher(@NotNull String vaultcherName, @NotNull OfflinePlayer player);

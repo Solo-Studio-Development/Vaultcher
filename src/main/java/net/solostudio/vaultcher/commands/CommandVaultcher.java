@@ -34,9 +34,13 @@ public class CommandVaultcher implements OrphanCommand {
 
     @Subcommand("help")
     public void help(@NotNull CommandSender sender) {
-        MessageKeys.HELP
-                .getMessages()
-                .forEach(sender::sendMessage);
+        if (sender.hasPermission("vaultcher.admin")) {
+            MessageKeys.ADMIN_HELP
+                    .getMessages()
+                    .forEach(sender::sendMessage);
+        } else MessageKeys.PLAYER_HELP
+                    .getMessages()
+                    .forEach(sender::sendMessage);
     }
 
     @Subcommand("about")
