@@ -60,7 +60,7 @@ public class CommandVaultcher implements OrphanCommand {
                             .replace("[language]", ConfigKeys.LANGUAGE.getString().toUpperCase())
                             .replace("[author]", "User-19fff")
                             .replace("[enabledWebhooks]", String.valueOf(Webhook.countEnabledWebhooks()))
-                            .replace("[isDatabaseConnected]", Vaultcher.getDatabase().isConnected() ? MessageKeys.TRUE.getMessage() : MessageKeys.FALSE.getMessage())
+                            .replace("[isDatabaseConnected]", Vaultcher.getDatabase().isConnected() ? ConfigKeys.TRUE.getString() : ConfigKeys.FALSE.getString())
                             .replace("[vaultchersCreated]", String.valueOf(Vaultcher.getDatabase().countVaultchers()));
                 })
                 .forEach(sender::sendMessage);

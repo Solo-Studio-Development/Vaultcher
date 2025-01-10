@@ -170,6 +170,9 @@ redeem:
 # Command Settings                                               #
 # ============================================================== #
 
+false: "&cFalse"
+true: "&aTrue"
+
 aliases:
   - "vaultcher"
   - "voucher"

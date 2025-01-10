@@ -22,6 +22,9 @@ public class DatabaseProxy {
         @Override
         public Object invoke(@NotNull Object proxy, @NotNull Method method, @NotNull Object[] args) throws Throwable {
             if (method.getReturnType().equals(Void.TYPE)) {
+
+                if (method.getName().equals("redeemVaultcher")) return method.invoke(instance, args);
+
                 Vaultcher.getInstance().getScheduler().runTaskAsynchronously(() -> {
                     try {
                         method.invoke(instance, args);

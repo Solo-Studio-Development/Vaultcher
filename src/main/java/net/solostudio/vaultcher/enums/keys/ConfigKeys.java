@@ -46,7 +46,10 @@ public enum ConfigKeys {
     REDEEM_IS_PARTICLE_ENABLED("redeem.particle.enabled"),
     REDEEM_PLAY_SOUND_AT_LOCATION("redeem.play-sound-at-location"),
     REDEEM_IS_SOUND_ENABLED("redeem.sound.enabled"),
-    REDEEM_SOUND("redeem.sound.name");
+    REDEEM_SOUND("redeem.sound.name"),
+
+    TRUE("true"),
+    FALSE("false");
 
     private final String path;
 

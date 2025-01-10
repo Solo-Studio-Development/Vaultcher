@@ -13,6 +13,7 @@ import net.solostudio.vaultcher.enums.keys.ConfigKeys;
 import net.solostudio.vaultcher.hooks.WebhookFile;
 import net.solostudio.vaultcher.interfaces.VaultcherDatabase;
 import net.solostudio.vaultcher.language.Language;
+import net.solostudio.vaultcher.managers.ConfigurationManager;
 import net.solostudio.vaultcher.utils.LoggerUtils;
 import org.bstats.bukkit.Metrics;
 import revxrsal.zapper.ZapperJavaPlugin;
@@ -77,6 +78,10 @@ public final class Vaultcher extends ZapperJavaPlugin {
 
         language = new Language("messages_" + LanguageTypes.valueOf(ConfigKeys.LANGUAGE.getString()));
         webhookFile = new WebhookFile();
+
+        getConfiguration().updateConfigWithDefaults();
+        getLanguage().updateConfigWithDefaults();
+        getWebhookFile().updateConfigWithDefaults();
     }
 
     private void initializeDatabaseManager() {

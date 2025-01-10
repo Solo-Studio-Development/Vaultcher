@@ -48,8 +48,6 @@ public enum MessageKeys {
     CANT_ACTIVATE_OWN_REFERRAL("messages.cant-activate-own-referral"),
     REFERRAL_NOT_EXISTS("messages.referral-not-exists"),
     SUCCESSFUL_REFERRAL_ACTIVATE("messages.successful-referral-activate"),
-    FALSE("messages.false"),
-    TRUE("messages.true"),
     ABOUT_MESSAGE("messages.about-message"),
     PLAYER_HELP("messages.player-help"),
     ADMIN_HELP("messages.admin-help"),
@@ -62,7 +60,7 @@ public enum MessageKeys {
     }
 
     public String getMessage() {
-        return MessageProcessor.process(Vaultcher.getInstance().getLanguage().getString(path));
+        return MessageProcessor.process(Vaultcher.getInstance().getLanguage().getString("prefix") + Vaultcher.getInstance().getLanguage().getString(path));
     }
 
     public List<String> getMessages() {
