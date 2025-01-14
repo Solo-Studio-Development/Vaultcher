@@ -60,7 +60,8 @@ public enum MessageKeys {
     }
 
     public String getMessage() {
-        return MessageProcessor.process(Vaultcher.getInstance().getLanguage().getString("prefix") + Vaultcher.getInstance().getLanguage().getString(path));
+        return MessageProcessor.process(Vaultcher.getInstance().getLanguage().getString(path))
+                .replace("%prefix%", MessageProcessor.process(Vaultcher.getInstance().getLanguage().getString("prefix")));
     }
 
     public List<String> getMessages() {

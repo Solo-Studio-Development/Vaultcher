@@ -27,12 +27,8 @@ import revxrsal.commands.orphan.OrphanCommand;
 
 @SuppressWarnings("deprecation")
 public class CommandVaultcher implements OrphanCommand {
-    @CommandPlaceholder
-    public void defaultCommand(@NotNull CommandSender sender) {
-        help(sender);
-    }
-
     @Subcommand("help")
+    @CommandPlaceholder
     public void help(@NotNull CommandSender sender) {
         if (sender.hasPermission("vaultcher.admin")) {
             MessageKeys.ADMIN_HELP
@@ -46,11 +42,9 @@ public class CommandVaultcher implements OrphanCommand {
     @Subcommand("about")
     @CommandPermission("vaultcher.about")
     public void about(@NotNull CommandSender sender) {
-        boolean isRegistered = PlaceholderAPI.isRegistered;
-
         MessageKeys.ABOUT_MESSAGE.getMessages().stream()
                 .map(message -> {
-                    String modifiedMessage = isRegistered ? me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((Player) sender, message) : message;
+                    String modifiedMessage = PlaceholderAPI.isRegistered ? me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((Player) sender, message) : message;
 
                     return modifiedMessage
                             .replace("[currentPluginVersion]", "v" + Vaultcher.getInstance().getDescription().getVersion())

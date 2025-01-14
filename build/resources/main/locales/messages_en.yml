@@ -1,4 +1,4 @@
-prefix: "&c&lVAULTCHER &8| "
+prefix: "&c&lVAULTCHER &8| " # Add %prefix% wherever you would like to.
 messages:
   player-help:
     - ""
